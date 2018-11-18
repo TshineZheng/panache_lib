@@ -31,7 +31,7 @@ class ThemeService {
 
   Future loadTheme(File file) async {
     final jsonTheme = await file.readAsString();
-    final themeMap = JSON.decode(jsonTheme);
+    final themeMap = json.decode(jsonTheme);
     theme = new ThemeData.light().copyWith(
         primaryColor: getMaterialColor(themeMap['primaryColor'].toString()),
         accentColor: getMaterialColor(themeMap['accentColor'].toString()),
@@ -117,11 +117,11 @@ class ThemeService {
 
     theme = themeData;
     themeNotifier.value = theme;
-    updateThemeFile(JSON.encode(map));
+    updateThemeFile(json.encode(map));
   }
 
   Future updateThemeFile(String content) async {
-    await _file.writeAsString(content, mode: FileMode.WRITE);
+    await _file.writeAsString(content, mode: FileMode.write);
   }
 }
 
@@ -133,5 +133,3 @@ getMaterialName(Color color, {VoidCallback or}) => colors_names()
     .firstWhere((c) => c.color.value == color.value,
         orElse: () => colors_names().first)
     .name;
-
-ThemeData parseTheme(Map<String, dynamic> themeMap) {}

@@ -1,9 +1,17 @@
-# Files and directories created by pub
+.DS_Store
+.dart_tool/
+
 .packages
 .pub/
+
 build/
+ios/.generated/
+ios/Flutter/Generated.xcconfig
+ios/Runner/GeneratedPluginRegistrant.*
+
 # Remove the following pattern if you wish to check in your lock file
 pubspec.lock
 
 # Directory created by dartdoc
 doc/api/
+android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
