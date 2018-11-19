@@ -33,14 +33,14 @@ class NamedColor {
   NamedColor(this.color, this.name);
 }
 
-List<NamedColor> colors_names() {
-  final colors = Colors.primaries.map((c) => c).toList();
-  colors.addAll([Colors.white, Colors.black, Colors.grey, ]);
+List<NamedColor> colorsNames() {
+  var colors = List<Color>.from(Colors.primaries, growable: true);
+  colors.addAll([Colors.white, Colors.black, Colors.grey]);
 
-  return colors.fold([], (cumul, current) {
-    cumul.add(new NamedColor(current, materialColorsNames[cumul.length]));
-    return cumul;
-  });
+  return colors.fold(
+      [],
+      (cumul, current) => cumul
+        ..add(new NamedColor(current, materialColorsNames[cumul.length])));
 }
 
 bool isDark(Color c) => (c.red + c.green + c.blue) / 3 >= 146;

@@ -7,27 +7,32 @@ const kS6 = const Size(1440 / 4, 2560 / 4);
 
 class AppPreviewContainer extends StatelessWidget {
   ThemeData get theme => service.theme;
-  ThemeService service;
+  final ThemeService service;
   final Size size;
 
   AppPreviewContainer(this.service, this.size);
 
   @override
   Widget build(BuildContext context) {
-    return new Expanded(
-        child: new Container(
-            color: Colors.grey.shade300,
-            child: new Center(
-                child: new Container(
-                    width: kIPhone6.width,
-                    height: kIPhone6.height,
-                    decoration: new BoxDecoration(boxShadow: [
-                      new BoxShadow(
-                          blurRadius: 4.0, color: Colors.grey.shade500)
-                    ]),
-                    child: new ThemePreviewApp(
-                      service: service,
-                    )))));
+    return Expanded(
+      child: Container(
+        color: Colors.grey.shade300,
+        child: Center(
+          child: Container(
+            width: kIPhone6.width,
+            height: kIPhone6.height,
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(blurRadius: 4.0, color: Colors.grey.shade500)
+              ],
+            ),
+            child: ThemePreviewApp(
+              service: service,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -39,12 +44,11 @@ class TabItem {
 }
 
 class ThemePreviewApp extends StatefulWidget {
-  ThemeData theme;
-  //ThemeData get theme => service.theme;
-  ThemeService service;
+  ThemeData get theme => service.theme;
+  final ThemeService service;
   ThemePreviewApp({this.service});
   @override
-  State<StatefulWidget> createState() => new ThemePreviewAppState(theme);
+  State<StatefulWidget> createState() => ThemePreviewAppState(theme);
 }
 
 class ThemePreviewAppState extends State<ThemePreviewApp>
@@ -54,11 +58,11 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
   double sliderValue = 0.5;
 
   final tabsItem = [
-    new TabItem('Controls', Icons.report),
-    new TabItem('Texte Themes', Icons.cloud_queue),
+    TabItem('Controls', Icons.report),
+    TabItem('Texte Themes', Icons.cloud_queue),
   ];
 
-  ThemePreviewAppState(this.theme) {}
+  ThemePreviewAppState(this.theme);
 
   @override
   void initState() {
@@ -72,203 +76,209 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
         {'label': 'Description', 'icon': Icons.description},
         {'label': 'Transform', 'icon': Icons.transform},
       ]
-          .map((item) => new BottomNavigationBarItem(
-              icon: new Icon(
-                  item['icon'] /*, color: theme.unselectedWidgetColor,*/),
-              title: new Text(item['label'])))
+          .map(
+            (item) => BottomNavigationBarItem(
+                  icon: Icon(item['icon']),
+                  title: Text(item['label']),
+                ),
+          )
           .toList();
 
   @override
   void didUpdateWidget(ThemePreviewApp oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if( widget.theme != null)
-    theme = widget.theme;
+    if (widget.theme != null) theme = widget.theme;
   }
 
   @override
-  Widget build(BuildContext context) {
-    return widget.service.theme != null
-        ? new MaterialApp(
-            title: 'App Preview',
-            debugShowCheckedModeBanner: false,
-            home: new Theme(
-                data: theme,
-                child: new DefaultTabController(
-                  length: 2,
-                  child: new Scaffold(
-                    appBar: new AppBar(
-                      title: new Text("App Preview"),
-                      bottom: _buildTabBar(),
-                    ),
-                    body: new TabBarView(
-                        children: [_buildTab1Content(), _buildTab2Content()]),
-                    bottomNavigationBar:
-                        new BottomNavigationBar(items: bottomItems),
-                  ),
-                )))
-        : new Center(
-            child: new Text("Loading"),
-          );
-  }
+  Widget build(BuildContext context) => widget.service.theme != null
+      ? MaterialApp(
+          title: 'App Preview',
+          debugShowCheckedModeBanner: false,
+          home: Theme(
+            data: theme,
+            child: DefaultTabController(
+              length: 2,
+              child: Scaffold(
+                appBar: AppBar(
+                  title: Text("App Preview"),
+                  bottom: _buildTabBar(),
+                ),
+                body: TabBarView(
+                    children: [_buildTab1Content(), _buildTab2Content()]),
+                bottomNavigationBar: BottomNavigationBar(items: bottomItems),
+              ),
+            ),
+          ),
+        )
+      : Center(
+          child: Text("Loading"),
+        );
 
-  _buildTabBar() => new TabBar(
+  _buildTabBar() => TabBar(
       tabs: tabsItem
-          .map((t) => new Tab(
+          .map((t) => Tab(
                 text: t.text,
-                icon: new Icon(t.icon),
+                icon: Icon(t.icon),
               ))
           .toList());
 
-  _buildTab1Content() => new Padding(
-      padding: new EdgeInsets.all(8.0),
-      child: new ListView(
-        children: <Widget>[
-          new Padding(
-              padding: new EdgeInsets.symmetric(vertical: 16.0),
-              child: new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    new RaisedButton(
-                      onPressed: () => print('bt... '),
-                      child: new Text("A button"),
+  _buildTab1Content() => Padding(
+        padding: EdgeInsets.all(8.0),
+        child: ListView(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  RaisedButton(
+                    onPressed: () => print('bt... '),
+                    child: Text("A button"),
+                  ),
+                  FloatingActionButton(
+                    child: Icon(
+                      Icons.check,
+                      color: theme?.accentTextTheme?.button?.color,
                     ),
-                    new FloatingActionButton(
-                        child: new Icon(
-                          Icons.check,
-                          color: theme?.accentTextTheme?.button?.color
-                              /* theme.accentColorBrightness == Brightness.dark
-                              ? theme.accentTextTheme.button.color
-                              : theme.accentTextTheme.button.color*/
-                              ,
-                        ),
-                        onPressed: () => print('FAB... ')),
-                    new FlatButton(
-                        onPressed: () => print('flatbutton... '),
-                        child: new Text('FlatButton')),
-                    new IconButton(
-                        icon: new Icon(
-                          Icons.restore_from_trash,
-                          color: theme?.textTheme?.button?.color,
-                        ),
-                        onPressed: () => print('IconButton... ')),
-                  ])),
-          new Divider(),
-          new Row(
-            children: <Widget>[
-              new Checkbox(
-                  value: true, onChanged: (v) => print('checkbox... ')),
-              new Checkbox(
-                  value: false, onChanged: (v) => print('checkbox... ')),
-              new Checkbox(value: true, onChanged: null),
-              new Checkbox(value: false, onChanged: null),
-            ],
-          ),
-          new Divider(),
-          new Row(
-            children: <Widget>[
-              new Radio(
-                  value: false,
-                  onChanged: (v) => print('checkbox... '),
-                  groupValue: null),
-              new Radio(
-                  value: true,
-                  onChanged: (v) => print('checkbox... '),
-                  groupValue: true),
-              new Switch(value: false, onChanged: (v) => print('checkbox... ')),
-              new Switch(value: true, onChanged: (v) => print('checkbox... ')),
-            ],
-          ),
-          new Divider(),
-          new Slider(
-              value: sliderValue,
-              onChanged: (v) => setState(() => sliderValue = v)),
-          new Row(
-            children: <Widget>[
-              new RaisedButton(
-                child: new Text('Dialog'),
-                onPressed: () => showDialog(
-                    context: context,
-                    child: new Theme(
-                        child: new Dialog(
-                          child: new Container(
-                              width: 420.0,
-                              height: 420.0,
-                              child: new Text(
-                                'a simple dialog',
-                                style: theme.textTheme.headline,
-                              )),
-                        ),
-                        data: widget.theme)),
-              )
-            ],
-          ),
-          new Row(children: [
-            new Expanded(
-                child: new LinearProgressIndicator(
-              value: 0.57,
-            )),
-            new CircularProgressIndicator(
-              value: 0.57,
-              backgroundColor: Colors.yellow,
+                    onPressed: () => print('FAB... '),
+                  ),
+                  FlatButton(
+                    onPressed: () => print('flatbutton... '),
+                    child: Text('FlatButton'),
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.restore_from_trash,
+                      color: theme?.textTheme?.button?.color,
+                    ),
+                    onPressed: () => print('IconButton... '),
+                  ),
+                ],
+              ),
             ),
-          ]),
-          new IgnorePointer(
-              child: new TextField(
-            decoration: const InputDecoration(
-                labelText: "Label text",
-                hintText: "Hint text",
-                errorText: "Error text example"),
-            controller: new TextEditingController(text: 'a textfield'),
-          ))
-        ],
-      ));
+            Divider(),
+            Row(
+              children: [
+                Checkbox(value: true, onChanged: (v) => print('checkbox... ')),
+                Checkbox(value: false, onChanged: (v) => print('checkbox... ')),
+                Checkbox(value: true, onChanged: null),
+                Checkbox(value: false, onChanged: null),
+              ],
+            ),
+            Divider(),
+            Row(
+              children: [
+                Radio(
+                    value: false,
+                    onChanged: (v) => print('checkbox... '),
+                    groupValue: null),
+                Radio(
+                    value: true,
+                    onChanged: (v) => print('checkbox... '),
+                    groupValue: true),
+                Switch(value: false, onChanged: (v) => print('checkbox... ')),
+                Switch(value: true, onChanged: (v) => print('checkbox... ')),
+              ],
+            ),
+            Divider(),
+            Slider(
+                value: sliderValue,
+                onChanged: (v) => setState(() => sliderValue = v)),
+            Row(
+              children: <Widget>[
+                RaisedButton(
+                  child: Text('Dialog'),
+                  onPressed: () => showDialog(
+                        context: context,
+                        builder: (BuildContext context) => Theme(
+                            child: Dialog(
+                              child: Container(
+                                width: 420.0,
+                                height: 420.0,
+                                child: Text(
+                                  'a simple dialog',
+                                  style: theme.textTheme.headline,
+                                ),
+                              ),
+                            ),
+                            data: widget.theme),
+                      ),
+                )
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: LinearProgressIndicator(
+                    value: 0.57,
+                  ),
+                ),
+                CircularProgressIndicator(
+                  value: 0.57,
+                  backgroundColor: Colors.yellow,
+                ),
+              ],
+            ),
+            IgnorePointer(
+              child: TextField(
+                decoration: const InputDecoration(
+                    labelText: "Label text",
+                    hintText: "Hint text",
+                    errorText: "Error text example"),
+                controller: TextEditingController(text: 'a textfield'),
+              ),
+            )
+          ],
+        ),
+      );
 
-  _buildTab2Content() => new Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: new ListView(
-          children: <Widget>[
-            new Text(
+  _buildTab2Content() => Padding(
+        padding: EdgeInsets.all(8.0),
+        child: ListView(
+          children: [
+            Text(
               'Headline',
               style: theme.textTheme.headline,
             ),
-            new Text(
+            Text(
               'Subhead',
               style: theme.textTheme.subhead,
             ),
-            new Text(
+            Text(
               'Title',
               style: theme.textTheme.title,
             ),
-            new Text(
+            Text(
               'Body 1',
             ),
-            new Text(
+            Text(
               'Body 1',
               style: theme.textTheme.body1,
             ),
-            new Text(
+            Text(
               'Body 2',
               style: theme.textTheme.body2,
             ),
-            new FlatButton(
-                child: new Text(
+            FlatButton(
+                child: Text(
                   'button',
                   style: theme.textTheme.button,
                 ),
                 onPressed: () {}),
-            new Text(
+            Text(
               'Display 1',
               style: theme.textTheme.display1,
             ),
-            new Text(
+            Text(
               'Display 2',
               style: theme.textTheme.display2,
             ),
-            new Text(
+            Text(
               'Display 3',
               style: theme.textTheme.display3,
             ),
-            new Text(
+            Text(
               'Display 4',
               style: theme.textTheme.display4,
             ),

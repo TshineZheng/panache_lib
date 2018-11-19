@@ -11,18 +11,17 @@ const flutterialChannel = const MethodChannel("flutterial");
 
 class ThemeService {
   Directory _appDir;
-
   ThemeData theme;
-
   File _file;
 
   final ValueNotifier<ThemeData> themeNotifier =
-      new ValueNotifier(new ThemeData.light());
+      ValueNotifier(ThemeData.light());
 
   ThemeService() {
     flutterialChannel.setMethodCallHandler((call) {
       print('ThemeService.onRemoteCall... ${call.method} ${call.arguments}');
     });
+
     getApplicationDocumentsDirectory().then((d) {
       _appDir = d;
       initTheme();
@@ -32,7 +31,7 @@ class ThemeService {
   Future loadTheme(File file) async {
     final jsonTheme = await file.readAsString();
     final themeMap = json.decode(jsonTheme);
-    theme = new ThemeData.light().copyWith(
+    theme = ThemeData.light().copyWith(
         primaryColor: getMaterialColor(themeMap['primaryColor'].toString()),
         accentColor: getMaterialColor(themeMap['accentColor'].toString()),
         scaffoldBackgroundColor:
@@ -68,12 +67,11 @@ class ThemeService {
             themeMap['isDark'] == 1 ? Brightness.dark : Brightness.light);
 
     themeNotifier.value = theme;
-    //print('ThemeService.load  jsonTheme ${jsonTheme}');
   }
 
   Future initTheme() async {
     print('ThemeService.initTheme ${_appDir.path}');
-    _file = new File(_appDir.path + '/theme.json');
+    _file = File(_appDir.path + '/theme.json');
     if (!(await _file.exists())) {
       print('ThemeService init theme.json... ');
       await _file
@@ -81,10 +79,6 @@ class ThemeService {
     }
 
     loadTheme(_file);
-
-    /*if ( await file.exists())
-    else {
-    }*/
   }
 
   void saveTheme(ThemeData themeData) {
@@ -125,11 +119,11 @@ class ThemeService {
   }
 }
 
-getMaterialColor(String name, {VoidCallback or}) => colors_names()
-    .firstWhere((c) => c.name == name, orElse: () => colors_names().first)
+getMaterialColor(String name, {VoidCallback or}) => colorsNames()
+    .firstWhere((c) => c.name == name, orElse: () => colorsNames().first)
     .color;
 
-getMaterialName(Color color, {VoidCallback or}) => colors_names()
+getMaterialName(Color color, {VoidCallback or}) => colorsNames()
     .firstWhere((c) => c.color.value == color.value,
-        orElse: () => colors_names().first)
+        orElse: () => colorsNames().first)
     .name;
