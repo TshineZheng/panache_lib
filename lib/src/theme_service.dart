@@ -10,28 +10,40 @@ import 'package:path_provider/path_provider.dart';
 const flutterialChannel = const MethodChannel("flutterial");
 
 class ThemeService {
-  Directory _appDir;
-  ThemeData theme;
-  File _file;
+  static ThemeData _themeBase = ThemeData.light();
+  final ValueNotifier<ThemeData> themeNotifier = ValueNotifier(_themeBase);
+  File _themeFile;
 
-  final ValueNotifier<ThemeData> themeNotifier =
-      ValueNotifier(ThemeData.light());
+  ThemeData get theme => themeNotifier.value;
+  set theme(ThemeData theme) => themeNotifier.value = theme;
 
   ThemeService() {
     flutterialChannel.setMethodCallHandler((call) {
       print('ThemeService.onRemoteCall... ${call.method} ${call.arguments}');
     });
 
-    getApplicationDocumentsDirectory().then((d) {
-      _appDir = d;
-      initTheme();
-    });
+    _initTheme();
   }
 
-  Future loadTheme(File file) async {
-    final jsonTheme = await file.readAsString();
+  Future _initTheme() async {
+    var dir = await getApplicationDocumentsDirectory();
+    _themeFile = File(dir.path + '/theme.json');
+
+    print('ThemeService.initTheme ${_themeFile.path}');
+    if (!(await _themeFile.exists())) {
+      print('ThemeService init theme.json... ');
+      await _themeFile
+          .writeAsString(await rootBundle.loadString("assets/theme.json"));
+    }
+
+    _loadTheme();
+    themeNotifier.addListener(() => _saveTheme());
+  }
+
+  Future _loadTheme() async {
+    final jsonTheme = await _themeFile.readAsString();
     final themeMap = json.decode(jsonTheme);
-    theme = ThemeData.light().copyWith(
+    theme = _themeBase.copyWith(
         primaryColor: getMaterialColor(themeMap['primaryColor'].toString()),
         accentColor: getMaterialColor(themeMap['accentColor'].toString()),
         scaffoldBackgroundColor:
@@ -65,65 +77,47 @@ class ThemeService {
             : TargetPlatform.android,
         brightness:
             themeMap['isDark'] == 1 ? Brightness.dark : Brightness.light);
-
-    themeNotifier.value = theme;
   }
 
-  Future initTheme() async {
-    print('ThemeService.initTheme ${_appDir.path}');
-    _file = File(_appDir.path + '/theme.json');
-    if (!(await _file.exists())) {
-      print('ThemeService init theme.json... ');
-      await _file
-          .writeAsString(await rootBundle.loadString("assets/theme.json"));
-    }
-
-    loadTheme(_file);
-  }
-
-  void saveTheme(ThemeData themeData) {
-    final map = <String, dynamic>{
-      "platform": themeData.platform == TargetPlatform.iOS ? 'iOS' : 'android',
-      "isDark": themeData.brightness == Brightness.light ? 0 : 1,
-      "primaryColor": getMaterialName(themeData.primaryColor),
-      "accentColor": getMaterialName(themeData.accentColor),
-      "scaffoldBackgroundColor":
-          getMaterialName(themeData.scaffoldBackgroundColor),
-      "buttonColor": getMaterialName(themeData.buttonColor),
-      "dividerColor": getMaterialName(themeData.dividerColor),
-      "canvasColor": getMaterialName(themeData.canvasColor),
-      "cardColor": getMaterialName(themeData.cardColor),
-      "disabledColor": getMaterialName(themeData.disabledColor),
-      "backgroundColor": getMaterialName(themeData.backgroundColor),
-      "highlightColor": getMaterialName(themeData.highlightColor),
-      "splashColor": getMaterialName(themeData.splashColor),
-      "dialogBackgroundColor": getMaterialName(themeData.dialogBackgroundColor),
-      "hintColor": getMaterialName(themeData.hintColor),
-      "errorColor": getMaterialName(themeData.errorColor),
-      "indicatorColor": getMaterialName(themeData.indicatorColor),
-      "selectedRowColor": getMaterialName(themeData.selectedRowColor),
-      "unselectedWidgetColor": getMaterialName(themeData.unselectedWidgetColor),
-      "secondaryHeaderColor": getMaterialName(themeData.secondaryHeaderColor),
-      "textSelectionColor": getMaterialName(themeData.textSelectionColor),
+  void _saveTheme() async {
+    final map = {
+      "platform": theme.platform == TargetPlatform.iOS ? 'iOS' : 'android',
+      "isDark": theme.brightness == Brightness.light ? 0 : 1,
+      "primaryColor": getMaterialName(theme.primaryColor),
+      "accentColor": getMaterialName(theme.accentColor),
+      "scaffoldBackgroundColor": getMaterialName(theme.scaffoldBackgroundColor),
+      "buttonColor": getMaterialName(theme.buttonColor),
+      "dividerColor": getMaterialName(theme.dividerColor),
+      "canvasColor": getMaterialName(theme.canvasColor),
+      "cardColor": getMaterialName(theme.cardColor),
+      "disabledColor": getMaterialName(theme.disabledColor),
+      "backgroundColor": getMaterialName(theme.backgroundColor),
+      "highlightColor": getMaterialName(theme.highlightColor),
+      "splashColor": getMaterialName(theme.splashColor),
+      "dialogBackgroundColor": getMaterialName(theme.dialogBackgroundColor),
+      "hintColor": getMaterialName(theme.hintColor),
+      "errorColor": getMaterialName(theme.errorColor),
+      "indicatorColor": getMaterialName(theme.indicatorColor),
+      "selectedRowColor": getMaterialName(theme.selectedRowColor),
+      "unselectedWidgetColor": getMaterialName(theme.unselectedWidgetColor),
+      "secondaryHeaderColor": getMaterialName(theme.secondaryHeaderColor),
+      "textSelectionColor": getMaterialName(theme.textSelectionColor),
       "textSelectionHandleColor":
-          getMaterialName(themeData.textSelectionHandleColor)
+          getMaterialName(theme.textSelectionHandleColor)
     };
 
-    theme = themeData;
-    themeNotifier.value = theme;
-    updateThemeFile(json.encode(map));
-  }
-
-  Future updateThemeFile(String content) async {
-    await _file.writeAsString(content, mode: FileMode.write);
+    await _themeFile.writeAsString(json.encode(map));
   }
 }
 
-getMaterialColor(String name, {VoidCallback or}) => colorsNames()
-    .firstWhere((c) => c.name == name, orElse: () => colorsNames().first)
+Color getMaterialColor(String name) => namedColors()
+    .firstWhere((c) => c.name == name,
+        orElse: () =>
+            NamedColor(name: name, color: Color(int.parse(name, radix: 16))))
     .color;
 
-getMaterialName(Color color, {VoidCallback or}) => colorsNames()
+String getMaterialName(Color color) => namedColors()
     .firstWhere((c) => c.color.value == color.value,
-        orElse: () => colorsNames().first)
+        orElse: () =>
+            NamedColor(name: color.value.toRadixString(16), color: color))
     .name;

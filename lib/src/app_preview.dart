@@ -6,9 +6,9 @@ const kIPhone6 = const Size(750 / 2, 1334 / 2);
 const kS6 = const Size(1440 / 4, 2560 / 4);
 
 class AppPreviewContainer extends StatelessWidget {
-  ThemeData get theme => service.theme;
   final ThemeService service;
   final Size size;
+  ThemeData get theme => service.themeNotifier.value;
 
   AppPreviewContainer(this.service, this.size);
 
@@ -44,9 +44,11 @@ class TabItem {
 }
 
 class ThemePreviewApp extends StatefulWidget {
-  ThemeData get theme => service.theme;
   final ThemeService service;
+  ThemeData get theme => service.themeNotifier.value;
+
   ThemePreviewApp({this.service});
+
   @override
   State<StatefulWidget> createState() => ThemePreviewAppState(theme);
 }
@@ -91,7 +93,7 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
   }
 
   @override
-  Widget build(BuildContext context) => widget.service.theme != null
+  Widget build(BuildContext context) => widget.service.themeNotifier.value != null
       ? MaterialApp(
           title: 'App Preview',
           debugShowCheckedModeBanner: false,

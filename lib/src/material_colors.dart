@@ -1,8 +1,7 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
-const materialColorsNames = const <String>[
+const materialColorsNames = [
   "red",
   "pink",
   "purple",
@@ -27,20 +26,21 @@ const materialColorsNames = const <String>[
 ];
 
 class NamedColor {
-  final Color color;
   final String name;
+  final Color color;
 
-  NamedColor(this.color, this.name);
+  NamedColor({@required this.name, @required this.color});
 }
 
-List<NamedColor> colorsNames() {
+List<NamedColor> namedColors() {
   var colors = List<Color>.from(Colors.primaries, growable: true);
   colors.addAll([Colors.white, Colors.black, Colors.grey]);
 
   return colors.fold(
       [],
       (cumul, current) => cumul
-        ..add(new NamedColor(current, materialColorsNames[cumul.length])));
+        ..add(NamedColor(
+            name: materialColorsNames[cumul.length], color: current)));
 }
 
 bool isDark(Color c) => (c.red + c.green + c.blue) / 3 >= 146;
