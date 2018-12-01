@@ -21,11 +21,11 @@ class AppPreviewContainer extends StatelessWidget {
           child: Container(
             width: kIPhone6.width,
             height: kIPhone6.height,
-            decoration: BoxDecoration(
+            /*decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(blurRadius: 4.0, color: Colors.grey.shade500)
               ],
-            ),
+            ),*/
             child: ThemePreviewApp(
               service: service,
             ),
@@ -93,7 +93,8 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
   }
 
   @override
-  Widget build(BuildContext context) => widget.service.themeNotifier.value != null
+  Widget build(BuildContext context) => widget.service.themeNotifier.value !=
+          null
       ? MaterialApp(
           title: 'App Preview',
           debugShowCheckedModeBanner: false,
@@ -105,6 +106,17 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
                 appBar: AppBar(
                   title: Text("App Preview"),
                   bottom: _buildTabBar(),
+                  actions: <Widget>[
+                    IconButton(icon: Icon(Icons.add), onPressed: () {}),
+                    IconButton(icon: Icon(Icons.add_a_photo), onPressed: () {}),
+                  ],
+                ),
+                floatingActionButton: FloatingActionButton(
+                  child: Icon(
+                    Icons.check,
+                    color: theme?.accentTextTheme?.button?.color,
+                  ),
+                  onPressed: () {},
                 ),
                 body: TabBarView(
                     children: [_buildTab1Content(), _buildTab2Content()]),
@@ -134,27 +146,14 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  RaisedButton(
-                    onPressed: () => print('bt... '),
-                    child: Text("A button"),
-                  ),
-                  FloatingActionButton(
-                    child: Icon(
-                      Icons.check,
-                      color: theme?.accentTextTheme?.button?.color,
-                    ),
-                    onPressed: () => print('FAB... '),
-                  ),
-                  FlatButton(
-                    onPressed: () => print('flatbutton... '),
-                    child: Text('FlatButton'),
-                  ),
+                  RaisedButton(onPressed: () {}, child: Text("A button")),
+                  FlatButton(onPressed: () {}, child: Text('FlatButton')),
                   IconButton(
                     icon: Icon(
                       Icons.restore_from_trash,
                       color: theme?.textTheme?.button?.color,
                     ),
-                    onPressed: () => print('IconButton... '),
+                    onPressed: () {},
                   ),
                 ],
               ),
@@ -162,8 +161,8 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
             Divider(),
             Row(
               children: [
-                Checkbox(value: true, onChanged: (v) => print('checkbox... ')),
-                Checkbox(value: false, onChanged: (v) => print('checkbox... ')),
+                Checkbox(value: true, onChanged: (v) {}),
+                Checkbox(value: false, onChanged: (v) {}),
                 Checkbox(value: true, onChanged: null),
                 Checkbox(value: false, onChanged: null),
               ],
@@ -171,16 +170,10 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
             Divider(),
             Row(
               children: [
-                Radio(
-                    value: false,
-                    onChanged: (v) => print('checkbox... '),
-                    groupValue: null),
-                Radio(
-                    value: true,
-                    onChanged: (v) => print('checkbox... '),
-                    groupValue: true),
-                Switch(value: false, onChanged: (v) => print('checkbox... ')),
-                Switch(value: true, onChanged: (v) => print('checkbox... ')),
+                Radio(value: false, onChanged: (v) {}, groupValue: null),
+                Radio(value: true, onChanged: (v) {}, groupValue: true),
+                Switch(value: false, onChanged: (v) {}),
+                Switch(value: true, onChanged: (v) {}),
               ],
             ),
             Divider(),
