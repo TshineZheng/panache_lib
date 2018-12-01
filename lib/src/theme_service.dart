@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,7 +11,9 @@ import 'package:path_provider/path_provider.dart';
 const flutterialChannel = const MethodChannel("flutterial");
 
 class ThemeService {
-  static ThemeData _themeBase = ThemeData.light();
+  static ThemeData _themeBase =
+      ThemeData.localize(ThemeData.light(), Typography.englishLike2018);
+
   final ValueNotifier<ThemeData> themeNotifier = ValueNotifier(_themeBase);
   File _themeFile;
 
