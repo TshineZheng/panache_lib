@@ -8,7 +8,7 @@ const kS6 = const Size(1440 / 4, 2560 / 4);
 class AppPreviewContainer extends StatelessWidget {
   final ThemeService service;
   final Size size;
-  ThemeData get theme => service.themeNotifier.value;
+  ThemeData get theme => service.theme;
 
   AppPreviewContainer(this.service, this.size);
 
@@ -45,32 +45,28 @@ class TabItem {
 
 class ThemePreviewApp extends StatefulWidget {
   final ThemeService service;
-  ThemeData get theme => service.themeNotifier.value;
+  ThemeData get theme => service.theme;
 
   ThemePreviewApp({this.service});
 
   @override
-  State<StatefulWidget> createState() => ThemePreviewAppState(theme);
+  State<StatefulWidget> createState() => ThemePreviewAppState();
 }
 
 class ThemePreviewAppState extends State<ThemePreviewApp>
     with SingleTickerProviderStateMixin {
-  ThemeData theme;
-
   double sliderValue = 0.5;
+
+  ThemeData get theme => widget.service.theme;
 
   final tabsItem = [
     TabItem('Controls', Icons.report),
     TabItem('Texte Themes', Icons.cloud_queue),
   ];
 
-  ThemePreviewAppState(this.theme);
-
   @override
   void initState() {
     super.initState();
-    final notifier = widget.service.themeNotifier;
-    notifier.addListener(() => setState(() => theme = notifier.value));
   }
 
   get bottomItems => [
@@ -93,9 +89,8 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
   }
 
   @override
-  Widget build(BuildContext context) => widget.service.themeNotifier.value !=
-          null
-      ? MaterialApp(
+  Widget build(BuildContext context) => widget.service.themeNotifier.value != null
+        ? MaterialApp(
           title: 'App Preview',
           debugShowCheckedModeBanner: false,
           home: Theme(

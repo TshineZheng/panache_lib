@@ -8,45 +8,36 @@ import 'package:flutter/services.dart';
 import 'package:flutterial_components/flutterial_components.dart';
 import 'package:path_provider/path_provider.dart';
 
-const flutterialChannel = const MethodChannel("flutterial");
-
 class ThemeService {
-  static ThemeData _themeBase =
-      ThemeData.localize(ThemeData.light(), Typography.englishLike2018);
-
-  final ValueNotifier<ThemeData> themeNotifier = ValueNotifier(_themeBase);
+  ThemeData _theme;
   File _themeFile;
+  VoidCallback _onThemeChanged;
 
-  ThemeData get theme => themeNotifier.value;
-  set theme(ThemeData theme) => themeNotifier.value = theme;
-
-  ThemeService() {
-    flutterialChannel.setMethodCallHandler((call) {
-      print('ThemeService.onRemoteCall... ${call.method} ${call.arguments}');
-    });
-
-    _initTheme();
+  ThemeData get theme => _theme;
+  set theme(ThemeData theme) {
+    _theme = theme;
+    _onThemeChanged();
+    _saveTheme();
   }
 
-  Future _initTheme() async {
+  ThemeService(BuildContext context, VoidCallback onThemeChanged) {
+    _theme = Theme.of(context);
+    _onThemeChanged = onThemeChanged;
+    _loadTheme();
+  }
+
+  Future _loadTheme() async {
     var dir = await getApplicationDocumentsDirectory();
     _themeFile = File(dir.path + '/theme.json');
 
-    print('ThemeService.initTheme ${_themeFile.path}');
     if (!(await _themeFile.exists())) {
-      print('ThemeService init theme.json... ');
       await _themeFile
           .writeAsString(await rootBundle.loadString("assets/theme.json"));
     }
 
-    _loadTheme();
-    themeNotifier.addListener(() => _saveTheme());
-  }
-
-  Future _loadTheme() async {
     final jsonTheme = await _themeFile.readAsString();
     final themeMap = json.decode(jsonTheme);
-    theme = _themeBase.copyWith(
+    _theme = _theme.copyWith(
         primaryColor: getMaterialColor(themeMap['primaryColor'].toString()),
         accentColor: getMaterialColor(themeMap['accentColor'].toString()),
         scaffoldBackgroundColor:
@@ -80,6 +71,9 @@ class ThemeService {
             : TargetPlatform.android,
         brightness:
             themeMap['isDark'] == 1 ? Brightness.dark : Brightness.light);
+
+    // set _theme and call _onThemeChanged directly to avoid saving the theme we just loaded
+    _onThemeChanged();
   }
 
   void _saveTheme() async {
