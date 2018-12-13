@@ -83,46 +83,36 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
           .toList();
 
   @override
-  void didUpdateWidget(ThemePreviewApp oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.theme != null) theme = widget.theme;
-  }
-
-  @override
-  Widget build(BuildContext context) => widget.service.themeNotifier.value != null
-        ? MaterialApp(
-          title: 'App Preview',
-          debugShowCheckedModeBanner: false,
-          home: Theme(
-            data: theme,
-            child: DefaultTabController(
-              length: 2,
-              child: Scaffold(
-                appBar: AppBar(
-                  title: Text("App Preview"),
-                  bottom: _buildTabBar(),
-                  actions: <Widget>[
-                    IconButton(icon: Icon(Icons.add), onPressed: () {}),
-                    IconButton(icon: Icon(Icons.add_a_photo), onPressed: () {}),
-                  ],
-                ),
-                floatingActionButton: FloatingActionButton(
-                  child: Icon(
-                    Icons.check,
-                    color: theme?.accentTextTheme?.button?.color,
-                  ),
-                  onPressed: () {},
-                ),
-                body: TabBarView(
-                    children: [_buildTab1Content(), _buildTab2Content()]),
-                bottomNavigationBar: BottomNavigationBar(items: bottomItems),
+  Widget build(BuildContext context) => MaterialApp(
+        title: 'App Preview',
+        debugShowCheckedModeBanner: false,
+        home: Theme(
+          data: theme,
+          child: DefaultTabController(
+            length: 2,
+            child: Scaffold(
+              appBar: AppBar(
+                title: Text("App Preview"),
+                bottom: _buildTabBar(),
+                actions: <Widget>[
+                  IconButton(icon: Icon(Icons.add), onPressed: () {}),
+                  IconButton(icon: Icon(Icons.add_a_photo), onPressed: () {}),
+                ],
               ),
+              floatingActionButton: FloatingActionButton(
+                child: Icon(
+                  Icons.check,
+                  color: theme?.accentTextTheme?.button?.color,
+                ),
+                onPressed: () {},
+              ),
+              body: TabBarView(
+                  children: [_buildTab1Content(), _buildTab2Content()]),
+              bottomNavigationBar: BottomNavigationBar(items: bottomItems),
             ),
           ),
-        )
-      : Center(
-          child: Text("Loading"),
-        );
+        ),
+      );
 
   _buildTabBar() => TabBar(
       tabs: tabsItem
