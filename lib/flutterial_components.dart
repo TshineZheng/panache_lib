@@ -6,7 +6,5 @@
 /// More dartdocs go here.
 library flutterial_components;
 
-export 'src/app_preview.dart';
-export 'src/theme_service.dart';
 export 'src/material_colors.dart';
-
+export 'src/theme_service.dart';

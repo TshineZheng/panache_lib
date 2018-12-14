@@ -10,20 +10,12 @@ import 'package:path_provider/path_provider.dart';
 
 class ThemeService {
   ThemeData _theme;
-  File _themeFile;
-  VoidCallback _onThemeChanged;
-
   ThemeData get theme => _theme;
-  set theme(ThemeData theme) {
-    _theme = theme;
-    _onThemeChanged();
-    _saveTheme();
-  }
 
-  ThemeService(BuildContext context, VoidCallback onThemeChanged) {
-    _theme = Theme.of(context);
-    _onThemeChanged = onThemeChanged;
-    _loadTheme();
+  File _themeFile;
+
+  ThemeService() {
+    _theme = ThemeData.localize(ThemeData.light(), Typography.englishLike2018);
   }
 
   Future _loadTheme() async {
@@ -73,37 +65,41 @@ class ThemeService {
             themeMap['isDark'] == 1 ? Brightness.dark : Brightness.light);
 
     // set _theme and call _onThemeChanged directly to avoid saving the theme we just loaded
-    _onThemeChanged();
   }
 
   void _saveTheme() async {
     final map = {
-      "platform": theme.platform == TargetPlatform.iOS ? 'iOS' : 'android',
-      "isDark": theme.brightness == Brightness.light ? 0 : 1,
-      "primaryColor": getMaterialName(theme.primaryColor),
-      "accentColor": getMaterialName(theme.accentColor),
-      "scaffoldBackgroundColor": getMaterialName(theme.scaffoldBackgroundColor),
-      "buttonColor": getMaterialName(theme.buttonColor),
-      "dividerColor": getMaterialName(theme.dividerColor),
-      "canvasColor": getMaterialName(theme.canvasColor),
-      "cardColor": getMaterialName(theme.cardColor),
-      "disabledColor": getMaterialName(theme.disabledColor),
-      "backgroundColor": getMaterialName(theme.backgroundColor),
-      "highlightColor": getMaterialName(theme.highlightColor),
-      "splashColor": getMaterialName(theme.splashColor),
-      "dialogBackgroundColor": getMaterialName(theme.dialogBackgroundColor),
-      "hintColor": getMaterialName(theme.hintColor),
-      "errorColor": getMaterialName(theme.errorColor),
-      "indicatorColor": getMaterialName(theme.indicatorColor),
-      "selectedRowColor": getMaterialName(theme.selectedRowColor),
-      "unselectedWidgetColor": getMaterialName(theme.unselectedWidgetColor),
-      "secondaryHeaderColor": getMaterialName(theme.secondaryHeaderColor),
-      "textSelectionColor": getMaterialName(theme.textSelectionColor),
+      "platform": _theme.platform == TargetPlatform.iOS ? 'iOS' : 'android',
+      "isDark": _theme.brightness == Brightness.light ? 0 : 1,
+      "primaryColor": getMaterialName(_theme.primaryColor),
+      "accentColor": getMaterialName(_theme.accentColor),
+      "scaffoldBackgroundColor":
+          getMaterialName(_theme.scaffoldBackgroundColor),
+      "buttonColor": getMaterialName(_theme.buttonColor),
+      "dividerColor": getMaterialName(_theme.dividerColor),
+      "canvasColor": getMaterialName(_theme.canvasColor),
+      "cardColor": getMaterialName(_theme.cardColor),
+      "disabledColor": getMaterialName(_theme.disabledColor),
+      "backgroundColor": getMaterialName(_theme.backgroundColor),
+      "highlightColor": getMaterialName(_theme.highlightColor),
+      "splashColor": getMaterialName(_theme.splashColor),
+      "dialogBackgroundColor": getMaterialName(_theme.dialogBackgroundColor),
+      "hintColor": getMaterialName(_theme.hintColor),
+      "errorColor": getMaterialName(_theme.errorColor),
+      "indicatorColor": getMaterialName(_theme.indicatorColor),
+      "selectedRowColor": getMaterialName(_theme.selectedRowColor),
+      "unselectedWidgetColor": getMaterialName(_theme.unselectedWidgetColor),
+      "secondaryHeaderColor": getMaterialName(_theme.secondaryHeaderColor),
+      "textSelectionColor": getMaterialName(_theme.textSelectionColor),
       "textSelectionHandleColor":
-          getMaterialName(theme.textSelectionHandleColor)
+          getMaterialName(_theme.textSelectionHandleColor)
     };
 
     await _themeFile.writeAsString(json.encode(map));
+  }
+
+  void updateTheme(ThemeData copyWith) {
+    _theme = copyWith;
   }
 }
 
