@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../theme_model.dart';
+import 'widgets_preview.dart';
 
 const kIPhone5 = const Size(640 / 2, 1136 / 2);
 const kIPhone6 = const Size(750 / 2, 1334 / 2);
@@ -37,38 +38,38 @@ class TabItem {
 }
 
 class ThemePreviewApp extends StatefulWidget {
-  ThemePreviewApp();
-
   @override
-  State<StatefulWidget> createState() => ThemePreviewAppState();
+  ThemePreviewAppState createState() {
+    return new ThemePreviewAppState();
+  }
 }
 
 class ThemePreviewAppState extends State<ThemePreviewApp>
     with SingleTickerProviderStateMixin {
-  double sliderValue = 0.5;
-
-  final tabsItem = [
+  final _tabsItem = [
+    TabItem('Butons', Icons.touch_app),
     TabItem('Controls', Icons.report),
     TabItem('Texte Themes', Icons.cloud_queue),
   ];
 
-  @override
-  void initState() {
-    super.initState();
-  }
+  TabController tabBarController;
 
   get bottomItems => [
         {'label': 'Map', 'icon': Icons.map},
         {'label': 'Description', 'icon': Icons.description},
         {'label': 'Transform', 'icon': Icons.transform},
       ]
-          .map(
-            (item) => BottomNavigationBarItem(
-                  icon: Icon(item['icon']),
-                  title: Text(item['label']),
-                ),
-          )
+          .map((item) => BottomNavigationBarItem(
+                icon: Icon(item['icon']),
+                title: Text(item['label']),
+              ))
           .toList();
+
+  @override
+  void initState() {
+    super.initState();
+    tabBarController = TabController(length: 3, vsync: this);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +79,7 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
         title: 'App Preview',
         debugShowCheckedModeBanner: false,
         home: AnimatedTheme(
-          isMaterialAppTheme: true,
+          /*isMaterialAppTheme: true,*/
           data: theme,
           child: DefaultTabController(
             length: 2,
@@ -89,6 +90,9 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
                 actions: <Widget>[
                   IconButton(icon: Icon(Icons.add), onPressed: () {}),
                   IconButton(icon: Icon(Icons.add_a_photo), onPressed: () {}),
+                  IconButton(
+                      icon: Icon(Icons.menu),
+                      onPressed: () => Scaffold.of(context).openDrawer()),
                 ],
               ),
               floatingActionButton: FloatingActionButton(
@@ -98,9 +102,17 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
                 ),
                 onPressed: () {},
               ),
-              body: TabBarView(children: [
-                _buildTab1Content(theme),
-                _buildTab2Content(theme)
+              drawer: Drawer(
+                child: ListView(
+                  children: <Widget>[
+                    Text('Drawer'),
+                  ],
+                ),
+              ),
+              body: TabBarView(controller: tabBarController, children: [
+                _buildButtonPreviewPage(theme),
+                _buildWidgetPreviewPage(theme),
+                _buildTypographyPreviewPage(theme)
               ]),
               bottomNavigationBar: BottomNavigationBar(items: bottomItems),
             ),
@@ -111,105 +123,21 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
   }
 
   _buildTabBar() => TabBar(
-      tabs: tabsItem
+      controller: tabBarController,
+      tabs: _tabsItem
           .map((t) => Tab(
                 text: t.text,
                 icon: Icon(t.icon),
               ))
           .toList());
 
-  _buildTab1Content(ThemeData theme) => Padding(
-        padding: EdgeInsets.all(8.0),
-        child: ListView(
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  RaisedButton(onPressed: () {}, child: Text("A button")),
-                  FlatButton(onPressed: () {}, child: Text('FlatButton')),
-                  IconButton(
-                    icon: Icon(
-                      Icons.restore_from_trash,
-                      color: theme?.textTheme?.button?.color,
-                    ),
-                    onPressed: () {},
-                  ),
-                ],
-              ),
-            ),
-            Divider(),
-            Row(
-              children: [
-                Checkbox(value: true, onChanged: (v) {}),
-                Checkbox(value: false, onChanged: (v) {}),
-                Checkbox(value: true, onChanged: null),
-                Checkbox(value: false, onChanged: null),
-              ],
-            ),
-            Divider(),
-            Row(
-              children: [
-                Radio(value: false, onChanged: (v) {}, groupValue: null),
-                Radio(value: true, onChanged: (v) {}, groupValue: true),
-                Switch(value: false, onChanged: (v) {}),
-                Switch(value: true, onChanged: (v) {}),
-              ],
-            ),
-            Divider(),
-            Slider(
-                value: sliderValue,
-                onChanged: (v) => setState(() => sliderValue = v)),
-            Row(
-              children: <Widget>[
-                RaisedButton(
-                  child: Text('Dialog'),
-                  onPressed: () => showDialog(
-                        context: context,
-                        builder: (BuildContext context) => Theme(
-                            child: Dialog(
-                              child: Container(
-                                width: 420.0,
-                                height: 420.0,
-                                child: Text(
-                                  'a simple dialog',
-                                  style: theme.textTheme.headline,
-                                ),
-                              ),
-                            ),
-                            data: theme),
-                      ),
-                )
-              ],
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: LinearProgressIndicator(
-                    value: 0.57,
-                  ),
-                ),
-                CircularProgressIndicator(
-                  value: 0.57,
-                  backgroundColor: Colors.yellow,
-                ),
-              ],
-            ),
-            IgnorePointer(
-              child: TextField(
-                decoration: const InputDecoration(
-                    labelText: "Label text",
-                    hintText: "Hint text",
-                    errorText: "Error text example"),
-                controller: TextEditingController(text: 'a textfield'),
-              ),
-            )
-          ],
-        ),
-      );
+  Widget _buildButtonPreviewPage(ThemeData theme) =>
+      ButtonPreview(theme: theme);
 
-  _buildTab2Content(ThemeData theme) => Padding(
+  Widget _buildWidgetPreviewPage(ThemeData theme) =>
+      WidgetPreview1(theme: theme);
+
+  Widget _buildTypographyPreviewPage(ThemeData theme) => Padding(
         padding: EdgeInsets.all(8.0),
         child: ListView(
           children: [

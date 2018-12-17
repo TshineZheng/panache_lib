@@ -1,0 +1,195 @@
+import 'package:flutter/material.dart';
+import 'package:flutterial_components/src/editor/controls/color_selector.dart';
+import 'package:flutterial_components/src/theme_model.dart';
+
+import '../../constants.dart';
+import '../editor_utils.dart';
+
+class ThemeColorPanel extends StatelessWidget {
+  final ThemeModel themeModel;
+
+  ThemeData get theme => themeModel.theme;
+
+  ThemeColorPanel(this.themeModel);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: kPadding,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          /*getColorBrightnessSelector(
+              label: 'Primary swatch',
+              currentColor: theme.primarySwatch,
+              changeHandler: (c) =>
+                  themeModel.updateColor(property: "primaryColor", color: c),
+              isDark: theme.primaryColorBrightness == Brightness.dark,
+              brightnessChangeHandler: (bool isDark) =>
+                  _onPrimaryBrightnessChanged(
+                      themeModel, isDark ? Brightness.dark : Brightness.light)),*/
+          getColorBrightnessSelector(
+              label: 'Primary color',
+              currentColor: theme.primaryColor,
+              changeHandler: (c) =>
+                  themeModel.updateColor(property: "primaryColor", color: c),
+              isDark: theme.primaryColorBrightness == Brightness.dark,
+              brightnessChangeHandler: (bool isDark) =>
+                  _onPrimaryBrightnessChanged(
+                      themeModel, isDark ? Brightness.dark : Brightness.light)),
+          getColorBrightnessSelector(
+              label: 'Accent color',
+              currentColor: theme.accentColor,
+              changeHandler: (c) =>
+                  themeModel.updateColor(property: "accentColor", color: c),
+              isDark: theme.accentColorBrightness == Brightness.dark,
+              brightnessChangeHandler: (bool isDark) =>
+                  _onAccentBrightnessChanged(
+                      themeModel, isDark ? Brightness.dark : Brightness.light)),
+          getColorBrightnessSelector(
+            label: 'Scaffold background color',
+            currentColor: theme.scaffoldBackgroundColor,
+            changeHandler: (c) => themeModel.updateColor(
+                property: "scaffoldBackgroundColor", color: c),
+            isDark: theme.brightness == Brightness.dark,
+            brightnessChangeHandler: (isDark) {
+              final updatedTheme = theme.copyWith(
+                  brightness: isDark ? Brightness.dark : Brightness.light);
+              themeModel.updateTheme(updatedTheme);
+            },
+          ),
+          getFieldsRow([
+            ColorSelector(
+              'Button color',
+              theme.buttonColor,
+              (color) => themeModel.updateTheme(theme.copyWith(
+                  buttonColor: color,
+                  buttonTheme: theme.buttonTheme.copyWith(
+                      buttonColor:
+                          color /*, textTheme: ButtonTextTheme.primary*/))),
+            ),
+            ColorSelector(
+              'Divider color',
+              theme.dividerColor,
+              (c) => themeModel.updateColor(property: "dividerColor", color: c),
+            ),
+          ]),
+          getFieldsRow([
+            ColorSelector(
+              'Canvas color',
+              theme.canvasColor,
+              (c) => themeModel.updateColor(property: "canvasColor", color: c),
+            ),
+            ColorSelector(
+              'Card color',
+              theme.cardColor,
+              (c) => themeModel.updateColor(property: "cardColor", color: c),
+            ),
+          ]),
+          getFieldsRow([
+            ColorSelector(
+              'Disabled color',
+              theme.disabledColor,
+              (color) => themeModel.updateTheme(theme.copyWith(
+                  disabledColor: color,
+                  buttonTheme: theme.buttonTheme.copyWith(
+                      disabledColor:
+                          color /*,
+                      textTheme: ButtonTextTheme.primary*/
+                      ))),
+            ),
+            ColorSelector(
+              'Background color',
+              theme.backgroundColor,
+              (c) =>
+                  themeModel.updateColor(property: "backgroundColor", color: c),
+            ),
+          ]),
+          getFieldsRow([
+            ColorSelector(
+              'Highlight color',
+              theme.highlightColor,
+              (c) =>
+                  themeModel.updateColor(property: "highlightColor", color: c),
+            ),
+            ColorSelector(
+              'Splash color',
+              theme.splashColor,
+              (c) => themeModel.updateColor(property: "splashColor", color: c),
+            ),
+          ]),
+          getFieldsRow([
+            ColorSelector(
+              'Dialog background color',
+              theme.dialogBackgroundColor,
+              (c) => themeModel.updateColor(
+                  property: "dialogBackgroundColor", color: c),
+            ),
+            ColorSelector(
+              'Hint color',
+              theme.hintColor,
+              (c) => themeModel.updateColor(property: "hintColor", color: c),
+            ),
+          ]),
+          getFieldsRow([
+            ColorSelector(
+              'Error color',
+              theme.errorColor,
+              (c) => themeModel.updateColor(property: "errorColor", color: c),
+            ),
+            ColorSelector(
+              'Indicator color',
+              theme.indicatorColor,
+              (c) =>
+                  themeModel.updateColor(property: "indicatorColor", color: c),
+            ),
+          ]),
+          getFieldsRow([
+            ColorSelector(
+              'Selected row color',
+              theme.selectedRowColor,
+              (c) => themeModel.updateColor(
+                  property: "selectedRowColor", color: c),
+            ),
+            ColorSelector(
+              'Unselected widget color',
+              theme.unselectedWidgetColor,
+              (c) => themeModel.updateColor(
+                  property: "unselectedWidgetColor", color: c),
+            ),
+          ]),
+          getFieldsRow([
+            ColorSelector(
+              'Secondary header widget color',
+              theme.secondaryHeaderColor,
+              (c) => themeModel.updateColor(
+                  property: "secondaryHeaderColor", color: c),
+            ),
+            ColorSelector(
+              'Text selection color',
+              theme.textSelectionColor,
+              (c) => themeModel.updateColor(
+                  property: "textSelectionColor", color: c),
+            ),
+          ]),
+          ColorSelector(
+            'Text selection handler color',
+            theme.textSelectionHandleColor,
+            (c) => themeModel.updateColor(
+                property: "textSelectionHandleColor", color: c),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _onPrimaryBrightnessChanged(
+      ThemeModel themeModel, Brightness brightness) {
+    themeModel.updateTheme(theme.copyWith(primaryColorBrightness: brightness));
+  }
+
+  void _onAccentBrightnessChanged(
+          ThemeModel themeModel, Brightness brightness) =>
+      themeModel
+          .updateTheme(theme.copyWith(primaryColorBrightness: brightness));
+}

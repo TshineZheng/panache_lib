@@ -16,7 +16,18 @@ class ThemeService {
   File _themeFile;
 
   ThemeService() {
-    _theme = ThemeData.localize(ThemeData.light(), Typography.englishLike2018);
+    initTheme();
+  }
+
+  ThemeData _localize(ThemeData theme) =>
+      ThemeData.localize(theme, Typography.englishLike2018);
+
+  void initTheme(
+      {MaterialColor primarySwatch: Colors.blue,
+      Brightness brightness: Brightness.light}) {
+    _theme = _localize(
+      ThemeData(primarySwatch: primarySwatch, brightness: brightness),
+    );
   }
 
   Future _loadTheme() async {
@@ -99,8 +110,8 @@ class ThemeService {
     await _themeFile.writeAsString(json.encode(map));
   }
 
-  void updateTheme(ThemeData copyWith) {
-    _theme = copyWith;
+  void updateTheme(ThemeData newTheme) {
+    _theme = newTheme;
   }
 }
 

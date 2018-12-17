@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import './editor/show_custom_menu.dart';
 import 'constants.dart';
 
-typedef void ColorChanged(Color c);
-
 const materialColorsNames = [
   "red",
   "pink",
@@ -49,7 +47,7 @@ class NamedColor {
 
 bool isDark(Color c) => (c.red + c.green + c.blue) / 3 >= 146;
 
-getMaterialSwatches(ColorChanged onSelection) {
+getMaterialSwatches(ValueChanged<Color> onSelection) {
   final colors = Colors.primaries.map((c) => c).toList();
   colors.addAll([
     Colors.white,
@@ -116,7 +114,7 @@ List<PopupGridMenuItem<Color>> getColorMenuTileItems() => namedColors()
     )
     .toList();
 
-void openColorMenu(BuildContext context, {ColorChanged onSelection}) {
+void openColorMenu(BuildContext context, {ValueChanged<Color> onSelection}) {
   final RenderBox renderBox = context.findRenderObject();
   final Offset topLeft = renderBox?.localToGlobal(Offset.zero);
 
