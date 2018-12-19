@@ -16,7 +16,11 @@ class ActionBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text('Panache', style: TextStyle(fontSize: 24, color: Colors.white70)),
+        Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Text('Flutterial',
+              style: TextStyle(fontSize: 24, color: Colors.white70)),
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
