@@ -17,10 +17,12 @@ class ButtonThemePanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appTextTheme = Theme.of(context).textTheme;
-    final titleStyle = appTextTheme.title;
+    final labelStyle = appTextTheme.subtitle;
+    final dropdownTextStyle = appTextTheme.body2;
     ;
     return Container(
       padding: kPadding,
+      color: Colors.grey.shade200,
       child: Column(
         children: <Widget>[
           Padding(
@@ -29,11 +31,13 @@ class ButtonThemePanel extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   _buildButtonTextThemeSelector(buttonTheme.textTheme,
-                      labelStyle: titleStyle),
+                      labelStyle: labelStyle,
+                      dropdownTextStyle: dropdownTextStyle),
                   ShapeFormControl(
-                      onShapeChanged: _onShapeChanged,
-                      shape: buttonTheme.shape,
-                      labelStyle: titleStyle),
+                    onShapeChanged: _onShapeChanged,
+                    shape: buttonTheme.shape,
+                    labelStyle: labelStyle,
+                  )
                 ]),
           ),
           Padding(
@@ -48,7 +52,7 @@ class ButtonThemePanel extends StatelessWidget {
                 ),
                 Text(
                   'Align dropdown',
-                  style: titleStyle,
+                  style: labelStyle,
                 ),
                 Switch.adaptive(
                     value: buttonTheme.alignedDropdown,
@@ -93,7 +97,7 @@ class ButtonThemePanel extends StatelessWidget {
   }
 
   Widget _buildButtonTextThemeSelector(ButtonTextTheme buttonTextTheme,
-      {TextStyle labelStyle}) {
+      {TextStyle labelStyle, TextStyle dropdownTextStyle}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -105,6 +109,7 @@ class ButtonThemePanel extends StatelessWidget {
           ),
         ),
         DropdownButton(
+            style: dropdownTextStyle,
             value: buttonTextTheme,
             items: ButtonTextTheme.values
                 .map(_buildButtonTextThemeSelectorItem)

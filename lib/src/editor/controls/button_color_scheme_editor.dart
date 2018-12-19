@@ -45,26 +45,35 @@ class ButtonColorSchemeControl extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 16.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           Text(
             'Color scheme',
             style: appTheme.title,
-          )
-        ]..addAll(_buildColorSchemeControls()),
+          ),
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            runAlignment: WrapAlignment.center,
+            runSpacing: 8,
+            children: _buildColorSchemeControls(),
+          ),
+        ],
       ),
     );
   }
 
   Iterable<Widget> _buildColorSchemeControls() {
     return colors.map((property) {
-      return ColorSelector(property, _getSchemeColor(property),
-          (color) => _onColorChanged(property, color));
+      return ColorSelector(
+        property,
+        _getSchemeColor(property),
+        (color) => _onColorChanged(property, color),
+        padding: 2,
+      );
     }).toList(growable: false);
   }
 
   Color _getSchemeColor(String property) {
-    print('ButtonColorSchemeControl._getSchemeColor... ${SchemeColors.values}');
     final schemeColor = SchemeColors.values
         .firstWhere((sc) => '$sc'.split('.').last == property);
     switch (schemeColor) {

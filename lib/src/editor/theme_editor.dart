@@ -6,6 +6,7 @@ import '../theme_model.dart';
 import 'action_bar.dart';
 import 'panel_header.dart';
 import 'panels/button_theme_panel.dart';
+import 'panels/chip_theme_panel.dart';
 import 'panels/theme_color_panel.dart';
 import 'panels/typography_panel.dart';
 
@@ -21,8 +22,9 @@ class ThemeEditor extends StatefulWidget {
 class ThemeEditorState extends State<ThemeEditor> {
   ThemeData get theme => widget.theme;
 
+  bool chipThemePanelExpanded = false;
+  bool colorPanelExpanded = false;
   bool buttonThemePanelExpanded = false;
-  bool colorPanelExpanded = true;
   bool textPanelExpanded = false;
   bool primaryTextPanelExpanded = false;
   bool accentTextPanelExpanded = false;
@@ -30,26 +32,25 @@ class ThemeEditorState extends State<ThemeEditor> {
   @override
   Widget build(BuildContext context) {
     final themeModel = ThemeModel.of(context);
-    return Container(
-      color: Colors.grey.shade200,
-      child: Padding(
-        padding: EdgeInsets.only(top: 24.0),
-        child: ListView(
-          children: [
-            Padding(
-              padding: kPadding,
-              child: ActionBar(),
-            ),
-            ExpansionPanelList(
-              expansionCallback: _onExpansionPanelUpdate,
-              children: [
-                _buildButtonThemePanel(themeModel),
-                _buildColorsPanel(themeModel),
-                _buildTextPanel(themeModel),
-              ],
-            )
-          ],
-        ),
+    return Material(
+      elevation: 4.0,
+      color: Colors.blueGrey.shade100,
+      child: ListView(
+        children: [
+          Padding(
+            padding: kPadding,
+            child: ActionBar(),
+          ),
+          ExpansionPanelList(
+            expansionCallback: _onExpansionPanelUpdate,
+            children: [
+              _buildColorsPanel(themeModel),
+              _buildButtonThemePanel(themeModel),
+              _buildChipThemePanel(themeModel),
+              _buildTextPanel(themeModel),
+            ],
+          )
+        ],
       ),
     );
   }
@@ -58,18 +59,21 @@ class ThemeEditorState extends State<ThemeEditor> {
         () {
           switch (panelIndex) {
             case 0:
-              buttonThemePanelExpanded = !isExpanded;
-              break;
-            case 1:
               colorPanelExpanded = !isExpanded;
               break;
+            case 1:
+              buttonThemePanelExpanded = !isExpanded;
+              break;
             case 2:
-              textPanelExpanded = !isExpanded;
+              chipThemePanelExpanded = !isExpanded;
               break;
             case 3:
-              primaryTextPanelExpanded = !isExpanded;
+              textPanelExpanded = !isExpanded;
               break;
             case 4:
+              primaryTextPanelExpanded = !isExpanded;
+              break;
+            case 5:
               accentTextPanelExpanded = !isExpanded;
               break;
           }
@@ -91,14 +95,29 @@ class ThemeEditorState extends State<ThemeEditor> {
   ExpansionPanel _buildTextPanel(ThemeModel model) => ExpansionPanel(
         isExpanded: textPanelExpanded,
         headerBuilder: (context, isExpanded) => ExpanderHeader(
-            label: 'Text Theme', icon: Icons.font_download, color: Colors.grey),
+              label: 'Text Theme',
+              icon: Icons.font_download,
+              color: theme.primaryColor,
+            ),
         body: TypographyThemePanel(model),
       );
 
   ExpansionPanel _buildButtonThemePanel(ThemeModel model) => ExpansionPanel(
         isExpanded: buttonThemePanelExpanded,
         headerBuilder: (context, isExpanded) => ExpanderHeader(
-            label: 'Button Theme', icon: Icons.touch_app, color: Colors.grey),
+              label: 'Button Theme',
+              icon: Icons.touch_app,
+              color: theme.primaryColor,
+            ),
         body: ButtonThemePanel(model),
+      );
+  ExpansionPanel _buildChipThemePanel(ThemeModel model) => ExpansionPanel(
+        isExpanded: chipThemePanelExpanded,
+        headerBuilder: (context, isExpanded) => ExpanderHeader(
+              label: 'Chip Theme',
+              icon: Icons.dns,
+              color: theme.primaryColor,
+            ),
+        body: ChipThemePanel(model),
       );
 }

@@ -25,6 +25,7 @@ class FontSizeSelector extends StatelessWidget {
             child: Slider(
               value: value,
               onChanged: onValueChanged,
+              divisions: (max - min) ~/ 2,
               min: min,
               max: max,
             ),

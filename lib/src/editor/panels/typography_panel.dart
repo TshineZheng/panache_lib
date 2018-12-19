@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutterial_components/src/editor/controls/color_selector.dart';
-import 'package:flutterial_components/src/editor/controls/font_size_slider.dart';
-import 'package:flutterial_components/src/theme_model.dart';
 
 import '../../constants.dart';
+import '../../theme_model.dart';
+import '../controls/text_style_control.dart';
 
 class TypographyThemePanel extends StatelessWidget {
   final ThemeModel model;
@@ -29,6 +28,7 @@ class TypographyThemePanel extends StatelessWidget {
     final headline = txtTheme.headline;
     final subhead = txtTheme.subhead;
     final title = txtTheme.title;
+    final subtitle = txtTheme.subtitle;
     final button = txtTheme.button;
     final display1 = txtTheme.display1;
     final display2 = txtTheme.display2;
@@ -36,7 +36,7 @@ class TypographyThemePanel extends StatelessWidget {
     final display4 = txtTheme.display4;
 
     return [
-      _getTextThemeForm(
+      TextStyleControl(
         'Body 1',
         colorValue: body1.color,
         fontSize: body1.fontSize ?? 24,
@@ -67,7 +67,7 @@ class TypographyThemePanel extends StatelessWidget {
           model.updateTheme(updatedTheme);
         },
       ),
-      _getTextThemeForm(
+      TextStyleControl(
         'Body 2',
         colorValue: body2.color,
         fontSize: body2.fontSize,
@@ -98,7 +98,7 @@ class TypographyThemePanel extends StatelessWidget {
           model.updateTheme(updatedTheme);
         },
       ),
-      _getTextThemeForm(
+      TextStyleControl(
         'Headline',
         colorValue: headline.color,
         fontSize: headline.fontSize,
@@ -131,7 +131,7 @@ class TypographyThemePanel extends StatelessWidget {
           model.updateTheme(updatedTheme);
         },
       ),
-      _getTextThemeForm(
+      TextStyleControl(
         'Subhead',
         colorValue: subhead.color,
         fontSize: subhead.fontSize,
@@ -164,7 +164,7 @@ class TypographyThemePanel extends StatelessWidget {
           model.updateTheme(updatedTheme);
         },
       ),
-      _getTextThemeForm(
+      TextStyleControl(
         'Title',
         colorValue: title.color,
         fontSize: title.fontSize,
@@ -195,7 +195,7 @@ class TypographyThemePanel extends StatelessWidget {
           model.updateTheme(updatedTheme);
         },
       ),
-      _getTextThemeForm(
+      TextStyleControl(
         'Button',
         colorValue: button.color,
         fontSize: button.fontSize,
@@ -227,7 +227,7 @@ class TypographyThemePanel extends StatelessWidget {
           model.updateTheme(updatedTheme);
         },
       ),
-      _getTextThemeForm(
+      TextStyleControl(
         'Display 1',
         colorValue: display1.color,
         fontSize: display1.fontSize,
@@ -260,7 +260,7 @@ class TypographyThemePanel extends StatelessWidget {
           model.updateTheme(updatedTheme);
         },
       ),
-      _getTextThemeForm(
+      TextStyleControl(
         'Display 2',
         colorValue: display2.color,
         fontSize: display2.fontSize,
@@ -293,7 +293,7 @@ class TypographyThemePanel extends StatelessWidget {
           model.updateTheme(updatedTheme);
         },
       ),
-      _getTextThemeForm(
+      TextStyleControl(
         'Display 3',
         colorValue: display3.color,
         fontSize: display3.fontSize,
@@ -326,7 +326,7 @@ class TypographyThemePanel extends StatelessWidget {
           model.updateTheme(updatedTheme);
         },
       ),
-      _getTextThemeForm(
+      TextStyleControl(
         'Display 4',
         colorValue: display4.color,
         fontSize: display4.fontSize,
@@ -362,7 +362,7 @@ class TypographyThemePanel extends StatelessWidget {
     ];
   }
 
-  Widget _getTextThemeForm(
+  /*Widget TextStyleControl(
     String label, {
     @required ValueChanged<Color> onColorChanged,
     @required ValueChanged<double> onSizeChanged,
@@ -405,11 +405,13 @@ class TypographyThemePanel extends StatelessWidget {
             ),
           ),
         ],
-      );
-
-  Widget _getFieldRow(w1, w2) => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        mainAxisSize: MainAxisSize.max,
-        children: [Expanded(child: w1), Expanded(child: w2)],
-      );
+      );*/
 }
+
+/*
+Widget _getFieldRow(w1, w2) => Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisSize: MainAxisSize.max,
+      children: [Expanded(child: w1), Expanded(child: w2)],
+    );
+*/

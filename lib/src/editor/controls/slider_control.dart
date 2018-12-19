@@ -43,7 +43,7 @@ class SliderPropertyControlState extends State<SliderPropertyControl> {
         children: [
           Text(
             "${widget.label}",
-            style: textTheme.title,
+            style: textTheme.subtitle,
           ),
           ConstrainedBox(
             constraints: BoxConstraints(maxWidth: widget.maxWidth),

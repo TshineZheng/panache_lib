@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../theme_model.dart';
+import 'typography_preview.dart';
 import 'widgets_preview.dart';
 
 const kIPhone5 = const Size(640 / 2, 1136 / 2);
@@ -47,9 +48,10 @@ class ThemePreviewApp extends StatefulWidget {
 class ThemePreviewAppState extends State<ThemePreviewApp>
     with SingleTickerProviderStateMixin {
   final _tabsItem = [
-    TabItem('Butons', Icons.touch_app),
-    TabItem('Controls', Icons.report),
-    TabItem('Texte Themes', Icons.cloud_queue),
+    TabItem('Buttons', Icons.touch_app),
+    TabItem('Controls', Icons.check_box),
+    TabItem('Chips', Icons.dns),
+    TabItem('Texte Themes', Icons.text_fields),
   ];
 
   TabController tabBarController;
@@ -68,7 +70,7 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
   @override
   void initState() {
     super.initState();
-    tabBarController = TabController(length: 3, vsync: this);
+    tabBarController = TabController(length: _tabsItem.length, vsync: this);
   }
 
   @override
@@ -79,7 +81,6 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
         title: 'App Preview',
         debugShowCheckedModeBanner: false,
         home: AnimatedTheme(
-          /*isMaterialAppTheme: true,*/
           data: theme,
           child: DefaultTabController(
             length: 2,
@@ -110,9 +111,10 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
                 ),
               ),
               body: TabBarView(controller: tabBarController, children: [
-                _buildButtonPreviewPage(theme),
-                _buildWidgetPreviewPage(theme),
-                _buildTypographyPreviewPage(theme)
+                ButtonPreview(theme: theme),
+                WidgetPreview1(theme: theme),
+                ChipsPreview(theme: theme),
+                TypographyPreview(theme: theme)
               ]),
               bottomNavigationBar: BottomNavigationBar(items: bottomItems),
             ),
@@ -123,6 +125,7 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
   }
 
   _buildTabBar() => TabBar(
+      isScrollable: true,
       controller: tabBarController,
       tabs: _tabsItem
           .map((t) => Tab(
@@ -130,60 +133,4 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
                 icon: Icon(t.icon),
               ))
           .toList());
-
-  Widget _buildButtonPreviewPage(ThemeData theme) =>
-      ButtonPreview(theme: theme);
-
-  Widget _buildWidgetPreviewPage(ThemeData theme) =>
-      WidgetPreview1(theme: theme);
-
-  Widget _buildTypographyPreviewPage(ThemeData theme) => Padding(
-        padding: EdgeInsets.all(8.0),
-        child: ListView(
-          children: [
-            Text(
-              'Headline',
-              style: theme.textTheme.headline,
-            ),
-            Text(
-              'Subhead',
-              style: theme.textTheme.subhead,
-            ),
-            Text(
-              'Title',
-              style: theme.textTheme.title,
-            ),
-            Text(
-              'Body 1',
-              style: theme.textTheme.body1,
-            ),
-            Text(
-              'Body 2',
-              style: theme.textTheme.body2,
-            ),
-            FlatButton(
-                child: Text(
-                  'button',
-                  style: theme.textTheme.button,
-                ),
-                onPressed: () {}),
-            Text(
-              'Display 1',
-              style: theme.textTheme.display1,
-            ),
-            Text(
-              'Display 2',
-              style: theme.textTheme.display2,
-            ),
-            Text(
-              'Display 3',
-              style: theme.textTheme.display3,
-            ),
-            Text(
-              'Display 4',
-              style: theme.textTheme.display4,
-            ),
-          ],
-        ),
-      );
 }

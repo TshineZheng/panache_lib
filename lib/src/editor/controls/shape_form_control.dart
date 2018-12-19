@@ -27,9 +27,10 @@ class ShapeFormControl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('ShapeFormControl.build... $shape');
+    final textTheme = Theme.of(context).textTheme;
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(right: 16.0),
@@ -38,10 +39,18 @@ class ShapeFormControl extends StatelessWidget {
             style: labelStyle,
           ),
         ),
-        DropdownButton(
-            value: _getShapeType(shape),
-            items: shapes.map(_getShapeMenuItem).toList(),
-            onChanged: (type) => onShapeChanged(_buildShape(type)))
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 12.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: Colors.white,
+          ),
+          child: DropdownButton(
+              style: textTheme.body2,
+              value: _getShapeType(shape),
+              items: shapes.map(_getShapeMenuItem).toList(),
+              onChanged: (type) => onShapeChanged(_buildShape(type))),
+        )
       ],
     );
   }
@@ -68,7 +77,6 @@ class ShapeFormControl extends StatelessWidget {
   }
 
   BorderShapes _getShapeType(ShapeBorder shape) {
-    print('ShapeFormControl._getShapeType... $shape');
     if (shape is RoundedRectangleBorder) return shapes[0];
     if (shape is CircleBorder) return shapes[1];
     if (shape is BeveledRectangleBorder) return shapes[2];

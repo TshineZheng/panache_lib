@@ -7,23 +7,29 @@ class ColorSelector extends StatelessWidget {
   final String label;
   final Color value;
   final ValueChanged<Color> onSelection;
+  final double padding;
 
-  ColorSelector(this.label, this.value, this.onSelection);
+  ColorSelector(this.label, this.value, this.onSelection, {this.padding: 8.0});
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(padding),
         child: Container(
           padding: EdgeInsets.all(8.0),
-          color: Colors.grey.shade100,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: Colors.white,
+          ),
           child: Row(
+            mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(
+              ConstrainedBox(
+                constraints: BoxConstraints.tightFor(width: 100),
                 child: Text(
                   label,
                   maxLines: 3,
-                  style: Theme.of(context).textTheme.body2,
+                  style: Theme.of(context).textTheme.subtitle,
                 ),
               ),
               InkWell(

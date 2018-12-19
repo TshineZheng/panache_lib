@@ -219,3 +219,63 @@ class WidgetPreview1 extends StatelessWidget {
             data: theme),
       );
 }
+
+class ChipsPreview extends StatelessWidget {
+  final ThemeData theme;
+
+  const ChipsPreview({Key key, this.theme}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(8.0),
+      child: ListView(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  children: <Widget>[
+                    Wrap(
+                      spacing: 16.0,
+                      alignment: WrapAlignment.start,
+                      children: <Widget>[
+                        CircleAvatar(
+                          child: Icon(Icons.person_pin),
+                        ),
+                        Chip(label: Text('Chip')),
+                        Chip(
+                          label: Text('Chip'),
+                          avatar: Icon(Icons.person_pin),
+                          onDeleted: () {},
+                        ),
+                        ActionChip(
+                          label: Text('Chip'),
+                          avatar: Icon(Icons.person_outline),
+                          onPressed: () {},
+                        ),
+                        ChoiceChip(
+                            avatar: CircleAvatar(child: Icon(Icons.person_pin)),
+                            label: Text('Selected Choice chip'),
+                            selected: true),
+                        ChoiceChip(
+                            label: Text('Not selected'), selected: false),
+                        FilterChip(
+                            label: Text('FilterChip'), onSelected: (_) {}),
+                        FilterChip(
+                            label: Text('Disabled FilterChip'),
+                            onSelected: null),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
