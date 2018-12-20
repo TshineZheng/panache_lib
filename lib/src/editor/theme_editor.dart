@@ -5,10 +5,7 @@ import '../constants.dart';
 import '../theme_model.dart';
 import 'action_bar.dart';
 import 'panel_header.dart';
-import 'panels/button_theme_panel.dart';
-import 'panels/chip_theme_panel.dart';
-import 'panels/theme_color_panel.dart';
-import 'panels/typography_panel.dart';
+import 'panels/panels.dart';
 
 class ThemeEditor extends StatefulWidget {
   final ThemeData theme;
@@ -22,6 +19,7 @@ class ThemeEditor extends StatefulWidget {
 class ThemeEditorState extends State<ThemeEditor> {
   ThemeData get theme => widget.theme;
 
+  bool tabBarThemePanelExpanded = false;
   bool chipThemePanelExpanded = false;
   bool colorPanelExpanded = false;
   bool buttonThemePanelExpanded = false;
@@ -45,6 +43,7 @@ class ThemeEditorState extends State<ThemeEditor> {
             expansionCallback: _onExpansionPanelUpdate,
             children: [
               _buildColorsPanel(themeModel),
+              _buildTabBarThemePanel(themeModel),
               _buildButtonThemePanel(themeModel),
               _buildChipThemePanel(themeModel),
               _buildTextPanel(themeModel),
@@ -62,20 +61,23 @@ class ThemeEditorState extends State<ThemeEditor> {
               colorPanelExpanded = !isExpanded;
               break;
             case 1:
-              buttonThemePanelExpanded = !isExpanded;
+              tabBarThemePanelExpanded = !isExpanded;
               break;
             case 2:
-              chipThemePanelExpanded = !isExpanded;
+              buttonThemePanelExpanded = !isExpanded;
               break;
             case 3:
-              textPanelExpanded = !isExpanded;
+              chipThemePanelExpanded = !isExpanded;
               break;
             case 4:
+              textPanelExpanded = !isExpanded;
+              break;
+            /*case 5:
               primaryTextPanelExpanded = !isExpanded;
               break;
-            case 5:
+            case 6:
               accentTextPanelExpanded = !isExpanded;
-              break;
+              break;*/
           }
         },
       );
@@ -111,6 +113,7 @@ class ThemeEditorState extends State<ThemeEditor> {
             ),
         body: ButtonThemePanel(model),
       );
+
   ExpansionPanel _buildChipThemePanel(ThemeModel model) => ExpansionPanel(
         isExpanded: chipThemePanelExpanded,
         headerBuilder: (context, isExpanded) => ExpanderHeader(
@@ -119,5 +122,15 @@ class ThemeEditorState extends State<ThemeEditor> {
               color: theme.primaryColor,
             ),
         body: ChipThemePanel(model),
+      );
+
+  ExpansionPanel _buildTabBarThemePanel(ThemeModel model) => ExpansionPanel(
+        isExpanded: tabBarThemePanelExpanded,
+        headerBuilder: (context, isExpanded) => ExpanderHeader(
+              label: 'TabBar Theme',
+              icon: Icons.tab,
+              color: theme.primaryColor,
+            ),
+        body: TabBarThemePanel(model),
       );
 }

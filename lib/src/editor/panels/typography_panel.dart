@@ -196,6 +196,39 @@ class TypographyThemePanel extends StatelessWidget {
         },
       ),
       TextStyleControl(
+        'Subtitle',
+        colorValue: subtitle.color,
+        fontSize: subtitle.fontSize,
+        isBold: subtitle.fontWeight == FontWeight.bold,
+        isItalic: subtitle.fontStyle == FontStyle.italic,
+        onColorChanged: (c) {
+          final updatedTheme = theme.copyWith(
+              textTheme:
+                  txtTheme.copyWith(subtitle: subtitle.copyWith(color: c)));
+          model.updateTheme(updatedTheme);
+        },
+        onSizeChanged: (s) {
+          final updatedTheme = theme.copyWith(
+              textTheme:
+                  txtTheme.copyWith(subtitle: subtitle.copyWith(fontSize: s)));
+          model.updateTheme(updatedTheme);
+        },
+        onWeightChanged: (v) {
+          final updatedTheme = theme.copyWith(
+              textTheme: txtTheme.copyWith(
+                  subtitle: subtitle.copyWith(
+                      fontWeight: v ? FontWeight.bold : FontWeight.normal)));
+          model.updateTheme(updatedTheme);
+        },
+        onFontStyleChanged: (v) {
+          final updatedTheme = theme.copyWith(
+              textTheme: txtTheme.copyWith(
+                  subtitle: subtitle.copyWith(
+                      fontStyle: v ? FontStyle.italic : FontStyle.normal)));
+          model.updateTheme(updatedTheme);
+        },
+      ),
+      TextStyleControl(
         'Button',
         colorValue: button.color,
         fontSize: button.fontSize,

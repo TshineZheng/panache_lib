@@ -45,7 +45,6 @@ class ActionBar extends StatelessWidget {
         ),
       ],
     );
-    ;
   }
 
   /*void _onPlatformChanged(ThemeModel model, TargetPlatform platform) =>

@@ -19,7 +19,7 @@ class ButtonThemePanel extends StatelessWidget {
     final appTextTheme = Theme.of(context).textTheme;
     final labelStyle = appTextTheme.subtitle;
     final dropdownTextStyle = appTextTheme.body2;
-    ;
+
     return Container(
       padding: kPadding,
       color: Colors.grey.shade200,
