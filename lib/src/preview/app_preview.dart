@@ -51,6 +51,7 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
     TabItem('Buttons', Icons.touch_app),
     TabItem('Controls', Icons.check_box),
     TabItem('Chips', Icons.dns),
+    TabItem('Slider', Icons.tune),
     TabItem('Texte Themes', Icons.text_fields),
   ];
 
@@ -114,6 +115,7 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
                 ButtonPreview(theme: theme),
                 WidgetPreview1(theme: theme),
                 ChipsPreview(theme: theme),
+                SliderPreview(theme: theme),
                 TypographyPreview(theme: theme)
               ]),
               bottomNavigationBar: BottomNavigationBar(items: bottomItems),

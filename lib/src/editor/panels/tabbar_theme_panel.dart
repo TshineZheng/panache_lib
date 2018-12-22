@@ -39,7 +39,8 @@ class TabBarThemePanel extends StatelessWidget {
               padding: 0,
             ),
           ]),
-/*          _TabBarIndicatorControl(
+          /*
+          _TabBarIndicatorControl(
             decoration:
                 tabTheme.indicator ?? _indicatorDecorations.first.decoration,
             onDecorationChanged: (value) =>

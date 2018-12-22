@@ -27,6 +27,15 @@ const materialColorsNames = [
   "Grey"
 ];
 
+bool isMaterialPrimary(Color color) {
+  return namedColors().where((c) => c.color.value == color.value).isNotEmpty;
+}
+
+MaterialColor swatchFor({Color color}) {
+  final found = Colors.primaries.where((c) => c.value == color.value);
+  return found.isNotEmpty ? found.first : Colors.blue;
+}
+
 List<NamedColor> namedColors() {
   var colors = List<Color>.from(Colors.primaries, growable: true);
   colors.addAll([Colors.white, Colors.black, Colors.grey]);

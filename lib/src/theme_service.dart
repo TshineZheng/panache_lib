@@ -26,7 +26,10 @@ class ThemeService {
       {MaterialColor primarySwatch: Colors.blue,
       Brightness brightness: Brightness.light}) {
     _theme = _localize(
-      ThemeData(primarySwatch: primarySwatch, brightness: brightness),
+      ThemeData(
+        primarySwatch: primarySwatch,
+        brightness: brightness,
+      ),
     );
   }
 

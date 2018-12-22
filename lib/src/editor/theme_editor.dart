@@ -19,6 +19,7 @@ class ThemeEditor extends StatefulWidget {
 class ThemeEditorState extends State<ThemeEditor> {
   ThemeData get theme => widget.theme;
 
+  bool sliderThemePanelExpanded = false;
   bool tabBarThemePanelExpanded = false;
   bool chipThemePanelExpanded = false;
   bool colorPanelExpanded = false;
@@ -45,6 +46,7 @@ class ThemeEditorState extends State<ThemeEditor> {
               _buildColorsPanel(themeModel),
               _buildTabBarThemePanel(themeModel),
               _buildButtonThemePanel(themeModel),
+              _buildSliderThemePanel(themeModel),
               _buildChipThemePanel(themeModel),
               _buildTextPanel(themeModel),
             ],
@@ -67,15 +69,17 @@ class ThemeEditorState extends State<ThemeEditor> {
               buttonThemePanelExpanded = !isExpanded;
               break;
             case 3:
-              chipThemePanelExpanded = !isExpanded;
+              sliderThemePanelExpanded = !isExpanded;
               break;
             case 4:
+              chipThemePanelExpanded = !isExpanded;
+              break;
+            case 5:
               textPanelExpanded = !isExpanded;
               break;
-            /*case 5:
-              primaryTextPanelExpanded = !isExpanded;
-              break;
+            /*
             case 6:
+              primaryTextPanelExpanded = !isExpanded;
               accentTextPanelExpanded = !isExpanded;
               break;*/
           }
@@ -132,5 +136,15 @@ class ThemeEditorState extends State<ThemeEditor> {
               color: theme.primaryColor,
             ),
         body: TabBarThemePanel(model),
+      );
+
+  ExpansionPanel _buildSliderThemePanel(ThemeModel model) => ExpansionPanel(
+        isExpanded: sliderThemePanelExpanded,
+        headerBuilder: (context, isExpanded) => ExpanderHeader(
+              label: 'Slider Theme',
+              icon: Icons.tune,
+              color: theme.primaryColor,
+            ),
+        body: SliderThemePanel(model),
       );
 }

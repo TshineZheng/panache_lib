@@ -7,7 +7,11 @@ import 'theme_service.dart';
 class ThemeModel extends Model {
   ThemeService _service;
 
+  MaterialColor _primarySwatch = Colors.blue;
+
   ThemeData get theme => _service.theme;
+
+  MaterialColor get primarySwatch => _primarySwatch;
 
   ThemeModel({ThemeService service}) : _service = service;
 
@@ -19,6 +23,7 @@ class ThemeModel extends Model {
       Brightness brightness: Brightness.light}) {
     assert(primarySwatch != null);
 
+    _primarySwatch = primarySwatch;
     _service.initTheme(primarySwatch: primarySwatch, brightness: brightness);
     notifyListeners();
   }

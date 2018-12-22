@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterial_components/src/color_utils.dart';
 import 'package:flutterial_components/src/editor/controls/brightness_control.dart';
 import 'package:flutterial_components/src/editor/controls/color_selector.dart';
 
@@ -8,7 +9,6 @@ class ActionBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = ThemeModel.of(context);
-    print('ActionBar.build... brightness ${model.theme.brightness}');
     //final onAndroid = model.theme.platform == TargetPlatform.android;
     final isDark = model.theme.brightness == Brightness.dark;
 
@@ -53,7 +53,9 @@ class ActionBar extends StatelessWidget {
   void _onThemeBrightnessChanged(ThemeModel model, Brightness brightness) =>
       model.updateTheme(ThemeData.localize(
           ThemeData(
-              primarySwatch: model.theme.primaryColor, brightness: brightness),
+              primarySwatch: model.primarySwatch ??
+                  swatchFor(color: model.theme.primaryColor),
+              brightness: brightness),
           model.theme.textTheme));
 
   void _onSwatchSelection(ThemeModel model, MaterialColor swatch) {
