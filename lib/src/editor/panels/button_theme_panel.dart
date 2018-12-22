@@ -61,7 +61,7 @@ class ButtonThemePanel extends StatelessWidget {
             ),
           ),
           _buildButtonSizeControl(buttonTheme),
-          ButtonColorSchemeControl(
+          ColorSchemeControl(
             scheme: buttonTheme.colorScheme,
             onSchemeChanged: _onSchemeChanged,
           )

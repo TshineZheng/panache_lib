@@ -53,6 +53,7 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
     TabItem('Slider', Icons.tune),
     TabItem('Chips', Icons.dns),
     TabItem('Text', Icons.text_fields),
+    /*TabItem('Color scheme', Icons.color_lens),*/
   ];
 
   TabController tabBarController;

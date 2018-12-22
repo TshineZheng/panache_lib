@@ -12,11 +12,6 @@ final showIndicatorOptions = [
   ShowValueIndicator.onlyForDiscrete,
 ];
 
-///
-/// [ ] color
-/// [ ] opacity
-/// [ ] size
-///
 class IconThemePanel extends StatelessWidget {
   final ThemeModel model;
 

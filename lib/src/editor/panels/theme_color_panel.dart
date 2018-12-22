@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterial_components/src/editor/controls/button_color_scheme_editor.dart';
 import 'package:flutterial_components/src/editor/controls/color_selector.dart';
 import 'package:flutterial_components/src/theme_model.dart';
 
@@ -205,6 +206,11 @@ class ThemeColorPanel extends StatelessWidget {
               padding: 2,
             ),
           ]),
+          /*ColorSchemeControl(
+            scheme: theme.colorScheme,
+            onSchemeChanged: (scheme) =>
+                themeModel.updateTheme(theme.copyWith(colorScheme: scheme)),
+          )*/
         ],
       ),
     );

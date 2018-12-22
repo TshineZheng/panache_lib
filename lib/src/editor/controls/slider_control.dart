@@ -85,6 +85,7 @@ class SliderPropertyControlState extends State<SliderPropertyControl> {
                     value: updatedValue,
                     min: widget.min,
                     max: widget.max,
+                    label: '$updatedValue',
                     divisions: widget.showDivisions
                         ? (widget.max - widget.min) ~/ 4
                         : null,
@@ -96,7 +97,10 @@ class SliderPropertyControlState extends State<SliderPropertyControl> {
                     },
                   ),
                 ),
-                Text("${updatedValue.toStringAsFixed(2)}"),
+                Text(
+                  "${updatedValue.toStringAsFixed(2)}",
+                  style: textTheme.overline,
+                ),
               ],
             ),
     );

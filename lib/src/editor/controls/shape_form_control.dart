@@ -22,12 +22,16 @@ class ShapeFormControl extends StatelessWidget {
   final TextStyle labelStyle;
 
   const ShapeFormControl(
-      {Key key, this.onShapeChanged, this.shape, this.labelStyle})
+      {Key key,
+      @required this.onShapeChanged,
+      @required this.shape,
+      this.labelStyle})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final _labelStyle = labelStyle ?? textTheme.subtitle;
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -36,7 +40,7 @@ class ShapeFormControl extends StatelessWidget {
           padding: EdgeInsets.only(right: 16.0),
           child: Text(
             'Shape',
-            style: labelStyle,
+            style: _labelStyle,
           ),
         ),
         Container(

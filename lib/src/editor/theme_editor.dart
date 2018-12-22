@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutterial_components/src/editor/panels/dialog_theme_panel.dart';
 
 import '../constants.dart';
 import '../theme_model.dart';
@@ -20,6 +21,7 @@ class ThemeEditor extends StatefulWidget {
 class ThemeEditorState extends State<ThemeEditor> {
   ThemeData get theme => widget.theme;
 
+  bool dialogThemePanelExpanded = false;
   bool iconThemePanelExpanded = false;
   bool sliderThemePanelExpanded = false;
   bool tabBarThemePanelExpanded = false;
@@ -50,8 +52,9 @@ class ThemeEditorState extends State<ThemeEditor> {
               _buildButtonThemePanel(themeModel),
               _buildSliderThemePanel(themeModel),
               _buildChipThemePanel(themeModel),
-              _buildIconThemePanel(themeModel),
               _buildTextPanel(themeModel),
+              _buildIconThemePanel(themeModel),
+              _buildDialogThemePanel(themeModel),
             ],
           )
         ],
@@ -69,19 +72,22 @@ class ThemeEditorState extends State<ThemeEditor> {
               tabBarThemePanelExpanded = !isExpanded;
               break;
             case 2:
-              sliderThemePanelExpanded = !isExpanded;
-              break;
-            case 3:
-              chipThemePanelExpanded = !isExpanded;
-              break;
-            case 4:
               buttonThemePanelExpanded = !isExpanded;
               break;
+            case 3:
+              sliderThemePanelExpanded = !isExpanded;
+              break;
+            case 4:
+              chipThemePanelExpanded = !isExpanded;
+              break;
             case 5:
-              iconThemePanelExpanded = !isExpanded;
+              textPanelExpanded = !isExpanded;
               break;
             case 6:
-              textPanelExpanded = !isExpanded;
+              dialogThemePanelExpanded = !isExpanded;
+              break;
+            case 7:
+              iconThemePanelExpanded = !isExpanded;
               break;
             /*
             case 6:
@@ -162,5 +168,14 @@ class ThemeEditorState extends State<ThemeEditor> {
               color: theme.primaryColor,
             ),
         body: IconThemePanel(model),
+      );
+  ExpansionPanel _buildDialogThemePanel(ThemeModel model) => ExpansionPanel(
+        isExpanded: dialogThemePanelExpanded,
+        headerBuilder: (context, isExpanded) => ExpanderHeader(
+              label: 'Dialog Theme',
+              icon: Icons.insert_emoticon,
+              color: theme.primaryColor,
+            ),
+        body: DialogThemePanel(model),
       );
 }

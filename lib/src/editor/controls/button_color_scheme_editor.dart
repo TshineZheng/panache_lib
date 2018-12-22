@@ -31,11 +31,11 @@ enum SchemeColors {
   secondaryVariant
 }
 
-class ButtonColorSchemeControl extends StatelessWidget {
+class ColorSchemeControl extends StatelessWidget {
   final ColorScheme scheme;
   final ValueChanged<ColorScheme> onSchemeChanged;
 
-  const ButtonColorSchemeControl(
+  const ColorSchemeControl(
       {Key key, @required this.scheme, @required this.onSchemeChanged})
       : super(key: key);
 
