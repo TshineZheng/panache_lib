@@ -50,9 +50,9 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
   final _tabsItem = [
     TabItem('Buttons', Icons.touch_app),
     TabItem('Controls', Icons.check_box),
-    TabItem('Chips', Icons.dns),
     TabItem('Slider', Icons.tune),
-    TabItem('Texte Themes', Icons.text_fields),
+    TabItem('Chips', Icons.dns),
+    TabItem('Text', Icons.text_fields),
   ];
 
   TabController tabBarController;

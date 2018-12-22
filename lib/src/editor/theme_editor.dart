@@ -5,6 +5,7 @@ import '../constants.dart';
 import '../theme_model.dart';
 import 'action_bar.dart';
 import 'panel_header.dart';
+import 'panels/icon_theme_panel.dart';
 import 'panels/panels.dart';
 
 class ThemeEditor extends StatefulWidget {
@@ -19,6 +20,7 @@ class ThemeEditor extends StatefulWidget {
 class ThemeEditorState extends State<ThemeEditor> {
   ThemeData get theme => widget.theme;
 
+  bool iconThemePanelExpanded = false;
   bool sliderThemePanelExpanded = false;
   bool tabBarThemePanelExpanded = false;
   bool chipThemePanelExpanded = false;
@@ -48,6 +50,7 @@ class ThemeEditorState extends State<ThemeEditor> {
               _buildButtonThemePanel(themeModel),
               _buildSliderThemePanel(themeModel),
               _buildChipThemePanel(themeModel),
+              _buildIconThemePanel(themeModel),
               _buildTextPanel(themeModel),
             ],
           )
@@ -66,15 +69,18 @@ class ThemeEditorState extends State<ThemeEditor> {
               tabBarThemePanelExpanded = !isExpanded;
               break;
             case 2:
-              buttonThemePanelExpanded = !isExpanded;
-              break;
-            case 3:
               sliderThemePanelExpanded = !isExpanded;
               break;
-            case 4:
+            case 3:
               chipThemePanelExpanded = !isExpanded;
               break;
+            case 4:
+              buttonThemePanelExpanded = !isExpanded;
+              break;
             case 5:
+              iconThemePanelExpanded = !isExpanded;
+              break;
+            case 6:
               textPanelExpanded = !isExpanded;
               break;
             /*
@@ -146,5 +152,15 @@ class ThemeEditorState extends State<ThemeEditor> {
               color: theme.primaryColor,
             ),
         body: SliderThemePanel(model),
+      );
+
+  ExpansionPanel _buildIconThemePanel(ThemeModel model) => ExpansionPanel(
+        isExpanded: iconThemePanelExpanded,
+        headerBuilder: (context, isExpanded) => ExpanderHeader(
+              label: 'Icon Theme',
+              icon: Icons.insert_emoticon,
+              color: theme.primaryColor,
+            ),
+        body: IconThemePanel(model),
       );
 }

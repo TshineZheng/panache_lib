@@ -6,10 +6,17 @@ class SliderPropertyControl extends StatefulWidget {
   final double min;
   final double max;
   final double maxWidth;
+  final bool showDivisions;
+  final bool vertical;
   final ValueChanged<double> onValueChanged;
 
   SliderPropertyControl(this.value, this.onValueChanged,
-      {this.label, this.min: 0.0, this.max: 112.0, this.maxWidth: 120})
+      {this.label,
+      this.min: 0.0,
+      this.max: 112.0,
+      this.maxWidth: 120,
+      this.showDivisions: true,
+      this.vertical: false})
       : assert(value != null),
         assert(min != null),
         assert(max != null),
@@ -39,30 +46,59 @@ class SliderPropertyControlState extends State<SliderPropertyControl> {
     textController.text = '$updatedValue';
     return Padding(
       padding: EdgeInsets.only(right: 16.0),
-      child: Row(
-        children: [
-          Text(
-            "${widget.label}",
-            style: textTheme.subtitle,
-          ),
-          ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: widget.maxWidth),
-            child: Slider(
-              value: updatedValue,
-              min: widget.min,
-              max: widget.max,
-              divisions: (widget.max - widget.min) ~/ 4,
-              onChangeEnd: widget.onValueChanged,
-              onChanged: (value) {
-                setState(() {
-                  updatedValue = value;
-                });
-              },
+      child: widget.vertical
+          ? Column(
+              children: [
+                Text(
+                  "${widget.label}",
+                  style: textTheme.subtitle,
+                ),
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: widget.maxWidth),
+                  child: Slider(
+                    value: updatedValue,
+                    min: widget.min,
+                    max: widget.max,
+                    divisions: widget.showDivisions
+                        ? (widget.max - widget.min) ~/ 4
+                        : null,
+                    onChangeEnd: widget.onValueChanged,
+                    onChanged: (value) {
+                      setState(() {
+                        updatedValue = value;
+                      });
+                    },
+                  ),
+                ),
+                Text("${updatedValue.toStringAsFixed(2)}"),
+              ],
+            )
+          : Row(
+              children: [
+                Text(
+                  "${widget.label}",
+                  style: textTheme.subtitle,
+                ),
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: widget.maxWidth),
+                  child: Slider(
+                    value: updatedValue,
+                    min: widget.min,
+                    max: widget.max,
+                    divisions: widget.showDivisions
+                        ? (widget.max - widget.min) ~/ 4
+                        : null,
+                    onChangeEnd: widget.onValueChanged,
+                    onChanged: (value) {
+                      setState(() {
+                        updatedValue = value;
+                      });
+                    },
+                  ),
+                ),
+                Text("${updatedValue.toStringAsFixed(2)}"),
+              ],
             ),
-          ),
-          Text("${updatedValue}"),
-        ],
-      ),
     );
   }
 }
