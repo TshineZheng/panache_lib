@@ -11,20 +11,24 @@ class ThemeCodePreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final SyntaxHighlighterStyle style =
-        Theme.of(context).brightness == Brightness.dark
+        SyntaxHighlighterStyle.panacheThemeStyle();
+    /*Theme.of(context).brightness == Brightness.dark
             ? SyntaxHighlighterStyle.darkThemeStyle()
-            : SyntaxHighlighterStyle.lightThemeStyle();
+            : SyntaxHighlighterStyle.lightThemeStyle();*/
 
-    return SingleChildScrollView(
-      child: Container(
-          padding: EdgeInsets.only(top: 32.0),
-          child: RichText(
-            text: TextSpan(
-                style: const TextStyle(fontFamily: 'monospace', fontSize: 10.0),
-                children: <TextSpan>[
-                  DartSyntaxHighlighter(style).format(code)
-                ]),
-          )),
+    return Container(
+      constraints: BoxConstraints.expand(),
+      decoration: BoxDecoration(
+          border: Border(left: BorderSide(color: Colors.blueGrey.shade800)),
+          color: Colors.blueGrey.shade700),
+      padding: EdgeInsets.only(top: 24, left: 24),
+      child: SingleChildScrollView(
+        child: RichText(
+          text: TextSpan(
+              style: const TextStyle(fontFamily: 'monospace', fontSize: 12.0),
+              children: <TextSpan>[DartSyntaxHighlighter(style).format(code)]),
+        ),
+      ),
     );
   }
 }

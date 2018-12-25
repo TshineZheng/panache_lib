@@ -12,8 +12,9 @@ const kS6 = const Size(1440 / 4, 2560 / 4);
 
 class AppPreviewContainer extends StatefulWidget {
   final Size size;
+  final bool showCode;
 
-  AppPreviewContainer(this.size);
+  AppPreviewContainer(this.size, {this.showCode});
 
   @override
   AppPreviewContainerState createState() {
@@ -22,38 +23,15 @@ class AppPreviewContainer extends StatefulWidget {
 }
 
 class AppPreviewContainerState extends State<AppPreviewContainer> {
-  bool showCode = false;
-
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<ThemeModel>(builder: (context, child, model) {
-      final theme = model.theme;
       return Expanded(
         child: Material(
           child: Column(
             children: <Widget>[
-              Container(
-                color: Colors.blueGrey.shade300,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    FlatButton.icon(
-                      textColor: Colors.white,
-                      icon: Icon(Icons.mobile_screen_share),
-                      label: Text('App preview'),
-                      onPressed: () => setState(() => showCode = false),
-                    ),
-                    FlatButton.icon(
-                      textColor: Colors.white,
-                      icon: Icon(Icons.keyboard),
-                      label: Text('Code preview'),
-                      onPressed: () => setState(() => showCode = true),
-                    ),
-                  ],
-                ),
-              ),
               Expanded(
-                child: showCode
+                child: widget.showCode
                     ? ThemeCodePreview(model)
                     : Container(
                         color: Colors.grey.shade300,

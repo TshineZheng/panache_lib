@@ -5,50 +5,31 @@ import 'package:flutterial_components/src/utils/color_utils.dart';
 
 import '../theme_model.dart';
 
-class ActionBar extends StatelessWidget {
+class GlobalThemePropertiesControl extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = ThemeModel.of(context);
     //final onAndroid = model.theme.platform == TargetPlatform.android;
     final isDark = model.theme.brightness == Brightness.dark;
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Container(
-          constraints: BoxConstraints.expand(height: 48),
-          color: Colors.blueGrey.shade300,
-          padding: EdgeInsets.all(8.0),
-          child: Row(
-            children: <Widget>[
-              Text('Panache',
-                  style: TextStyle(fontSize: 24, color: Colors.white70)),
-              FlatButton.icon(
-                  onPressed: model.exportTheme,
-                  icon: Icon(Icons.save),
-                  label: Text('Export'))
-            ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          ColorSelector(
+            'Primary swatch',
+            model.theme.primaryColor,
+            (color) => _onSwatchSelection(model, color),
+            padding: 0,
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ColorSelector(
-                'Primary swatch',
-                model.theme.primaryColor,
-                (color) => _onSwatchSelection(model, color),
-                padding: 0,
-              ),
-              BrightnessSelector(
-                isDark: isDark,
-                label: 'Brightness',
-                onBrightnessChanged: (value) =>
-                    _onThemeBrightnessChanged(model, value),
-              ),
-              /*Text('Platform: Android'),
+          BrightnessSelector(
+            isDark: isDark,
+            label: 'Brightness',
+            onBrightnessChanged: (value) =>
+                _onThemeBrightnessChanged(model, value),
+          ),
+          /*Text('Platform: Android'),
               Switch(
                 onChanged: (value) => _onPlatformChanged(
                       model,
@@ -57,10 +38,8 @@ class ActionBar extends StatelessWidget {
                 value: onAndroid,
               ),
               Text('iOS'),*/
-            ],
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

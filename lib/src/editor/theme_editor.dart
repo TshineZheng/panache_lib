@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutterial_components/src/editor/action_bar.dart';
 import 'package:flutterial_components/src/editor/panels/dialog_theme_panel.dart';
-import 'package:scoped_model/scoped_model.dart';
 
 import '../theme_model.dart';
-import 'action_bar.dart';
 import 'panel_header.dart';
 import 'panels/icon_theme_panel.dart';
 import 'panels/panels.dart';
 
 class ThemeEditor extends StatefulWidget {
-  ThemeEditor();
+  final ThemeModel model;
+
+  ThemeEditor({this.model});
 
   @override
   State<StatefulWidget> createState() => ThemeEditorState();
@@ -30,90 +31,85 @@ class ThemeEditorState extends State<ThemeEditor> {
 
   @override
   Widget build(BuildContext context) {
-    print('ThemeEditorState.build... ');
-
-    return ScopedModelDescendant<ThemeModel>(
-      builder: (BuildContext context, Widget child, model) {
-        final primaryColor = model.theme.primaryColor;
-        return Material(
-          elevation: 4.0,
-          color: Colors.blueGrey.shade100,
-          child: ListView(
+    final primaryColor = widget.model.theme.primaryColor;
+    return Material(
+      elevation: 4.0,
+      color: Colors.blueGrey.shade100,
+      child: ListView(
+        shrinkWrap: true,
+        children: [
+          GlobalThemePropertiesControl(),
+          ExpansionPanelList(
+            expansionCallback: _onExpansionPanelUpdate,
             children: [
-              ActionBar(),
-              ExpansionPanelList(
-                expansionCallback: _onExpansionPanelUpdate,
-                children: [
-                  _buildPanel(
-                    model,
-                    'Colors',
-                    child: ThemeColorPanel(model),
-                    expanded: colorPanelExpanded,
-                    icon: Icons.color_lens,
-                    color: primaryColor,
-                  ),
-                  _buildPanel(
-                    model,
-                    'TabBar Theme',
-                    child: TabBarThemePanel(model),
-                    expanded: tabBarThemePanelExpanded,
-                    icon: Icons.tab,
-                    color: primaryColor,
-                  ),
-                  _buildPanel(
-                    model,
-                    'Button Theme',
-                    child: ButtonThemePanel(model),
-                    expanded: buttonThemePanelExpanded,
-                    icon: Icons.touch_app,
-                    color: primaryColor,
-                  ),
-                  _buildPanel(
-                    model,
-                    'Slider Theme',
-                    child: SliderThemePanel(model),
-                    expanded: sliderThemePanelExpanded,
-                    icon: Icons.tune,
-                    color: primaryColor,
-                  ),
-                  _buildPanel(
-                    model,
-                    'Chips Theme',
-                    child: ChipThemePanel(model),
-                    expanded: chipThemePanelExpanded,
-                    icon: Icons.dns,
-                    color: primaryColor,
-                  ),
-                  _buildPanel(
-                    model,
-                    'Text Theme',
-                    child: TypographyThemePanel(),
-                    expanded: textPanelExpanded,
-                    icon: Icons.font_download,
-                    color: primaryColor,
-                  ),
-                  _buildPanel(
-                    model,
-                    'Icon Themes',
-                    child: IconThemePanel(model),
-                    expanded: iconThemePanelExpanded,
-                    icon: Icons.insert_emoticon,
-                    color: primaryColor,
-                  ),
-                  _buildPanel(
-                    model,
-                    'Dialog Theme',
-                    child: DialogThemePanel(model),
-                    expanded: dialogThemePanelExpanded,
-                    icon: Icons.check_box_outline_blank,
-                    color: primaryColor,
-                  ),
-                ],
-              )
+              _buildPanel(
+                widget.model,
+                'Colors',
+                child: ThemeColorPanel(widget.model),
+                expanded: colorPanelExpanded,
+                icon: Icons.color_lens,
+                color: primaryColor,
+              ),
+              _buildPanel(
+                widget.model,
+                'TabBar Theme',
+                child: TabBarThemePanel(widget.model),
+                expanded: tabBarThemePanelExpanded,
+                icon: Icons.tab,
+                color: primaryColor,
+              ),
+              _buildPanel(
+                widget.model,
+                'Button Theme',
+                child: ButtonThemePanel(widget.model),
+                expanded: buttonThemePanelExpanded,
+                icon: Icons.touch_app,
+                color: primaryColor,
+              ),
+              _buildPanel(
+                widget.model,
+                'Slider Theme',
+                child: SliderThemePanel(widget.model),
+                expanded: sliderThemePanelExpanded,
+                icon: Icons.tune,
+                color: primaryColor,
+              ),
+              _buildPanel(
+                widget.model,
+                'Chips Theme',
+                child: ChipThemePanel(widget.model),
+                expanded: chipThemePanelExpanded,
+                icon: Icons.dns,
+                color: primaryColor,
+              ),
+              _buildPanel(
+                widget.model,
+                'Text Theme',
+                child: TypographyThemePanel(),
+                expanded: textPanelExpanded,
+                icon: Icons.font_download,
+                color: primaryColor,
+              ),
+              _buildPanel(
+                widget.model,
+                'Icon Themes',
+                child: IconThemePanel(widget.model),
+                expanded: iconThemePanelExpanded,
+                icon: Icons.insert_emoticon,
+                color: primaryColor,
+              ),
+              _buildPanel(
+                widget.model,
+                'Dialog Theme',
+                child: DialogThemePanel(widget.model),
+                expanded: dialogThemePanelExpanded,
+                icon: Icons.check_box_outline_blank,
+                color: primaryColor,
+              ),
             ],
-          ),
-        );
-      },
+          )
+        ],
+      ),
     );
   }
 

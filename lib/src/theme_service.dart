@@ -26,9 +26,9 @@ class ThemeService {
       Brightness brightness: Brightness.light}) {
     _theme = _localize(
       ThemeData(
-        primarySwatch: primarySwatch,
-        brightness: brightness,
-      ),
+          primarySwatch: primarySwatch,
+          brightness: brightness,
+          platform: TargetPlatform.iOS),
     );
   }
 
