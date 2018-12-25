@@ -3,17 +3,17 @@ import 'package:flutterial_components/src/editor/controls/color_selector.dart';
 
 const List<String> colors = [
   'background',
-  'error',
   'onBackground',
+  'error',
   'onError',
-  'onPrimary',
-  'onSecondary',
-  'onSurface',
-  'surface',
   'primary',
   'primaryVariant',
+  'onPrimary',
   'secondary',
-  'secondaryVariant'
+  'secondaryVariant',
+  'onSecondary',
+  'surface',
+  'onSurface',
 ];
 
 enum SchemeColors {
@@ -51,10 +51,12 @@ class ColorSchemeControl extends StatelessWidget {
             'Color scheme',
             style: appTheme.title,
           ),
-          Wrap(
-            alignment: WrapAlignment.spaceBetween,
-            runAlignment: WrapAlignment.center,
-            runSpacing: 8,
+          GridView.count(
+            shrinkWrap: true,
+            childAspectRatio: 3.8,
+            controller: ScrollController(keepScrollOffset: false),
+            semanticChildCount: colors.length,
+            crossAxisCount: 2,
             children: _buildColorSchemeControls(),
           ),
         ],

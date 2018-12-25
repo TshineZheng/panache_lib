@@ -32,11 +32,11 @@ class ThemeEditorState extends State<ThemeEditor> {
   @override
   Widget build(BuildContext context) {
     final primaryColor = widget.model.theme.primaryColor;
-    return Material(
-      elevation: 4.0,
+    return Container(
+      /*elevation: 4.0,*/
       color: Colors.blueGrey.shade100,
       child: ListView(
-        shrinkWrap: true,
+        /*shrinkWrap: true,*/
         children: [
           GlobalThemePropertiesControl(),
           ExpansionPanelList(
@@ -134,10 +134,10 @@ class ThemeEditorState extends State<ThemeEditor> {
         textPanelExpanded = !isExpanded;
         break;
       case 6:
-        dialogThemePanelExpanded = !isExpanded;
+        iconThemePanelExpanded = !isExpanded;
         break;
       case 7:
-        iconThemePanelExpanded = !isExpanded;
+        dialogThemePanelExpanded = !isExpanded;
         break;
     }
 

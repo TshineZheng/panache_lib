@@ -152,12 +152,12 @@ class WidgetPreview1 extends StatelessWidget {
                 padding: const EdgeInsets.all(24.0),
                 child: Column(
                   children: <Widget>[
+                    CircleAvatar(
+                      child: Icon(Icons.person_pin),
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        CircleAvatar(
-                          child: Icon(Icons.person_pin),
-                        ),
                         RaisedButton(
                           child: Text('Datepicker'),
                           onPressed: () => showDatePicker(
@@ -186,10 +186,10 @@ class WidgetPreview1 extends StatelessWidget {
               ),
             ),
           ),
+          Text('Progress'),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text('Progress'),
               SizedBox(
                 width: 200,
                 child: LinearProgressIndicator(
@@ -237,45 +237,74 @@ class ChipsPreview extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  children: <Widget>[
-                    Wrap(
-                      spacing: 16.0,
-                      alignment: WrapAlignment.start,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Card(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints.expand(height: 100),
+                    child: Column(
                       children: <Widget>[
-                        CircleAvatar(
-                          child: Icon(Icons.person_pin),
+                        Text('Chips'),
+                        Wrap(
+                          spacing: 16.0,
+                          children: <Widget>[
+                            Chip(label: Text('Chip')),
+                            Chip(
+                              label: Text('Chip'),
+                              avatar: Icon(Icons.person_pin),
+                              onDeleted: () {},
+                            ),
+                          ],
                         ),
-                        Chip(label: Text('Chip')),
-                        Chip(
-                          label: Text('Chip'),
-                          avatar: Icon(Icons.person_pin),
-                          onDeleted: () {},
-                        ),
-                        ActionChip(
-                          label: Text('Chip'),
-                          avatar: Icon(Icons.person_outline),
-                          onPressed: () {},
-                        ),
-                        ChoiceChip(
-                            avatar: CircleAvatar(child: Icon(Icons.person_pin)),
-                            label: Text('Selected Choice chip'),
-                            selected: true),
-                        ChoiceChip(
-                            label: Text('Not selected'), selected: false),
-                        FilterChip(
-                            label: Text('FilterChip'), onSelected: (_) {}),
-                        FilterChip(
-                            label: Text('Disabled FilterChip'),
-                            onSelected: null),
                       ],
                     ),
+                  ),
+                ),
+                Divider(),
+                Card(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints.expand(height: 130),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text('Choice chips'),
+                        Wrap(
+                          spacing: 16.0,
+                          alignment: WrapAlignment.start,
+                          children: <Widget>[
+                            ChoiceChip(
+                                label: Text('Selected Choice chip'),
+                                selected: true),
+                            ChoiceChip(
+                                label: Text('Not selected'), selected: false),
+                            ChoiceChip(
+                                label: Text('Not selected 2'), selected: false),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Divider(),
+                Text('Filter chips'),
+                Wrap(
+                  spacing: 16.0,
+                  alignment: WrapAlignment.start,
+                  children: <Widget>[
+                    FilterChip(
+                        selected: true,
+                        label: Text('FilterChip'),
+                        onSelected: (_) {}),
+                    FilterChip(
+                        selected: true,
+                        label: Text('FilterChip'),
+                        onSelected: (_) {}),
+                    FilterChip(
+                        label: Text('Disabled FilterChip'), onSelected: null),
                   ],
                 ),
-              ),
+              ],
             ),
           ),
         ],

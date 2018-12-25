@@ -34,11 +34,15 @@ class AppPreviewContainerState extends State<AppPreviewContainer> {
                 child: widget.showCode
                     ? ThemeCodePreview(model)
                     : Container(
-                        color: Colors.grey.shade300,
+                        decoration: BoxDecoration(
+                            border: Border(
+                                left: BorderSide(
+                                    color: Colors.blueGrey.shade800)),
+                            color: Colors.blueGrey.shade700),
                         child: Center(
                           child: Container(
-                            width: kIPhone6.width,
-                            height: kIPhone6.height,
+                            width: widget.size.width,
+                            height: widget.size.height,
                             child: ThemePreviewApp(theme: model.theme),
                           ),
                         ),
@@ -81,6 +85,8 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
 
   TabController tabBarController;
 
+  bool showFAB = true;
+
   get bottomItems => [
         {'label': 'Map', 'icon': Icons.map},
         {'label': 'Description', 'icon': Icons.description},
@@ -96,6 +102,11 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
   void initState() {
     super.initState();
     tabBarController = TabController(length: _tabsItem.length, vsync: this);
+    tabBarController.addListener(() {
+      setState(() {
+        showFAB = tabBarController.index == 0;
+      });
+    });
   }
 
   @override
@@ -119,13 +130,14 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
                     onPressed: () => Scaffold.of(context).openDrawer()),
               ],
             ),
-            floatingActionButton: FloatingActionButton(
-              child: Icon(
-                Icons.check,
-                color: widget.theme?.accentTextTheme?.button?.color,
-              ),
-              onPressed: () {},
-            ),
+            floatingActionButton: tabBarController.index == 0
+                ? FloatingActionButton(
+                    child: Icon(
+                      Icons.check,
+                      color: widget.theme?.accentTextTheme?.button?.color,
+                    ),
+                    onPressed: () {})
+                : null,
             drawer: Drawer(
               child: ListView(
                 children: <Widget>[
@@ -136,8 +148,8 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
             body: TabBarView(controller: tabBarController, children: [
               ButtonPreview(theme: widget.theme),
               WidgetPreview1(theme: widget.theme),
-              ChipsPreview(theme: widget.theme),
               SliderPreview(theme: widget.theme),
+              ChipsPreview(theme: widget.theme),
               TypographyPreview(theme: widget.theme)
             ]),
             bottomNavigationBar: BottomNavigationBar(items: bottomItems),

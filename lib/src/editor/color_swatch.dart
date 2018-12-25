@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutterial_components/src/utils/color_utils.dart';
 import 'package:flutterial_components/src/utils/constants.dart';
 
-class ColorSwatch extends StatelessWidget {
+class ColorSwatchControl extends StatelessWidget {
   final Color color;
+
+  final ValueChanged<Color> onSelection;
 
   String get label {
     final namedPeer = namedColors().where((c) => c.color.value == color.value);
@@ -12,28 +14,22 @@ class ColorSwatch extends StatelessWidget {
         : "#${color.value.toRadixString(16)}";
   }
 
-  ColorSwatch(this.color);
+  ColorSwatchControl({this.color, this.onSelection});
 
   @override
-  Widget build(BuildContext context) => Row(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(right: 8.0),
-            child: Text(
-              label,
-              style: kDarkTextStyle,
-            ),
-          ),
-          Container(
-            width: kSwatchSize,
-            height: kSwatchSize,
-            decoration: BoxDecoration(
-              color: color,
-              boxShadow: [
-                BoxShadow(blurRadius: 2.5, color: Colors.grey.shade400)
-              ],
-            ),
-          ),
-        ],
-      );
+  Widget build(BuildContext context) => InkWell(
+      onTap: () => openColorMenu(context, onSelection: onSelection),
+      child: Container(
+        width: kSwatchSize,
+        height: kSwatchSize,
+        decoration: BoxDecoration(
+          color: color,
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 2.5,
+              color: Colors.grey.shade400,
+            )
+          ],
+        ),
+      ));
 }

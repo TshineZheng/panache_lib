@@ -20,17 +20,25 @@ class ChipThemePanel extends StatelessWidget {
     final appTextTheme = Theme.of(context).textTheme;
     final labelStyle = appTextTheme.subtitle;
     final chipLabelStyle = chipTheme.labelStyle;
+    final chipSecondaryLabelStyle = chipTheme.secondaryLabelStyle;
 
     return Container(
       padding: kPadding,
       color: Colors.grey.shade100,
       child: Column(
         children: <Widget>[
+          ColorSelector(
+            'Background color',
+            model.theme.chipTheme.backgroundColor,
+            (color) => _onBackgroundColorChanged(color),
+            padding: 2,
+            maxLabelWidth: 250,
+          ),
           getFieldsRow([
             ColorSelector(
-              'Background color',
-              model.theme.chipTheme.backgroundColor,
-              (color) => _onBackgroundColorChanged(color),
+              'Secondary selected color',
+              model.theme.chipTheme.secondarySelectedColor,
+              (color) => _onSecondarySelectedColorChanged(color),
               padding: 2,
             ),
             ColorSelector(
@@ -58,6 +66,7 @@ class ChipThemePanel extends StatelessWidget {
           Divider(),
           TextStyleControl(
             'Label Style',
+            key: Key('chip_textstyle'),
             color: chipLabelStyle.color,
             fontSize: chipLabelStyle.fontSize ?? 24,
             isBold: chipLabelStyle.fontWeight == FontWeight.bold,
@@ -66,6 +75,20 @@ class ChipThemePanel extends StatelessWidget {
             onSizeChanged: _onLabelStyleSizeChanged,
             onWeightChanged: _onLabelStyleWeightChanged,
             onFontStyleChanged: _onLabelStyleItalicChanged,
+            maxFontSize: 32,
+          ),
+          Divider(),
+          TextStyleControl(
+            'Secondary Label Style',
+            key: Key('chip_alternative_textstyle'),
+            color: chipSecondaryLabelStyle.color,
+            fontSize: chipSecondaryLabelStyle.fontSize ?? 24,
+            isBold: chipSecondaryLabelStyle.fontWeight == FontWeight.bold,
+            isItalic: chipSecondaryLabelStyle.fontStyle == FontStyle.italic,
+            onColorChanged: _onSecondaryLabelStyleColorChanged,
+            onSizeChanged: _onSecondaryLabelStyleSizeChanged,
+            onWeightChanged: _onSecondaryLabelStyleWeightChanged,
+            onFontStyleChanged: _onSecondaryLabelStyleItalicChanged,
             maxFontSize: 32,
           ),
           Divider(),
@@ -98,10 +121,26 @@ class ChipThemePanel extends StatelessWidget {
     model.updateTheme(updatedTheme);
   }
 
+  void _onSecondaryLabelStyleItalicChanged(bool value) {
+    final updatedTheme = model.theme.copyWith(
+        chipTheme: chipTheme.copyWith(
+            secondaryLabelStyle: chipTheme.secondaryLabelStyle.copyWith(
+                fontStyle: value ? FontStyle.italic : FontStyle.normal)));
+    model.updateTheme(updatedTheme);
+  }
+
   void _onLabelStyleWeightChanged(bool value) {
     final updatedTheme = model.theme.copyWith(
         chipTheme: chipTheme.copyWith(
             labelStyle: chipTheme.labelStyle.copyWith(
+                fontWeight: value ? FontWeight.bold : FontWeight.normal)));
+    model.updateTheme(updatedTheme);
+  }
+
+  void _onSecondaryLabelStyleWeightChanged(bool value) {
+    final updatedTheme = model.theme.copyWith(
+        chipTheme: chipTheme.copyWith(
+            secondaryLabelStyle: chipTheme.secondaryLabelStyle.copyWith(
                 fontWeight: value ? FontWeight.bold : FontWeight.normal)));
     model.updateTheme(updatedTheme);
   }
@@ -113,10 +152,26 @@ class ChipThemePanel extends StatelessWidget {
     model.updateTheme(updatedTheme);
   }
 
+  void _onSecondaryLabelStyleSizeChanged(double value) {
+    final updatedTheme = model.theme.copyWith(
+        chipTheme: chipTheme.copyWith(
+            secondaryLabelStyle:
+                chipTheme.secondaryLabelStyle.copyWith(fontSize: value)));
+    model.updateTheme(updatedTheme);
+  }
+
   void _onLabelStyleColorChanged(Color value) {
     final updatedTheme = model.theme.copyWith(
         chipTheme: chipTheme.copyWith(
             labelStyle: chipTheme.labelStyle.copyWith(color: value)));
+    model.updateTheme(updatedTheme);
+  }
+
+  void _onSecondaryLabelStyleColorChanged(Color value) {
+    final updatedTheme = model.theme.copyWith(
+        chipTheme: chipTheme.copyWith(
+            secondaryLabelStyle:
+                chipTheme.secondaryLabelStyle.copyWith(color: value)));
     model.updateTheme(updatedTheme);
   }
 
@@ -140,6 +195,12 @@ class ChipThemePanel extends StatelessWidget {
   void _onBackgroundColorChanged(Color value) {
     final updatedTheme = model.theme
         .copyWith(chipTheme: chipTheme.copyWith(backgroundColor: value));
+    model.updateTheme(updatedTheme);
+  }
+
+  void _onSecondarySelectedColorChanged(Color value) {
+    final updatedTheme = model.theme
+        .copyWith(chipTheme: chipTheme.copyWith(secondarySelectedColor: value));
     model.updateTheme(updatedTheme);
   }
 

@@ -30,6 +30,7 @@ class TextStyleControl extends StatelessWidget {
 
   TextStyleControl(
     this.label, {
+    Key key,
     @required this.onColorChanged,
     @required this.onSizeChanged,
     @required this.onWeightChanged,
@@ -39,7 +40,7 @@ class TextStyleControl extends StatelessWidget {
     @required this.isBold,
     @required this.isItalic,
     this.maxFontSize: 112.0,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +48,6 @@ class TextStyleControl extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12.0),
       child: Container(
-        padding: EdgeInsets.all(12.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           color: Colors.white30,

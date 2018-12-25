@@ -56,6 +56,7 @@ class SliderThemePanel extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text('Show value indicator'),
               DropdownButton(

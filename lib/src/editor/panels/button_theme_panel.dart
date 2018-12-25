@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../theme_model.dart';
 import '../../utils/constants.dart';
-import '../controls/button_color_scheme_editor.dart';
+import '../controls/color_scheme_control.dart';
 import '../controls/shape_form_control.dart';
 import '../controls/slider_control.dart';
 import '../editor_utils.dart';

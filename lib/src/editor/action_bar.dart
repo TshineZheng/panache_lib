@@ -17,11 +17,16 @@ class GlobalThemePropertiesControl extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          ColorSelector(
-            'Primary swatch',
-            model.theme.primaryColor,
-            (color) => _onSwatchSelection(model, color),
-            padding: 0,
+          Flexible(
+            child: ColorSelector(
+              'Primary swatch',
+              model.theme.primaryColor,
+              (color) => _onSwatchSelection(model, color),
+              padding: 0,
+            ),
+          ),
+          SizedBox(
+            width: 10,
           ),
           BrightnessSelector(
             isDark: isDark,

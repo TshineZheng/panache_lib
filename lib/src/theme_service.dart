@@ -1,5 +1,3 @@
-import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -12,9 +10,11 @@ class ThemeService {
   ThemeData _theme;
   ThemeData get theme => _theme;
 
-  File _themeFile;
+  //File _themeFile;
 
-  ThemeService() {
+  final Directory dir;
+
+  ThemeService({this.dir}) {
     initTheme();
   }
 
@@ -32,7 +32,7 @@ class ThemeService {
     );
   }
 
-  Future _loadTheme() async {
+  /*Future _loadTheme() async {
     var dir = await getApplicationDocumentsDirectory();
     _themeFile = File(dir.path + '/theme.json');
 
@@ -110,15 +110,15 @@ class ThemeService {
     };
 
     await _themeFile.writeAsString(json.encode(map));
-  }
+  }*/
 
   void updateTheme(ThemeData newTheme) {
     _theme = newTheme;
   }
 
-  void exportTheme(String code) async {
+  void exportTheme({String filename, String code}) async {
     var dir = await getApplicationDocumentsDirectory();
-    final themeFile = File('${dir.path}/themes/theme.dart');
+    final themeFile = File('${dir.path}/themes/$filename.dart');
     print('ThemeService.exportTheme... ${themeFile.path}');
     themeFile.createSync(recursive: true);
     themeFile.writeAsStringSync(code);

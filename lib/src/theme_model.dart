@@ -21,9 +21,10 @@ class ThemeModel extends Model {
   static ThemeModel of(BuildContext context) =>
       ScopedModel.of<ThemeModel>(context);
 
-  void initTheme(
-      {@required MaterialColor primarySwatch,
-      Brightness brightness: Brightness.light}) {
+  void initTheme({
+    @required MaterialColor primarySwatch,
+    Brightness brightness: Brightness.light,
+  }) {
     assert(primarySwatch != null);
 
     _primarySwatch = primarySwatch;
@@ -36,9 +37,9 @@ class ThemeModel extends Model {
     notifyListeners();
   }
 
-  void exportTheme() {
+  void exportTheme({String name: 'theme'}) {
     final code = themeToCode(theme);
-    _service.exportTheme(code);
+    _service.exportTheme(filename: name, code: code);
   }
 
   void updateColor({String property, Color color}) {
