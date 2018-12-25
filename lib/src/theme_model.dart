@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutterial_components/src/utils/theme_exporter.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import 'theme_service.dart';
@@ -12,6 +13,8 @@ class ThemeModel extends Model {
   ThemeData get theme => _service.theme;
 
   MaterialColor get primarySwatch => _primarySwatch;
+
+  String get themeCode => themeToCode(theme);
 
   ThemeModel({ThemeService service}) : _service = service;
 
@@ -33,11 +36,15 @@ class ThemeModel extends Model {
     notifyListeners();
   }
 
+  void exportTheme() {
+    final code = themeToCode(theme);
+    _service.exportTheme(code);
+  }
+
   void updateColor({String property, Color color}) {
     final args = <Symbol, dynamic>{};
     args[Symbol(property)] = color;
     final updatedTheme = Function.apply(theme.copyWith, null, args);
-    print('ThemeModel.updateColor... $args');
     updateTheme(updatedTheme);
   }
 }

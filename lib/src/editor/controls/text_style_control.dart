@@ -16,7 +16,7 @@ class TextStyleControl extends StatelessWidget {
 
   final ValueChanged<bool> onFontStyleChanged;
 
-  final Color colorValue;
+  final Color color;
 
   final double fontSize;
 
@@ -34,7 +34,7 @@ class TextStyleControl extends StatelessWidget {
     @required this.onSizeChanged,
     @required this.onWeightChanged,
     @required this.onFontStyleChanged,
-    @required this.colorValue,
+    @required this.color,
     @required this.fontSize,
     @required this.isBold,
     @required this.isItalic,
@@ -67,7 +67,7 @@ class TextStyleControl extends StatelessWidget {
             getFieldsRow([
               ColorSelector(
                 'Color',
-                colorValue,
+                color,
                 onColorChanged,
                 padding: 0,
               ),

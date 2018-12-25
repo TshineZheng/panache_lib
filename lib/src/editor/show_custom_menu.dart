@@ -143,7 +143,7 @@ class _PopupMenu<T> extends StatelessWidget {
 
     final Widget child = SizedBox(
       width: 480.0,
-      height: 320.0,
+      height: 340.0,
       child: GridView(
         children: children,
         gridDelegate:

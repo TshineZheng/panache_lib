@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutterial_components/src/editor/controls/button_color_scheme_editor.dart';
 import 'package:flutterial_components/src/editor/controls/color_selector.dart';
 import 'package:flutterial_components/src/theme_model.dart';
+import 'package:flutterial_components/src/utils/constants.dart';
 
-import '../../constants.dart';
 import '../editor_utils.dart';
 
 class ThemeColorPanel extends StatelessWidget {
@@ -15,39 +14,37 @@ class ThemeColorPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('ThemeColorPanel.build... ');
     return Container(
       color: Colors.grey.shade100,
       padding: kPadding,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          /*getColorBrightnessSelector(
-              label: 'Primary swatch',
-              currentColor: theme.primarySwatch,
-              changeHandler: (c) =>
-                  themeModel.updateColor(property: "primaryColor", color: c),
-              isDark: theme.primaryColorBrightness == Brightness.dark,
-              brightnessChangeHandler: (bool isDark) =>
-                  _onPrimaryBrightnessChanged(
-                      themeModel, isDark ? Brightness.dark : Brightness.light)),*/
           getColorBrightnessSelector(
-              label: 'Primary color',
-              currentColor: theme.primaryColor,
-              changeHandler: (c) =>
-                  themeModel.updateColor(property: "primaryColor", color: c),
-              isDark: theme.primaryColorBrightness == Brightness.dark,
-              brightnessChangeHandler: (bool isDark) =>
-                  _onPrimaryBrightnessChanged(
-                      themeModel, isDark ? Brightness.dark : Brightness.light)),
+            label: 'Primary color',
+            currentColor: theme.primaryColor,
+            changeHandler: (c) =>
+                themeModel.updateColor(property: "primaryColor", color: c),
+            isDark: theme.primaryColorBrightness == Brightness.dark,
+            brightnessChangeHandler: (bool isDark) =>
+                _onPrimaryBrightnessChanged(
+                  themeModel,
+                  isDark ? Brightness.dark : Brightness.light,
+                ),
+          ),
           getColorBrightnessSelector(
-              label: 'Accent color',
-              currentColor: theme.accentColor,
-              changeHandler: (c) =>
-                  themeModel.updateColor(property: "accentColor", color: c),
-              isDark: theme.accentColorBrightness == Brightness.dark,
-              brightnessChangeHandler: (bool isDark) =>
-                  _onAccentBrightnessChanged(
-                      themeModel, isDark ? Brightness.dark : Brightness.light)),
+            label: 'Accent color',
+            currentColor: theme.accentColor,
+            changeHandler: (c) =>
+                themeModel.updateColor(property: "accentColor", color: c),
+            isDark: theme.accentColorBrightness == Brightness.dark,
+            brightnessChangeHandler: (bool isDark) =>
+                _onAccentBrightnessChanged(
+                  themeModel,
+                  isDark ? Brightness.dark : Brightness.light,
+                ),
+          ),
           getColorBrightnessSelector(
             label: 'Scaffold background color',
             currentColor: theme.scaffoldBackgroundColor,
@@ -66,9 +63,7 @@ class ThemeColorPanel extends StatelessWidget {
               theme.buttonColor,
               (color) => themeModel.updateTheme(theme.copyWith(
                   buttonColor: color,
-                  buttonTheme: theme.buttonTheme.copyWith(
-                      buttonColor:
-                          color /*, textTheme: ButtonTextTheme.primary*/))),
+                  buttonTheme: theme.buttonTheme.copyWith(buttonColor: color))),
               padding: 2,
             ),
             ColorSelector(
@@ -98,11 +93,8 @@ class ThemeColorPanel extends StatelessWidget {
               theme.disabledColor,
               (color) => themeModel.updateTheme(theme.copyWith(
                   disabledColor: color,
-                  buttonTheme: theme.buttonTheme.copyWith(
-                      disabledColor:
-                          color /*,
-                      textTheme: ButtonTextTheme.primary*/
-                      ))),
+                  buttonTheme:
+                      theme.buttonTheme.copyWith(disabledColor: color))),
               padding: 2,
             ),
             ColorSelector(
@@ -223,6 +215,5 @@ class ThemeColorPanel extends StatelessWidget {
 
   void _onAccentBrightnessChanged(
           ThemeModel themeModel, Brightness brightness) =>
-      themeModel
-          .updateTheme(theme.copyWith(primaryColorBrightness: brightness));
+      themeModel.updateTheme(theme.copyWith(accentColorBrightness: brightness));
 }

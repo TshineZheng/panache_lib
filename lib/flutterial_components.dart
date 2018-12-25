@@ -7,6 +7,7 @@
 library flutterial_components;
 
 export 'src/editor/theme_editor.dart';
+export 'src/launch_screen.dart';
 export 'src/preview/app_preview.dart';
 export 'src/theme_model.dart';
 export 'src/theme_service.dart';

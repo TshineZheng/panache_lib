@@ -4,8 +4,8 @@ import 'package:flutterial_components/src/editor/controls/shape_form_control.dar
 import 'package:flutterial_components/src/editor/controls/text_style_control.dart';
 import 'package:flutterial_components/src/editor/editor_utils.dart';
 import 'package:flutterial_components/src/theme_model.dart';
+import 'package:flutterial_components/src/utils/constants.dart';
 
-import '../../constants.dart';
 import '../controls/brightness_control.dart';
 
 class ChipThemePanel extends StatelessWidget {
@@ -58,7 +58,7 @@ class ChipThemePanel extends StatelessWidget {
           Divider(),
           TextStyleControl(
             'Label Style',
-            colorValue: chipLabelStyle.color,
+            color: chipLabelStyle.color,
             fontSize: chipLabelStyle.fontSize ?? 24,
             isBold: chipLabelStyle.fontWeight == FontWeight.bold,
             isItalic: chipLabelStyle.fontStyle == FontStyle.italic,

@@ -5,9 +5,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutterial_components/src/utils/color_utils.dart';
 import 'package:path_provider/path_provider.dart';
-
-import 'color_utils.dart';
 
 class ThemeService {
   ThemeData _theme;
@@ -115,6 +114,14 @@ class ThemeService {
 
   void updateTheme(ThemeData newTheme) {
     _theme = newTheme;
+  }
+
+  void exportTheme(String code) async {
+    var dir = await getApplicationDocumentsDirectory();
+    final themeFile = File('${dir.path}/themes/theme.dart');
+    print('ThemeService.exportTheme... ${themeFile.path}');
+    themeFile.createSync(recursive: true);
+    themeFile.writeAsStringSync(code);
   }
 }
 

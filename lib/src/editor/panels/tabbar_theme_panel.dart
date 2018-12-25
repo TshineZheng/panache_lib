@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutterial_components/src/utils/constants.dart';
 
-import '../../constants.dart';
 import '../../theme_model.dart';
 import '../controls/color_selector.dart';
 import '../editor_utils.dart';
@@ -18,6 +18,7 @@ class TabBarThemePanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('TabBarThemePanel.build... ');
     return Container(
       padding: kPadding,
       color: Colors.grey.shade100,

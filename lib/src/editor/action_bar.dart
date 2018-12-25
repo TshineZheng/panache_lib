@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutterial_components/src/color_utils.dart';
 import 'package:flutterial_components/src/editor/controls/brightness_control.dart';
 import 'package:flutterial_components/src/editor/controls/color_selector.dart';
+import 'package:flutterial_components/src/utils/color_utils.dart';
 
 import '../theme_model.dart';
 
@@ -16,32 +16,49 @@ class ActionBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: Text('Flutterial',
-              style: TextStyle(fontSize: 24, color: Colors.white70)),
+        Container(
+          constraints: BoxConstraints.expand(height: 48),
+          color: Colors.blueGrey.shade300,
+          padding: EdgeInsets.all(8.0),
+          child: Row(
+            children: <Widget>[
+              Text('Panache',
+                  style: TextStyle(fontSize: 24, color: Colors.white70)),
+              FlatButton.icon(
+                  onPressed: model.exportTheme,
+                  icon: Icon(Icons.save),
+                  label: Text('Export'))
+            ],
+          ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            ColorSelector('Primary swatch', model.theme.primaryColor,
-                (color) => _onSwatchSelection(model, color)),
-            BrightnessSelector(
-              isDark: isDark,
-              label: 'Brightness',
-              onBrightnessChanged: (value) =>
-                  _onThemeBrightnessChanged(model, value),
-            ),
-            /*Text('Platform: Android'),
-            Switch(
-              onChanged: (value) => _onPlatformChanged(
-                    model,
-                    value ? TargetPlatform.iOS : TargetPlatform.android,
-                  ),
-              value: onAndroid,
-            ),
-            Text('iOS'),*/
-          ],
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ColorSelector(
+                'Primary swatch',
+                model.theme.primaryColor,
+                (color) => _onSwatchSelection(model, color),
+                padding: 0,
+              ),
+              BrightnessSelector(
+                isDark: isDark,
+                label: 'Brightness',
+                onBrightnessChanged: (value) =>
+                    _onThemeBrightnessChanged(model, value),
+              ),
+              /*Text('Platform: Android'),
+              Switch(
+                onChanged: (value) => _onPlatformChanged(
+                      model,
+                      value ? TargetPlatform.iOS : TargetPlatform.android,
+                    ),
+                value: onAndroid,
+              ),
+              Text('iOS'),*/
+            ],
+          ),
         ),
       ],
     );

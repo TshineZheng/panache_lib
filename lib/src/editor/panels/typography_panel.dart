@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutterial_components/src/utils/constants.dart';
 
-import '../../constants.dart';
 import '../../theme_model.dart';
 import '../controls/text_style_control.dart';
 
 class TypographyThemePanel extends StatelessWidget {
-  final ThemeModel model;
-
-  ThemeData get theme => model.theme;
-
-  const TypographyThemePanel(this.model, {Key key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    final model = ThemeModel.of(context);
+    return Container(
+      color: Colors.grey.shade200,
       padding: kPadding,
       child: Column(
         children: _buildTextThemeEditorFields(model),
@@ -22,7 +18,8 @@ class TypographyThemePanel extends StatelessWidget {
   }
 
   List<Widget> _buildTextThemeEditorFields(ThemeModel model) {
-    final txtTheme = theme.textTheme;
+    final theme = model.theme;
+    final txtTheme = model.theme.textTheme;
     final body1 = txtTheme.body1;
     final body2 = txtTheme.body2;
     final headline = txtTheme.headline;
@@ -38,7 +35,7 @@ class TypographyThemePanel extends StatelessWidget {
     return [
       TextStyleControl(
         'Body 1',
-        colorValue: body1.color,
+        color: body1.color,
         fontSize: body1.fontSize ?? 24,
         isBold: body1.fontWeight == FontWeight.bold,
         isItalic: body1.fontStyle == FontStyle.italic,
@@ -69,7 +66,7 @@ class TypographyThemePanel extends StatelessWidget {
       ),
       TextStyleControl(
         'Body 2',
-        colorValue: body2.color,
+        color: body2.color,
         fontSize: body2.fontSize,
         isBold: body2.fontWeight == FontWeight.bold,
         isItalic: body2.fontStyle == FontStyle.italic,
@@ -100,7 +97,7 @@ class TypographyThemePanel extends StatelessWidget {
       ),
       TextStyleControl(
         'Headline',
-        colorValue: headline.color,
+        color: headline.color,
         fontSize: headline.fontSize,
         isBold: headline.fontWeight == FontWeight.bold,
         isItalic: headline.fontStyle == FontStyle.italic,
@@ -133,7 +130,7 @@ class TypographyThemePanel extends StatelessWidget {
       ),
       TextStyleControl(
         'Subhead',
-        colorValue: subhead.color,
+        color: subhead.color,
         fontSize: subhead.fontSize,
         isBold: subhead.fontWeight == FontWeight.bold,
         isItalic: subhead.fontStyle == FontStyle.italic,
@@ -166,7 +163,7 @@ class TypographyThemePanel extends StatelessWidget {
       ),
       TextStyleControl(
         'Title',
-        colorValue: title.color,
+        color: title.color,
         fontSize: title.fontSize,
         isBold: title.fontWeight == FontWeight.bold,
         isItalic: title.fontStyle == FontStyle.italic,
@@ -197,7 +194,7 @@ class TypographyThemePanel extends StatelessWidget {
       ),
       TextStyleControl(
         'Subtitle',
-        colorValue: subtitle.color,
+        color: subtitle.color,
         fontSize: subtitle.fontSize,
         isBold: subtitle.fontWeight == FontWeight.bold,
         isItalic: subtitle.fontStyle == FontStyle.italic,
@@ -230,7 +227,7 @@ class TypographyThemePanel extends StatelessWidget {
       ),
       TextStyleControl(
         'Button',
-        colorValue: button.color,
+        color: button.color,
         fontSize: button.fontSize,
         isBold: button.fontWeight == FontWeight.bold,
         isItalic: button.fontStyle == FontStyle.italic,
@@ -262,7 +259,7 @@ class TypographyThemePanel extends StatelessWidget {
       ),
       TextStyleControl(
         'Display 1',
-        colorValue: display1.color,
+        color: display1.color,
         fontSize: display1.fontSize,
         isBold: display1.fontWeight == FontWeight.bold,
         isItalic: display1.fontStyle == FontStyle.italic,
@@ -295,7 +292,7 @@ class TypographyThemePanel extends StatelessWidget {
       ),
       TextStyleControl(
         'Display 2',
-        colorValue: display2.color,
+        color: display2.color,
         fontSize: display2.fontSize,
         isBold: display2.fontWeight == FontWeight.bold,
         isItalic: display2.fontStyle == FontStyle.italic,
@@ -328,7 +325,7 @@ class TypographyThemePanel extends StatelessWidget {
       ),
       TextStyleControl(
         'Display 3',
-        colorValue: display3.color,
+        color: display3.color,
         fontSize: display3.fontSize,
         isBold: display3.fontWeight == FontWeight.bold,
         isItalic: display3.fontStyle == FontStyle.italic,
@@ -361,7 +358,7 @@ class TypographyThemePanel extends StatelessWidget {
       ),
       TextStyleControl(
         'Display 4',
-        colorValue: display4.color,
+        color: display4.color,
         fontSize: display4.fontSize,
         isBold: display4.fontWeight == FontWeight.bold,
         isItalic: display4.fontStyle == FontStyle.italic,

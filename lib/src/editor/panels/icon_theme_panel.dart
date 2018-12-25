@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutterial_components/src/editor/controls/slider_control.dart';
+import 'package:flutterial_components/src/utils/constants.dart';
 
-import '../../constants.dart';
 import '../../theme_model.dart';
 import '../controls/color_selector.dart';
 

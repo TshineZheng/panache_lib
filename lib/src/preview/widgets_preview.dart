@@ -8,7 +8,6 @@ class ButtonPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('ButtonPreview.build... ${theme.buttonColor} ${Colors.cyan}');
     return Padding(
       padding: EdgeInsets.all(8.0),
       child: ListView(

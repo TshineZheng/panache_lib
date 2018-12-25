@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutterial_components/src/editor/controls/shape_form_control.dart';
-import 'package:flutterial_components/src/editor/controls/slider_control.dart';
-import 'package:flutterial_components/src/theme_model.dart';
 
-import '../../constants.dart';
+import '../../theme_model.dart';
+import '../../utils/constants.dart';
 import '../controls/button_color_scheme_editor.dart';
+import '../controls/shape_form_control.dart';
+import '../controls/slider_control.dart';
 import '../editor_utils.dart';
 
 class ButtonThemePanel extends StatelessWidget {
@@ -16,6 +16,7 @@ class ButtonThemePanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('ButtonThemePanel.build... ');
     final appTextTheme = Theme.of(context).textTheme;
     final labelStyle = appTextTheme.subtitle;
     final dropdownTextStyle = appTextTheme.body2;
@@ -34,7 +35,8 @@ class ButtonThemePanel extends StatelessWidget {
                       labelStyle: labelStyle,
                       dropdownTextStyle: dropdownTextStyle),
                   ShapeFormControl(
-                    onShapeChanged: _onShapeChanged,
+                    onShapeChanged: (shape) => _onButtonThemeChanged(
+                        buttonTheme.copyWith(shape: shape)),
                     shape: buttonTheme.shape,
                     labelStyle: labelStyle,
                   )
@@ -46,7 +48,8 @@ class ButtonThemePanel extends StatelessWidget {
               children: <Widget>[
                 SliderPropertyControl(
                   buttonTheme.padding.horizontal,
-                  _onHorizontalPaddingChanged,
+                  (padding) => _onButtonThemeChanged(buttonTheme.copyWith(
+                      padding: EdgeInsets.symmetric(horizontal: padding))),
                   label: 'Horizontal padding',
                   max: 64,
                 ),
@@ -56,30 +59,20 @@ class ButtonThemePanel extends StatelessWidget {
                 ),
                 Switch.adaptive(
                     value: buttonTheme.alignedDropdown,
-                    onChanged: _onAlignDropdownChanged)
+                    onChanged: (aligned) => _onButtonThemeChanged(
+                        buttonTheme.copyWith(alignedDropdown: aligned)))
               ],
             ),
           ),
           _buildButtonSizeControl(buttonTheme),
           ColorSchemeControl(
             scheme: buttonTheme.colorScheme,
-            onSchemeChanged: _onSchemeChanged,
+            onSchemeChanged: (scheme) => _onButtonThemeChanged(
+                buttonTheme.copyWith(colorScheme: scheme)),
           )
         ],
       ),
     );
-  }
-
-  void _onShapeChanged(ShapeBorder value) {
-    final updatedTheme =
-        model.theme.copyWith(buttonTheme: buttonTheme.copyWith(shape: value));
-    model.updateTheme(updatedTheme);
-  }
-
-  void _onSchemeChanged(ColorScheme value) {
-    final updatedTheme = model.theme
-        .copyWith(buttonTheme: buttonTheme.copyWith(colorScheme: value));
-    model.updateTheme(updatedTheme);
   }
 
   Widget _buildButtonSizeControl(ButtonThemeData theme) {
@@ -88,10 +81,20 @@ class ButtonThemePanel extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 2.0),
       child: getFieldsRow([
-        SliderPropertyControl(minWidth, _onMinWidthChanged,
-            label: 'Min width', min: 48, max: 256),
-        SliderPropertyControl(height, _onHeightChanged,
-            label: 'Height', min: 24, max: 128),
+        SliderPropertyControl(
+            minWidth,
+            (width) =>
+                _onButtonThemeChanged(buttonTheme.copyWith(minWidth: width)),
+            label: 'Min width',
+            min: 48,
+            max: 256),
+        SliderPropertyControl(
+            height,
+            (height) =>
+                _onButtonThemeChanged(buttonTheme.copyWith(height: height)),
+            label: 'Height',
+            min: 24,
+            max: 128),
       ]),
     );
   }
@@ -114,16 +117,11 @@ class ButtonThemePanel extends StatelessWidget {
             items: ButtonTextTheme.values
                 .map(_buildButtonTextThemeSelectorItem)
                 .toList(growable: false),
-            onChanged: (newButtonTextTheme) =>
-                _onButtonTextThemeChanged(newButtonTextTheme)),
+            onChanged: (newButtonTextTheme) => _onButtonThemeChanged(
+                buttonTheme.copyWith(textTheme: newButtonTextTheme))),
       ],
     );
   }
-
-  _onButtonTextThemeChanged(textTheme) =>
-      model.updateTheme(model.theme.copyWith(
-        buttonTheme: buttonTheme.copyWith(textTheme: textTheme),
-      ));
 
   DropdownMenuItem<ButtonTextTheme> _buildButtonTextThemeSelectorItem(
           ButtonTextTheme buttonTextTheme) =>
@@ -132,28 +130,9 @@ class ButtonThemePanel extends StatelessWidget {
         value: buttonTextTheme,
       );
 
-  void _onMinWidthChanged(double value) {
-    model.updateTheme(model.theme.copyWith(
-      buttonTheme: buttonTheme.copyWith(minWidth: value),
-    ));
-  }
-
-  void _onHeightChanged(double value) {
-    model.updateTheme(model.theme.copyWith(
-      buttonTheme: buttonTheme.copyWith(height: value),
-    ));
-  }
-
-  void _onHorizontalPaddingChanged(double value) {
-    model.updateTheme(model.theme.copyWith(
-      buttonTheme: buttonTheme.copyWith(
-          padding: EdgeInsets.symmetric(horizontal: value)),
-    ));
-  }
-
-  void _onAlignDropdownChanged(bool value) {
-    model.updateTheme(model.theme.copyWith(
-      buttonTheme: buttonTheme.copyWith(alignedDropdown: value),
-    ));
+  void _onButtonThemeChanged(ButtonThemeData value) {
+    model.updateTheme(
+      model.theme.copyWith(buttonTheme: value),
+    );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import './editor/show_custom_menu.dart';
+import '../editor/show_custom_menu.dart';
 import 'constants.dart';
 
 const materialColorsNames = [
@@ -34,6 +34,11 @@ bool isMaterialPrimary(Color color) {
 MaterialColor swatchFor({Color color}) {
   final found = Colors.primaries.where((c) => c.value == color.value);
   return found.isNotEmpty ? found.first : Colors.blue;
+}
+
+String swatchConstructorFor({Color color}) {
+  final found = namedColors().firstWhere((c) => c.color.value == color.value);
+  return 'Colors.${found.name}';
 }
 
 List<NamedColor> namedColors() {
@@ -103,26 +108,6 @@ List<PopupMenuItem<Color>> getColorMenuItems() {
       .toList();
 }
 
-List<PopupGridMenuItem<Color>> getColorMenuTileItems() => namedColors()
-    .map(
-      (c) => PopupGridMenuItem<Color>(
-            value: c.color,
-            child: GridTile(
-              footer: Padding(
-                padding: EdgeInsets.all(4.0),
-                child: Text(c.name,
-                    style: isDark(c.color) ? kDarkTextStyle : kLightTextStyle),
-              ),
-              child: Container(
-                width: kSwatchSize,
-                height: kSwatchSize,
-                color: c.color,
-              ),
-            ),
-          ),
-    )
-    .toList();
-
 void openColorMenu(BuildContext context, {ValueChanged<Color> onSelection}) {
   final RenderBox renderBox = context.findRenderObject();
   final Offset topLeft = renderBox?.localToGlobal(Offset.zero);
@@ -144,3 +129,23 @@ void openColorMenu(BuildContext context, {ValueChanged<Color> onSelection}) {
     },
   );
 }
+
+List<PopupGridMenuItem<Color>> getColorMenuTileItems() => namedColors()
+    .map(
+      (c) => PopupGridMenuItem<Color>(
+            value: c.color,
+            child: GridTile(
+              footer: Padding(
+                padding: EdgeInsets.all(4.0),
+                child: Text(c.name,
+                    style: isDark(c.color) ? kDarkTextStyle : kLightTextStyle),
+              ),
+              child: Container(
+                width: kSwatchSize,
+                height: kSwatchSize,
+                color: c.color,
+              ),
+            ),
+          ),
+    )
+    .toList();

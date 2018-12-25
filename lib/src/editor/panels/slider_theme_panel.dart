@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutterial_components/src/editor/controls/text_style_control.dart';
+import 'package:flutterial_components/src/utils/constants.dart';
 
-import '../../constants.dart';
 import '../../theme_model.dart';
 import '../controls/color_selector.dart';
 import '../editor_utils.dart';
@@ -184,7 +184,7 @@ class SliderThemePanel extends StatelessWidget {
       'Value indicator text style',
       fontSize: indicatorStyle.fontSize ?? 12,
       maxFontSize: 20,
-      colorValue: indicatorStyle.color,
+      color: indicatorStyle.color,
       isBold: indicatorStyle.fontWeight == FontWeight.bold,
       isItalic: indicatorStyle.fontStyle == FontStyle.italic,
       onColorChanged: (c) => _updateSliderTheme(sliderTheme.copyWith(
