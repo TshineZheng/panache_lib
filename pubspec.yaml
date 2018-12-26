@@ -1,7 +1,8 @@
-name: flutterial_components
-description: A starting point for Dart libraries or applications.
-version: 0.0.2
-author: rxlabz <rxlabz@gmail.com>
+name: panache_lib
+description: Panache app core
+version: 0.1.0
+author: Erick Ghaumez <erick@rxla.bz>
+homepage: https://github.com/rxlabz/panache
 
 environment:
   sdk: ^2.0.0

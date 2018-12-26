@@ -4,9 +4,10 @@
 /// Support for doing something awesome.
 ///
 /// More dartdocs go here.
-library flutterial_components;
+library panache_lib;
 
-export 'src/editor/theme_editor.dart';
+export 'src/app_theme.dart';
+export 'src/editor/editor_screen.dart';
 export 'src/launch_screen.dart';
 export 'src/preview/app_preview.dart';
 export 'src/theme_model.dart';

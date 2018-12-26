@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutterial_components/src/editor/controls/brightness_control.dart';
-import 'package:flutterial_components/src/editor/controls/color_selector.dart';
-import 'package:flutterial_components/src/utils/color_utils.dart';
 
 import '../theme_model.dart';
+import '../utils/color_utils.dart';
+import 'controls/brightness_control.dart';
+import 'controls/color_selector.dart';
 
 class GlobalThemePropertiesControl extends StatelessWidget {
   @override

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutterial_components/src/utils/color_utils.dart';
-import 'package:flutterial_components/src/utils/constants.dart';
+
+import '../utils/color_utils.dart';
+import '../utils/constants.dart';
 
 class ColorSwatchControl extends StatelessWidget {
   final Color color;

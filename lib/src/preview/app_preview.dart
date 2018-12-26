@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutterial_components/src/preview/code_preview.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../theme_model.dart';
+import 'code_preview.dart';
 import 'typography_preview.dart';
 import 'widgets_preview.dart';
 

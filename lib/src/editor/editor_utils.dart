@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutterial_components/src/editor/controls/brightness_control.dart';
-import 'package:flutterial_components/src/editor/controls/color_selector.dart';
+
+import 'controls/brightness_control.dart';
+import 'controls/color_selector.dart';
 
 Widget getFieldsRow(List<Widget> children) => Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

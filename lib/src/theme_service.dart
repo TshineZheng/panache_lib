@@ -3,18 +3,15 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutterial_components/src/utils/color_utils.dart';
-import 'package:path_provider/path_provider.dart';
+
+typedef Future<Directory> DirectoryProvider();
 
 class ThemeService {
   ThemeData _theme;
   ThemeData get theme => _theme;
+  final Function(String, String) themeExporter;
 
-  //File _themeFile;
-
-  final Directory dir;
-
-  ThemeService({this.dir}) {
+  ThemeService({this.themeExporter}) {
     initTheme();
   }
 
@@ -31,6 +28,11 @@ class ThemeService {
           platform: TargetPlatform.iOS),
     );
   }
+
+  void updateTheme(ThemeData newTheme) => _theme = newTheme;
+
+  void exportTheme({String filename, String code}) =>
+      themeExporter(code, filename);
 
   /*Future _loadTheme() async {
     var dir = await getApplicationDocumentsDirectory();
@@ -110,20 +112,7 @@ class ThemeService {
     };
 
     await _themeFile.writeAsString(json.encode(map));
-  }*/
-
-  void updateTheme(ThemeData newTheme) {
-    _theme = newTheme;
   }
-
-  void exportTheme({String filename, String code}) async {
-    var dir = await getApplicationDocumentsDirectory();
-    final themeFile = File('${dir.path}/themes/$filename.dart');
-    print('ThemeService.exportTheme... ${themeFile.path}');
-    themeFile.createSync(recursive: true);
-    themeFile.writeAsStringSync(code);
-  }
-}
 
 Color getMaterialColor(String name) => namedColors()
     .firstWhere((c) => c.name == name,
@@ -136,3 +125,6 @@ String getMaterialName(Color color) => namedColors()
         orElse: () =>
             NamedColor(name: color.value.toRadixString(16), color: color))
     .name;
+  */
+
+}

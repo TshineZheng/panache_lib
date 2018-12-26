@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutterial_components/src/editor/controls/color_selector.dart';
+
+import 'color_selector.dart';
 
 const List<String> colors = [
   'background',

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutterial_components/src/utils/constants.dart';
 
 import '../../theme_model.dart';
+import '../../utils/constants.dart';
 import '../controls/text_style_control.dart';
 
 class TypographyThemePanel extends StatelessWidget {

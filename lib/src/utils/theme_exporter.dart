@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutterial_components/src/utils/color_utils.dart';
+
+import 'color_utils.dart';
 
 String themeToCode(ThemeData theme) {
   return '''
@@ -8,34 +9,34 @@ String themeToCode(ThemeData theme) {
   final ThemeData myTheme = ThemeData(
     primarySwatch: ${swatchConstructorFor(color: theme.primaryColor)},
     brightness: ${theme.brightness},
-    primaryColor: Color(${theme.primaryColor.value}),
+    primaryColor: ${colorToCode(theme.primaryColor)},
     primaryColorBrightness: ${theme.primaryColorBrightness},
     primaryColorLight: ${theme.primaryColorLight},
     primaryColorDark: ${theme.primaryColorDark},
-    accentColor: ${theme.accentColor},
+    accentColor: ${colorToCode(theme.accentColor)},
     accentColorBrightness: ${theme.accentColorBrightness},
-    canvasColor: ${theme.canvasColor},
-    scaffoldBackgroundColor: ${theme.scaffoldBackgroundColor},
-    bottomAppBarColor: ${theme.bottomAppBarColor},
-    cardColor: ${theme.cardColor},
-    dividerColor: ${theme.dividerColor},
-    highlightColor: ${theme.highlightColor},
-    splashColor: ${theme.splashColor},
-    selectedRowColor: ${theme.selectedRowColor},
-    unselectedWidgetColor: ${theme.unselectedWidgetColor},
-    disabledColor: ${theme.disabledColor},
+    canvasColor: ${colorToCode(theme.canvasColor)},
+    scaffoldBackgroundColor: ${colorToCode(theme.scaffoldBackgroundColor)},
+    bottomAppBarColor: ${colorToCode(theme.bottomAppBarColor)},
+    cardColor: ${colorToCode(theme.cardColor)},
+    dividerColor: ${colorToCode(theme.dividerColor)},
+    highlightColor: ${colorToCode(theme.highlightColor)},
+    splashColor: ${colorToCode(theme.splashColor)},
+    selectedRowColor: ${colorToCode(theme.selectedRowColor)},
+    unselectedWidgetColor: ${colorToCode(theme.unselectedWidgetColor)},
+    disabledColor: ${colorToCode(theme.disabledColor)},
     buttonTheme: ${buttonThemeToCode(theme.buttonTheme)},
-    buttonColor: ${theme.buttonColor},
-    toggleableActiveColor: ${theme.toggleableActiveColor},
-    secondaryHeaderColor: ${theme.secondaryHeaderColor},
-    textSelectionColor: ${theme.textSelectionColor},
-    cursorColor: ${theme.cursorColor},
-    textSelectionHandleColor: ${theme.textSelectionHandleColor},
-    backgroundColor: ${theme.backgroundColor},
-    dialogBackgroundColor: ${theme.dialogBackgroundColor},
-    indicatorColor: ${theme.indicatorColor},
-    hintColor: ${theme.hintColor},
-    errorColor: ${theme.errorColor},
+    buttonColor: ${colorToCode(theme.buttonColor)},
+    toggleableActiveColor: ${colorToCode(theme.toggleableActiveColor)},
+    secondaryHeaderColor: ${colorToCode(theme.secondaryHeaderColor)},
+    textSelectionColor: ${colorToCode(theme.textSelectionColor)},
+    cursorColor: ${colorToCode(theme.cursorColor)},
+    textSelectionHandleColor: ${colorToCode(theme.textSelectionHandleColor)},
+    backgroundColor: ${colorToCode(theme.backgroundColor)},
+    dialogBackgroundColor: ${colorToCode(theme.dialogBackgroundColor)},
+    indicatorColor: ${colorToCode(theme.indicatorColor)},
+    hintColor: ${colorToCode(theme.hintColor)},
+    errorColor: ${colorToCode(theme.errorColor)},
     textTheme: ${textThemeToCode(theme.textTheme)},
     primaryTextTheme: ${textThemeToCode(theme.primaryTextTheme)},
     accentTextTheme: ${textThemeToCode(theme.accentTextTheme)},
@@ -70,19 +71,19 @@ String buttonThemeToCode(ButtonThemeData buttonTheme) {
 
 String sliderThemeToCode(SliderThemeData sliderTheme) {
   return '''SliderThemeData(
-      activeTrackColor: ${sliderTheme.activeTrackColor},
-      inactiveTrackColor: ${sliderTheme.inactiveTrackColor},
-      disabledActiveTrackColor: ${sliderTheme.disabledActiveTrackColor},
-      disabledInactiveTrackColor: ${sliderTheme.disabledInactiveTrackColor},
-      activeTickMarkColor: ${sliderTheme.activeTickMarkColor},
-      inactiveTickMarkColor: ${sliderTheme.inactiveTickMarkColor},
-      disabledActiveTickMarkColor: ${sliderTheme.disabledActiveTickMarkColor},
-      disabledInactiveTickMarkColor: ${sliderTheme.disabledInactiveTickMarkColor},
-      thumbColor: ${sliderTheme.thumbColor},
-      disabledThumbColor: ${sliderTheme.disabledThumbColor},
+      activeTrackColor: ${colorToCode(sliderTheme.activeTrackColor)},
+      inactiveTrackColor: ${colorToCode(sliderTheme.inactiveTrackColor)},
+      disabledActiveTrackColor: ${colorToCode(sliderTheme.disabledActiveTrackColor)},
+      disabledInactiveTrackColor: ${colorToCode(sliderTheme.disabledInactiveTrackColor)},
+      activeTickMarkColor: ${colorToCode(sliderTheme.activeTickMarkColor)},
+      inactiveTickMarkColor: ${colorToCode(sliderTheme.inactiveTickMarkColor)},
+      disabledActiveTickMarkColor: ${colorToCode(sliderTheme.disabledActiveTickMarkColor)},
+      disabledInactiveTickMarkColor: ${colorToCode(sliderTheme.disabledInactiveTickMarkColor)},
+      thumbColor: ${colorToCode(sliderTheme.thumbColor)},
+      disabledThumbColor: ${colorToCode(sliderTheme.disabledThumbColor)},
       thumbShape: ${instanceToCode(sliderTheme.thumbShape)},
-      overlayColor: ${sliderTheme.overlayColor},
-      valueIndicatorColor: ${sliderTheme.valueIndicatorColor},
+      overlayColor: ${colorToCode(sliderTheme.overlayColor)},
+      valueIndicatorColor: ${colorToCode(sliderTheme.valueIndicatorColor)},
       valueIndicatorShape: ${instanceToCode(sliderTheme.valueIndicatorShape)},
       showValueIndicator: ${sliderTheme.showValueIndicator},
       valueIndicatorTextStyle: ${textStyleToCode(sliderTheme.valueIndicatorTextStyle)},
@@ -104,40 +105,48 @@ String dialogThemeToCode(DialogTheme iconTheme) {
 
 String iconThemeToCode(IconThemeData iconTheme) {
   return '''IconThemeData(
-      color: ${iconTheme.color},
+      color: ${colorToCode(iconTheme.color)},
       opacity: ${iconTheme.opacity},
       size: ${iconTheme.size},
     )''';
+}
+
+String colorToCode(Color color) {
+  if (color == null) return 'null';
+  if (color is MaterialColor) {
+    return 'Color(${color.value})';
+  }
+  return 'Color(${color.value})';
 }
 
 /// TODO indicator Decoration
 String tabBarThemeToCode(TabBarTheme tabBarTheme) {
   return '''TabBarTheme(
       indicatorSize: ${tabBarTheme.indicatorSize},
-      labelColor: ${tabBarTheme.labelColor},
-      unselectedLabelColor: ${tabBarTheme.unselectedLabelColor},
+      labelColor: ${colorToCode(tabBarTheme.labelColor)},
+      unselectedLabelColor: ${colorToCode(tabBarTheme.unselectedLabelColor)},
     )''';
 }
 
 String chipThemeToCode(ChipThemeData chipTheme) {
   return '''ChipThemeData(
-      backgroundColor: ${chipTheme.backgroundColor},
+      backgroundColor: ${colorToCode(chipTheme.backgroundColor)},
       brightness: ${chipTheme.brightness},
-      deleteIconColor: ${chipTheme.deleteIconColor},
-      disabledColor: ${chipTheme.disabledColor},
+      deleteIconColor: ${colorToCode(chipTheme.deleteIconColor)},
+      disabledColor: ${colorToCode(chipTheme.disabledColor)},
       labelPadding: ${paddingToCode(chipTheme.labelPadding)},
       labelStyle: ${textStyleToCode(chipTheme.labelStyle)},
       padding: ${paddingToCode(chipTheme.padding)},
       secondaryLabelStyle: ${textStyleToCode(chipTheme.secondaryLabelStyle)},
-      secondarySelectedColor: ${chipTheme.secondarySelectedColor},
-      selectedColor: ${chipTheme.selectedColor},
+      secondarySelectedColor: ${colorToCode(chipTheme.secondarySelectedColor)},
+      selectedColor: ${colorToCode(chipTheme.selectedColor)},
       shape: ${chipShapeToCode(chipTheme)},
     )''';
 }
 
 String textStyleToCode(TextStyle style) {
   return '''TextStyle(
-      color: ${style.color},
+      color: ${colorToCode(style.color)},
       fontSize: ${style.fontSize},
       fontWeight: ${style.fontWeight},
       fontStyle: ${style.fontStyle},
@@ -150,7 +159,7 @@ String textStyleToCode(TextStyle style) {
       background: ${style.background},
       shadows: ${style.shadows},
       decoration: ${style.decoration},
-      decorationColor: ${style.decorationColor},
+      decorationColor: ${colorToCode(style.decorationColor)},
       decorationStyle: ${style.decorationStyle},
     )''';
 }

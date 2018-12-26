@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutterial_components/src/theme_model.dart';
-import 'package:flutterial_components/src/utils/syntax_highlighter.dart';
+
+import '../theme_model.dart';
+import '../utils/syntax_highlighter.dart';
 
 class ThemeCodePreview extends StatelessWidget {
   final ThemeModel model;

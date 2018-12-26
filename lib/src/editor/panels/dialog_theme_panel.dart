@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutterial_components/src/utils/constants.dart';
 
 import '../../theme_model.dart';
+import '../../utils/constants.dart';
 import '../controls/shape_form_control.dart';
 
 final showIndicatorOptions = [

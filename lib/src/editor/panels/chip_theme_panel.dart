@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutterial_components/src/editor/controls/color_selector.dart';
-import 'package:flutterial_components/src/editor/controls/shape_form_control.dart';
-import 'package:flutterial_components/src/editor/controls/text_style_control.dart';
-import 'package:flutterial_components/src/editor/editor_utils.dart';
-import 'package:flutterial_components/src/theme_model.dart';
-import 'package:flutterial_components/src/utils/constants.dart';
 
+import '../../theme_model.dart';
+import '../../utils/constants.dart';
 import '../controls/brightness_control.dart';
+import '../controls/color_selector.dart';
+import '../controls/shape_form_control.dart';
+import '../controls/text_style_control.dart';
+import '../editor_utils.dart';
 
 class ChipThemePanel extends StatelessWidget {
   final ThemeModel model;

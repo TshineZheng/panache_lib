@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutterial_components/src/utils/theme_exporter.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import 'theme_service.dart';
+import 'utils/theme_exporter.dart';
 
 class ThemeModel extends Model {
   ThemeService _service;

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutterial_components/src/editor/action_bar.dart';
-import 'package:flutterial_components/src/editor/panels/dialog_theme_panel.dart';
 
 import '../theme_model.dart';
+import 'action_bar.dart';
 import 'panel_header.dart';
+import 'panels/dialog_theme_panel.dart';
 import 'panels/icon_theme_panel.dart';
 import 'panels/panels.dart';
 
