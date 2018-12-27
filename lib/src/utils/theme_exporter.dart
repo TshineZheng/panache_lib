@@ -113,10 +113,7 @@ String iconThemeToCode(IconThemeData iconTheme) {
 
 String colorToCode(Color color) {
   if (color == null) return 'null';
-  if (color is MaterialColor) {
-    return 'Color(${color.value})';
-  }
-  return 'Color(${color.value})';
+  return 'Color( 0x${color.value.toRadixString(16).padLeft(8, '0')} )';
 }
 
 /// TODO indicator Decoration

@@ -30,14 +30,14 @@ class TabBarThemePanel extends StatelessWidget {
               selectedColor,
               (color) =>
                   _updateTabBarTheme(tabTheme.copyWith(labelColor: color)),
-              padding: 0,
+              padding: 4,
             ),
             ColorSelector(
               'Unselected label color',
               tabTheme.unselectedLabelColor ?? selectedColor.withAlpha(0xB2),
               (color) => _updateTabBarTheme(
                   tabTheme.copyWith(unselectedLabelColor: color)),
-              padding: 0,
+              padding: 4,
             ),
           ]),
           /*

@@ -26,31 +26,22 @@ class AppPreviewContainerState extends State<AppPreviewContainer> {
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<ThemeModel>(builder: (context, child, model) {
-      return Expanded(
-        child: Material(
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                child: widget.showCode
-                    ? ThemeCodePreview(model)
-                    : Container(
-                        decoration: BoxDecoration(
-                            border: Border(
-                                left: BorderSide(
-                                    color: Colors.blueGrey.shade800)),
-                            color: Colors.blueGrey.shade700),
-                        child: Center(
-                          child: Container(
-                            width: widget.size.width,
-                            height: widget.size.height,
-                            child: ThemePreviewApp(theme: model.theme),
-                          ),
-                        ),
-                      ),
+      return Material(
+        child: widget.showCode
+            ? ThemeCodePreview(model)
+            : Container(
+                decoration: BoxDecoration(
+                    border: Border(
+                        left: BorderSide(color: Colors.blueGrey.shade800)),
+                    color: Colors.blueGrey.shade700),
+                child: Center(
+                  child: Container(
+                    width: widget.size.width,
+                    height: widget.size.height,
+                    child: ThemePreviewApp(theme: model.theme),
+                  ),
+                ),
               ),
-            ],
-          ),
-        ),
       );
     });
   }

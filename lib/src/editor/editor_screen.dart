@@ -47,7 +47,7 @@ class PanacheEditorScreenState extends State<PanacheEditorScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(child: ThemeEditor(model: model)),
-            AppPreviewContainer(kIPhone6, showCode: showCode),
+            Expanded(child: AppPreviewContainer(kIPhone6, showCode: showCode)),
           ],
         ),
       );

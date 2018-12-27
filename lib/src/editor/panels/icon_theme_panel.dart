@@ -147,8 +147,10 @@ class IconThemePanel extends StatelessWidget {
 
   void _updateIconTheme(IconThemeData iconTheme) =>
       model.updateTheme(model.theme.copyWith(iconTheme: iconTheme));
+
   void _updatePrimaryIconTheme(IconThemeData iconTheme) =>
       model.updateTheme(model.theme.copyWith(primaryIconTheme: iconTheme));
+
   void _updateAccentIconTheme(IconThemeData iconTheme) =>
       model.updateTheme(model.theme.copyWith(accentIconTheme: iconTheme));
 }
