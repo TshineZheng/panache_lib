@@ -7,7 +7,7 @@ class SwitcherControl extends StatelessWidget {
   final ValueChanged<bool> onChange;
 
   SwitcherControl({
-    this.label,
+    @required this.label,
     this.checkedLabel: '',
     this.checked,
     this.onChange,

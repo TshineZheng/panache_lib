@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:panache_lib/src/preview/subscreens/chips_preview.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../theme_model.dart';
 import 'code_preview.dart';
-import 'typography_preview.dart';
-import 'widgets_preview.dart';
+import 'subscreens/inputs_preview.dart';
+import 'subscreens/slider_preview.dart';
+import 'subscreens/typography_preview.dart';
+import 'subscreens/widgets_preview.dart';
 
 const kIPhone5 = const Size(640 / 2, 1136 / 2);
 const kIPhone6 = const Size(750 / 2, 1334 / 2);
@@ -66,8 +69,9 @@ class ThemePreviewApp extends StatefulWidget {
 class ThemePreviewAppState extends State<ThemePreviewApp>
     with SingleTickerProviderStateMixin {
   final _tabsItem = [
-    TabItem('Buttons', Icons.touch_app),
+    TabItem('Inputs', Icons.keyboard),
     TabItem('Controls', Icons.check_box),
+    TabItem('Buttons', Icons.touch_app),
     TabItem('Slider', Icons.tune),
     TabItem('Chips', Icons.dns),
     TabItem('Text', Icons.text_fields),
@@ -137,6 +141,7 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
               ),
             ),
             body: TabBarView(controller: tabBarController, children: [
+              InputsPreview(theme: widget.theme),
               ButtonPreview(theme: widget.theme),
               WidgetPreview1(theme: widget.theme),
               SliderPreview(theme: widget.theme),

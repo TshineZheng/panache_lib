@@ -14,7 +14,6 @@ class ThemeColorPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('ThemeColorPanel.build... ');
     return Container(
       color: Colors.grey.shade100,
       padding: kPadding,

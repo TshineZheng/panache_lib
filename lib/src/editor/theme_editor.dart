@@ -6,6 +6,7 @@ import 'action_bar.dart';
 import 'panel_header.dart';
 import 'panels/dialog_theme_panel.dart';
 import 'panels/icon_theme_panel.dart';
+import 'panels/input_decoration_theme_panel.dart';
 import 'panels/panels.dart';
 
 class ThemeEditor extends StatefulWidget {
@@ -28,6 +29,7 @@ class ThemeEditorState extends State<ThemeEditor> {
   bool chipThemePanelExpanded = false;
   bool dialogThemePanelExpanded = false;
   bool textPanelExpanded = false;
+  bool inputsPanelExpanded = true;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +44,14 @@ class ThemeEditorState extends State<ThemeEditor> {
           ExpansionPanelList(
             expansionCallback: _onExpansionPanelUpdate,
             children: [
+              _buildPanel(
+                widget.model,
+                'Inputs',
+                child: InputDecorationThemePanel(widget.model),
+                expanded: inputsPanelExpanded,
+                icon: Icons.keyboard,
+                color: primaryColor,
+              ),
               _buildPanel(
                 widget.model,
                 'Colors',
@@ -116,27 +126,30 @@ class ThemeEditorState extends State<ThemeEditor> {
   void _onExpansionPanelUpdate(int panelIndex, bool isExpanded) {
     switch (panelIndex) {
       case 0:
-        colorPanelExpanded = !isExpanded;
+        dialogThemePanelExpanded = !isExpanded;
         break;
       case 1:
-        tabBarThemePanelExpanded = !isExpanded;
+        colorPanelExpanded = !isExpanded;
         break;
       case 2:
-        buttonThemePanelExpanded = !isExpanded;
+        tabBarThemePanelExpanded = !isExpanded;
         break;
       case 3:
-        sliderThemePanelExpanded = !isExpanded;
+        buttonThemePanelExpanded = !isExpanded;
         break;
       case 4:
-        chipThemePanelExpanded = !isExpanded;
+        sliderThemePanelExpanded = !isExpanded;
         break;
       case 5:
-        textPanelExpanded = !isExpanded;
+        chipThemePanelExpanded = !isExpanded;
         break;
       case 6:
-        iconThemePanelExpanded = !isExpanded;
+        textPanelExpanded = !isExpanded;
         break;
       case 7:
+        iconThemePanelExpanded = !isExpanded;
+        break;
+      case 8:
         dialogThemePanelExpanded = !isExpanded;
         break;
     }

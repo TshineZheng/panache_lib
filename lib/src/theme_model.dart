@@ -34,6 +34,8 @@ class ThemeModel extends Model {
 
   void updateTheme(ThemeData updatedTheme) {
     _service.updateTheme(updatedTheme);
+    print(
+        'ThemeModel.updateTheme... ${updatedTheme.inputDecorationTheme.border}');
     notifyListeners();
   }
 
