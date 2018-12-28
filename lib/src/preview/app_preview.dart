@@ -69,9 +69,9 @@ class ThemePreviewApp extends StatefulWidget {
 class ThemePreviewAppState extends State<ThemePreviewApp>
     with SingleTickerProviderStateMixin {
   final _tabsItem = [
-    TabItem('Inputs', Icons.keyboard),
     TabItem('Controls', Icons.check_box),
     TabItem('Buttons', Icons.touch_app),
+    TabItem('Inputs', Icons.keyboard),
     TabItem('Slider', Icons.tune),
     TabItem('Chips', Icons.dns),
     TabItem('Text', Icons.text_fields),
@@ -141,9 +141,9 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
               ),
             ),
             body: TabBarView(controller: tabBarController, children: [
-              InputsPreview(theme: widget.theme),
-              ButtonPreview(theme: widget.theme),
               WidgetPreview1(theme: widget.theme),
+              ButtonPreview(theme: widget.theme),
+              InputsPreview(theme: widget.theme),
               SliderPreview(theme: widget.theme),
               ChipsPreview(theme: widget.theme),
               TypographyPreview(theme: widget.theme)

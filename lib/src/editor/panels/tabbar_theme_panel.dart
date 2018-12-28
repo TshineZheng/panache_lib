@@ -18,7 +18,6 @@ class TabBarThemePanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('TabBarThemePanel.build... ');
     return Container(
       padding: kPadding,
       color: Colors.grey.shade100,

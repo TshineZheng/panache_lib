@@ -88,7 +88,6 @@ class InputBorderControl extends StatelessWidget {
   }
 
   InputBorders _getShapeType(InputBorder border) {
-    print('InputBorderControl._getShapeType... $border');
     if (border == null) return borders[0];
     if (border is UnderlineInputBorder) return borders[0];
     if (border is OutlineInputBorder) return borders[1];

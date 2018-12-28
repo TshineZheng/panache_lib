@@ -16,7 +16,6 @@ class ButtonThemePanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('ButtonThemePanel.build... ');
     final appTextTheme = Theme.of(context).textTheme;
     final labelStyle = appTextTheme.subtitle;
     final dropdownTextStyle = appTextTheme.body2;

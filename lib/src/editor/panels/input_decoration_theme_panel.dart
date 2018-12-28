@@ -22,7 +22,6 @@ class InputDecorationThemePanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('InputDecorationThemePanel.build... ${inputTheme.hintStyle}');
     final baseStyle =
         model.theme.textTheme.caption.copyWith(color: model.theme.hintColor);
     final helperStyle = inputTheme.helperStyle ?? baseStyle;

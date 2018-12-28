@@ -66,9 +66,10 @@ class ThemeColorPanel extends StatelessWidget {
               padding: 2,
             ),
             ColorSelector(
-              'Divider color',
-              theme.dividerColor,
-              (c) => themeModel.updateColor(property: "dividerColor", color: c),
+              'Toggleable Active Color',
+              theme.toggleableActiveColor,
+              (c) => themeModel.updateColor(
+                  property: "toggleableActiveColor", color: c),
               padding: 2,
             ),
           ]),
@@ -106,6 +107,20 @@ class ThemeColorPanel extends StatelessWidget {
           ]),
           getFieldsRow([
             ColorSelector(
+              'Error color',
+              theme.errorColor,
+              (c) => themeModel.updateColor(property: "errorColor", color: c),
+              padding: 2,
+            ),
+            ColorSelector(
+              'Hint color',
+              theme.hintColor,
+              (c) => themeModel.updateColor(property: "hintColor", color: c),
+              padding: 2,
+            ),
+          ]),
+          getFieldsRow([
+            ColorSelector(
               'Highlight color',
               theme.highlightColor,
               (c) =>
@@ -121,31 +136,32 @@ class ThemeColorPanel extends StatelessWidget {
           ]),
           getFieldsRow([
             ColorSelector(
+              'Indicator color',
+              theme.indicatorColor,
+              (c) =>
+                  themeModel.updateColor(property: "indicatorColor", color: c),
+              padding: 2,
+            ),
+            ColorSelector(
               'Dialog background color',
               theme.dialogBackgroundColor,
               (c) => themeModel.updateColor(
                   property: "dialogBackgroundColor", color: c),
               padding: 2,
             ),
-            ColorSelector(
-              'Hint color',
-              theme.hintColor,
-              (c) => themeModel.updateColor(property: "hintColor", color: c),
-              padding: 2,
-            ),
           ]),
           getFieldsRow([
             ColorSelector(
-              'Error color',
-              theme.errorColor,
-              (c) => themeModel.updateColor(property: "errorColor", color: c),
+              'Divider color',
+              theme.dividerColor,
+              (c) => themeModel.updateColor(property: "dividerColor", color: c),
               padding: 2,
             ),
             ColorSelector(
-              'Indicator color',
-              theme.indicatorColor,
-              (c) =>
-                  themeModel.updateColor(property: "indicatorColor", color: c),
+              'Secondary header widget color',
+              theme.secondaryHeaderColor,
+              (c) => themeModel.updateColor(
+                  property: "secondaryHeaderColor", color: c),
               padding: 2,
             ),
           ]),
@@ -167,26 +183,10 @@ class ThemeColorPanel extends StatelessWidget {
           ]),
           getFieldsRow([
             ColorSelector(
-              'Secondary header widget color',
-              theme.secondaryHeaderColor,
-              (c) => themeModel.updateColor(
-                  property: "secondaryHeaderColor", color: c),
-              padding: 2,
-            ),
-            ColorSelector(
               'Text selection color',
               theme.textSelectionColor,
               (c) => themeModel.updateColor(
                   property: "textSelectionColor", color: c),
-              padding: 2,
-            ),
-          ]),
-          getFieldsRow([
-            ColorSelector(
-              'Toggleable Active Color',
-              theme.toggleableActiveColor,
-              (c) => themeModel.updateColor(
-                  property: "toggleableActiveColor", color: c),
               padding: 2,
             ),
             ColorSelector(

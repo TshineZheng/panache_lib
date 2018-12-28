@@ -165,15 +165,6 @@ class WidgetPreview1 extends StatelessWidget {
                         ),
                       ],
                     ),
-                    IgnorePointer(
-                      child: TextField(
-                        decoration: const InputDecoration(
-                            labelText: "Label text",
-                            hintText: "Hint text",
-                            errorText: "Error text example"),
-                        controller: TextEditingController(text: 'a textfield'),
-                      ),
-                    )
                   ],
                 ),
               ),
