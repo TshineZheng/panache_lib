@@ -29,7 +29,7 @@ class ThemeEditorState extends State<ThemeEditor> {
   bool chipThemePanelExpanded = false;
   bool dialogThemePanelExpanded = false;
   bool textPanelExpanded = false;
-  bool inputsPanelExpanded = true;
+  bool inputsPanelExpanded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -46,26 +46,10 @@ class ThemeEditorState extends State<ThemeEditor> {
             children: [
               _buildPanel(
                 widget.model,
-                'Inputs',
-                child: InputDecorationThemePanel(widget.model),
-                expanded: inputsPanelExpanded,
-                icon: Icons.keyboard,
-                color: primaryColor,
-              ),
-              _buildPanel(
-                widget.model,
                 'Colors',
                 child: ThemeColorPanel(widget.model),
                 expanded: colorPanelExpanded,
                 icon: Icons.color_lens,
-                color: primaryColor,
-              ),
-              _buildPanel(
-                widget.model,
-                'TabBar Theme',
-                child: TabBarThemePanel(widget.model),
-                expanded: tabBarThemePanelExpanded,
-                icon: Icons.tab,
                 color: primaryColor,
               ),
               _buildPanel(
@@ -78,6 +62,22 @@ class ThemeEditorState extends State<ThemeEditor> {
               ),
               _buildPanel(
                 widget.model,
+                'Inputs',
+                child: InputDecorationThemePanel(widget.model),
+                expanded: inputsPanelExpanded,
+                icon: Icons.keyboard,
+                color: primaryColor,
+              ),
+              _buildPanel(
+                widget.model,
+                'TabBar Theme',
+                child: TabBarThemePanel(widget.model),
+                expanded: tabBarThemePanelExpanded,
+                icon: Icons.tab,
+                color: primaryColor,
+              ),
+              _buildPanel(
+                widget.model,
                 'Slider Theme',
                 child: SliderThemePanel(widget.model),
                 expanded: sliderThemePanelExpanded,
@@ -86,18 +86,18 @@ class ThemeEditorState extends State<ThemeEditor> {
               ),
               _buildPanel(
                 widget.model,
-                'Chips Theme',
-                child: ChipThemePanel(widget.model),
-                expanded: chipThemePanelExpanded,
-                icon: Icons.dns,
-                color: primaryColor,
-              ),
-              _buildPanel(
-                widget.model,
                 'Text Theme',
                 child: TypographyThemePanel(),
                 expanded: textPanelExpanded,
                 icon: Icons.font_download,
+                color: primaryColor,
+              ),
+              _buildPanel(
+                widget.model,
+                'Chips Theme',
+                child: ChipThemePanel(widget.model),
+                expanded: chipThemePanelExpanded,
+                icon: Icons.dns,
                 color: primaryColor,
               ),
               _buildPanel(
@@ -126,25 +126,25 @@ class ThemeEditorState extends State<ThemeEditor> {
   void _onExpansionPanelUpdate(int panelIndex, bool isExpanded) {
     switch (panelIndex) {
       case 0:
-        dialogThemePanelExpanded = !isExpanded;
-        break;
-      case 1:
         colorPanelExpanded = !isExpanded;
         break;
+      case 1:
+        buttonThemePanelExpanded = !isExpanded;
+        break;
       case 2:
-        tabBarThemePanelExpanded = !isExpanded;
+        inputsPanelExpanded = !isExpanded;
         break;
       case 3:
-        buttonThemePanelExpanded = !isExpanded;
+        tabBarThemePanelExpanded = !isExpanded;
         break;
       case 4:
         sliderThemePanelExpanded = !isExpanded;
         break;
       case 5:
-        chipThemePanelExpanded = !isExpanded;
+        textPanelExpanded = !isExpanded;
         break;
       case 6:
-        textPanelExpanded = !isExpanded;
+        chipThemePanelExpanded = !isExpanded;
         break;
       case 7:
         iconThemePanelExpanded = !isExpanded;
