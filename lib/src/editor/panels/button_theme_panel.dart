@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:panache_lib/src/editor/controls/color_selector.dart';
+import 'package:panache_lib/src/editor/controls/switcher_control.dart';
 
 import '../../theme_model.dart';
 import '../../utils/constants.dart';
@@ -25,8 +27,43 @@ class ButtonThemePanel extends StatelessWidget {
       color: Colors.grey.shade200,
       child: Column(
         children: <Widget>[
+          getFieldsRow([
+            ColorSelector(
+              'Raised button fill color',
+              buttonTheme.getFillColor(enabledRaisedButton),
+              /* TODO update theme.buttonColor ? */
+              (color) => _onButtonThemeChanged(
+                  buttonTheme.copyWith(buttonColor: color)),
+              padding: 2,
+            ),
+            ColorSelector(
+              'Raised button disabled color',
+              buttonTheme.getDisabledFillColor(disabledRaisedButton),
+              (color) => _onButtonThemeChanged(
+                  buttonTheme.copyWith(disabledColor: color)),
+              padding: 2,
+            ),
+          ]),
+          getFieldsRow([
+            /* longpress / pressed color */
+            ColorSelector(
+              'Highlight color',
+              buttonTheme.getHighlightColor(enabledRaisedButton),
+              (color) => _onButtonThemeChanged(
+                  buttonTheme.copyWith(highlightColor: color)),
+              padding: 2,
+            ),
+            /* tap ink color */
+            ColorSelector(
+              'Splash color',
+              buttonTheme.getSplashColor(enabledRaisedButton),
+              (color) => _onButtonThemeChanged(
+                  buttonTheme.copyWith(splashColor: color)),
+              padding: 2,
+            ),
+          ]),
           Padding(
-            padding: const EdgeInsets.only(bottom: 12.0),
+            padding: const EdgeInsets.symmetric(vertical: 10.0),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -42,24 +79,25 @@ class ButtonThemePanel extends StatelessWidget {
                 ]),
           ),
           Padding(
-            padding: const EdgeInsets.only(bottom: 12.0),
+            padding: const EdgeInsets.only(bottom: 4.0),
             child: Row(
               children: <Widget>[
-                SliderPropertyControl(
-                  buttonTheme.padding.horizontal,
-                  (padding) => _onButtonThemeChanged(buttonTheme.copyWith(
-                      padding: EdgeInsets.symmetric(horizontal: padding))),
-                  label: 'Horizontal padding',
-                  max: 64,
+                Expanded(
+                  child: SliderPropertyControl(
+                    buttonTheme.padding.horizontal,
+                    (padding) => _onButtonThemeChanged(buttonTheme.copyWith(
+                        padding: EdgeInsets.symmetric(horizontal: padding))),
+                    label: 'Horizontal padding',
+                    max: 64,
+                    vertical: true,
+                  ),
                 ),
-                Text(
-                  'Align dropdown',
-                  style: labelStyle,
+                SwitcherControl(
+                  label: 'Align dropdown',
+                  checked: buttonTheme.alignedDropdown,
+                  onChange: (aligned) => _onButtonThemeChanged(
+                      buttonTheme.copyWith(alignedDropdown: aligned)),
                 ),
-                Switch.adaptive(
-                    value: buttonTheme.alignedDropdown,
-                    onChanged: (aligned) => _onButtonThemeChanged(
-                        buttonTheme.copyWith(alignedDropdown: aligned)))
               ],
             ),
           ),
@@ -78,47 +116,58 @@ class ButtonThemePanel extends StatelessWidget {
     final minWidth = theme.minWidth;
     final height = theme.height;
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 2.0),
+      padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 2.0),
       child: getFieldsRow([
         SliderPropertyControl(
-            minWidth,
-            (width) =>
-                _onButtonThemeChanged(buttonTheme.copyWith(minWidth: width)),
-            label: 'Min width',
-            min: 48,
-            max: 256),
+          minWidth,
+          (width) =>
+              _onButtonThemeChanged(buttonTheme.copyWith(minWidth: width)),
+          label: 'Min width',
+          min: 48,
+          max: 256,
+          vertical: true,
+        ),
         SliderPropertyControl(
             height,
             (height) =>
                 _onButtonThemeChanged(buttonTheme.copyWith(height: height)),
             label: 'Height',
             min: 24,
-            max: 128),
+            max: 128,
+            maxWidth: 200,
+            vertical: true),
       ]),
     );
   }
 
   Widget _buildButtonTextThemeSelector(ButtonTextTheme buttonTextTheme,
       {TextStyle labelStyle, TextStyle dropdownTextStyle}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(right: 16.0),
-          child: Text(
-            'Text Theme',
-            style: labelStyle,
+    return Container(
+      padding: const EdgeInsets.all(4.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: Colors.white,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: Text(
+              'Text theme',
+              style: labelStyle,
+            ),
           ),
-        ),
-        DropdownButton(
-            style: dropdownTextStyle,
-            value: buttonTextTheme,
-            items: ButtonTextTheme.values
-                .map(_buildButtonTextThemeSelectorItem)
-                .toList(growable: false),
-            onChanged: (newButtonTextTheme) => _onButtonThemeChanged(
-                buttonTheme.copyWith(textTheme: newButtonTextTheme))),
-      ],
+          DropdownButton(
+              style: dropdownTextStyle,
+              value: buttonTextTheme,
+              items: ButtonTextTheme.values
+                  .map(_buildButtonTextThemeSelectorItem)
+                  .toList(growable: false),
+              onChanged: (newButtonTextTheme) => _onButtonThemeChanged(
+                  buttonTheme.copyWith(textTheme: newButtonTextTheme))),
+        ],
+      ),
     );
   }
 

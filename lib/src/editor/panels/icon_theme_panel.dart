@@ -34,13 +34,13 @@ class IconThemePanel extends StatelessWidget {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: Row(children: [
+            child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Expanded(
                 child: ColorSelector(
                   'Color',
                   iconTheme.color,
                   (color) => _updateIconTheme(iconTheme.copyWith(color: color)),
-                  padding: 0,
+                  padding: 4,
                 ),
               ),
               SliderPropertyControl(
@@ -49,6 +49,7 @@ class IconThemePanel extends StatelessWidget {
                 label: 'Size',
                 min: 8,
                 max: 64,
+                maxWidth: 140.0,
                 vertical: true,
               ),
               SliderPropertyControl(
@@ -58,7 +59,7 @@ class IconThemePanel extends StatelessWidget {
                 label: 'Opacity',
                 min: 0.0,
                 max: 1.0,
-                maxWidth: 100.0,
+                maxWidth: 140.0,
                 vertical: true,
                 showDivisions: false,
               ),

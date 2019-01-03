@@ -1,11 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:panache_lib/src/theme_model.dart';
 
 class LaunchScreen extends StatefulWidget {
   final Directory dir;
+  final ThemeModel model;
 
-  const LaunchScreen({Key key, this.dir}) : super(key: key);
+  const LaunchScreen({Key key, this.dir, this.model}) : super(key: key);
 
   @override
   LaunchScreenState createState() {
@@ -23,11 +25,19 @@ class LaunchScreenState extends State<LaunchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-          child: Container(
-              child: RaisedButton(
-                  child: Text('New theme'), onPressed: () => _newTheme()))),
+          child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          RaisedButton(child: Text('New theme'), onPressed: _openEditor),
+          RaisedButton(child: Text('Load theme'), onPressed: _loadTheme),
+        ],
+      )),
     );
   }
 
-  _newTheme() => Navigator.of(context).pushNamed('/editor');
+  _openEditor() => Navigator.of(context).pushNamed('/editor');
+  Future _loadTheme() async {
+    await widget.model.loadTheme();
+    return _openEditor();
+  }
 }

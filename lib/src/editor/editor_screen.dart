@@ -37,10 +37,17 @@ class PanacheEditorScreenState extends State<PanacheEditorScreen> {
               onPressed: () => setState(() => showCode = true),
             ),
             FlatButton.icon(
-                onPressed: model.exportTheme,
-                textColor: Colors.yellow,
-                icon: Icon(Icons.save),
-                label: Text('Export')),
+              onPressed: model.saveTheme,
+              textColor: Colors.yellow,
+              icon: Icon(Icons.save),
+              label: Text('Save'),
+            ),
+            FlatButton.icon(
+              onPressed: model.exportTheme,
+              textColor: Colors.yellow,
+              icon: Icon(Icons.save),
+              label: Text('Export'),
+            ),
           ],
         ),
         body: Row(

@@ -12,6 +12,10 @@ class ButtonPreview extends StatelessWidget {
       padding: EdgeInsets.all(8.0),
       child: ListView(
         children: [
+          Text(
+            'RaisedButton',
+            style: theme.textTheme.subhead,
+          ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 16.0),
             child: Wrap(
@@ -60,46 +64,56 @@ class ButtonPreview extends StatelessWidget {
           ),
           Divider(),
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              IconButton(
-                icon: Icon(
-                  Icons.save,
-                  color: theme?.textTheme?.button?.color,
+              Expanded(
+                child: Text(
+                  'IconButton',
+                  style: theme.textTheme.subhead,
                 ),
+              ),
+              IconButton(
+                icon: Icon(Icons.save),
                 onPressed: () {},
               ),
-              IconButton(
-                icon: Icon(
-                  Icons.save,
-                  color: theme?.textTheme?.button?.color,
-                ),
-                onPressed: null,
+              Text('Enabled', style: theme.textTheme.caption),
+              IconButton(icon: Icon(Icons.style), onPressed: null),
+              Text(
+                'Disabled',
+                style: theme.textTheme.caption,
               ),
+            ],
+          ),
+          Divider(),
+          Row(
+            children: <Widget>[
               Expanded(
-                child: SizedBox(),
+                child: Text('Dropdown'),
               ),
               DropdownButton(
                   items: ['Paris', 'Moscou', 'Amsterdam']
                       .map((item) => DropdownMenuItem(child: Text(item)))
                       .toList(growable: false),
-                  onChanged: (value) => print('dropdown value $value'))
+                  onChanged: (value) => print('dropdown value $value')),
             ],
           ),
           Divider(),
+          Text('FlatButton', style: theme.textTheme.subhead),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 16.0),
             child: Wrap(
               children: [
-                FlatButton(onPressed: () {}, child: Text("A button")),
-                FlatButton(onPressed: null, child: Text('FlatButton')),
+                FlatButton(onPressed: () {}, child: Text("Enabled")),
+                FlatButton(onPressed: null, child: Text('Disabled')),
                 FlatButton.icon(
-                  icon: Icon(
-                    Icons.restore_from_trash,
-                    color: theme?.textTheme?.button?.color,
-                  ),
+                  icon: Icon(Icons.restore_from_trash),
                   onPressed: () {},
                   label: Text('FlatButton.icon'),
+                ),
+                FlatButton.icon(
+                  icon: Icon(Icons.restore_from_trash),
+                  onPressed: null,
+                  label: Text('Disabled.icon'),
                 ),
               ],
             ),

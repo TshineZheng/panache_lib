@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../utils/color_utils.dart';
-import '../../utils/constants.dart';
 import '../color_swatch.dart';
 
 class ColorSelector extends StatelessWidget {
@@ -24,6 +23,7 @@ class ColorSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return Padding(
       padding: EdgeInsets.all(padding),
       child: Container(
@@ -44,7 +44,8 @@ class ColorSelector extends StatelessWidget {
                     children: [
                       TextSpan(
                           text: colorLabel,
-                          style: kDarkTextStyle.copyWith(height: 2))
+                          style: textTheme.overline.copyWith(height: 1.5)
+                          /*kDarkTextStyle.copyWith(height: 2)*/)
                     ]),
               ),
             ),

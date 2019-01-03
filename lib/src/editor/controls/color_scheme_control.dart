@@ -66,17 +66,19 @@ class ColorSchemeControl extends StatelessWidget {
   }
 
   Iterable<Widget> _buildColorSchemeControls() {
+    final _scheme = scheme ?? ColorScheme.light();
+
     return colors.map((property) {
       return ColorSelector(
         property,
-        _getSchemeColor(property),
+        _getSchemeColor(property, _scheme),
         (color) => _onColorChanged(property, color),
         padding: 2,
       );
     }).toList(growable: false);
   }
 
-  Color _getSchemeColor(String property) {
+  Color _getSchemeColor(String property, ColorScheme scheme) {
     final schemeColor = SchemeColors.values
         .firstWhere((sc) => '$sc'.split('.').last == property);
     switch (schemeColor) {

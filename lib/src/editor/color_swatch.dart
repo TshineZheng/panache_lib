@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../utils/color_utils.dart';
 import '../utils/constants.dart';
+import 'controls/color_menu.dart';
 
 class ColorSwatchControl extends StatelessWidget {
   final Color color;

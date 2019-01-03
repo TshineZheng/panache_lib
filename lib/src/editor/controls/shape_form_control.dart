@@ -32,30 +32,33 @@ class ShapeFormControl extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final _labelStyle = labelStyle ?? textTheme.subtitle;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(right: 16.0),
-          child: Text(
-            'Shape',
-            style: _labelStyle,
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: Colors.white,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(right: 16.0),
+            child: Text(
+              'Shape',
+              style: _labelStyle,
+            ),
           ),
-        ),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 12.0),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            color: Colors.white,
-          ),
-          child: DropdownButton(
-              style: textTheme.body2,
-              value: _getShapeType(shape),
-              items: shapes.map(_getShapeMenuItem).toList(),
-              onChanged: (type) => onShapeChanged(_buildShape(type))),
-        )
-      ],
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 12.0),
+            child: DropdownButton(
+                style: textTheme.body2,
+                value: _getShapeType(shape),
+                items: shapes.map(_getShapeMenuItem).toList(),
+                onChanged: (type) => onShapeChanged(_buildShape(type))),
+          )
+        ],
+      ),
     );
   }
 

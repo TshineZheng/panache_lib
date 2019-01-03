@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../editor/show_custom_menu.dart';
 import 'constants.dart';
 
 const materialColorsNames = [
@@ -26,6 +25,18 @@ const materialColorsNames = [
   "Black",
   "Grey"
 ];
+
+Color getMaterialColor(String name) => namedColors()
+    .firstWhere((c) => c.name == name,
+        orElse: () =>
+            NamedColor(name: name, color: Color(int.parse(name, radix: 16))))
+    .color;
+
+String getMaterialName(Color color) => namedColors()
+    .firstWhere((c) => c.color.value == color.value,
+        orElse: () =>
+            NamedColor(name: color.value.toRadixString(16), color: color))
+    .name;
 
 bool isMaterialPrimary(Color color) {
   return namedColors().where((c) => c.color.value == color.value).isNotEmpty;
@@ -85,67 +96,3 @@ getMaterialSwatches(ValueChanged<Color> onSelection) {
       )
       .toList();
 }
-
-List<PopupMenuItem<Color>> getColorMenuItems() {
-  final colors = Colors.primaries.map((c) => c).toList();
-  colors.addAll([
-    Colors.white,
-    Colors.black,
-    Colors.grey,
-  ]);
-
-  return colors
-      .map(
-        (c) => PopupMenuItem<Color>(
-              value: c,
-              child: Container(
-                width: kSwatchSize,
-                height: kSwatchSize,
-                color: c,
-              ),
-            ),
-      )
-      .toList();
-}
-
-void openColorMenu(BuildContext context, {ValueChanged<Color> onSelection}) {
-  final RenderBox renderBox = context.findRenderObject();
-  final Offset topLeft = renderBox?.localToGlobal(Offset.zero);
-
-  showGridMenu<Color>(
-    context: context,
-    elevation: 2.0,
-    items: getColorMenuTileItems(),
-    position: RelativeRect.fromLTRB(
-      topLeft.dx,
-      topLeft.dy,
-      0.0,
-      0.0,
-    ),
-  ).then<Null>(
-    (Color newValue) {
-      if (newValue == null) return null;
-      if (onSelection != null) onSelection(newValue);
-    },
-  );
-}
-
-List<PopupGridMenuItem<Color>> getColorMenuTileItems() => namedColors()
-    .map(
-      (c) => PopupGridMenuItem<Color>(
-            value: c.color,
-            child: GridTile(
-              footer: Padding(
-                padding: EdgeInsets.all(4.0),
-                child: Text(c.name,
-                    style: isDark(c.color) ? kDarkTextStyle : kLightTextStyle),
-              ),
-              child: Container(
-                width: kSwatchSize,
-                height: kSwatchSize,
-                color: c.color,
-              ),
-            ),
-          ),
-    )
-    .toList();

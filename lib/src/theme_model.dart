@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:scoped_model/scoped_model.dart';
 
+import 'converters/theme_converter.dart';
 import 'theme_service.dart';
-import 'utils/theme_exporter.dart';
 
 class ThemeModel extends Model {
   ThemeService _service;
@@ -47,5 +47,15 @@ class ThemeModel extends Model {
     args[Symbol(property)] = color;
     final updatedTheme = Function.apply(theme.copyWith, null, args);
     updateTheme(updatedTheme);
+  }
+
+  void saveTheme() {
+    _service.saveTheme('new_theme');
+  }
+
+  Future loadTheme() async {
+    final result = await _service.loadTheme('new_theme.json');
+    notifyListeners();
+    return result;
   }
 }
