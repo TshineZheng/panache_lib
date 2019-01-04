@@ -114,7 +114,7 @@ TextStyle textStyleFromMap(Map<String, dynamic> data) {
   return TextStyle(
     color: Color(data['color']),
     fontSize: data['fontSize'],
-    fontWeight: FontWeight.values[data['fontWeight']],
+    fontWeight: FontWeight.values[max(0, data['fontWeight'])],
     fontStyle: FontStyle.values[max(data['fontStyle'], 0)],
   );
 }

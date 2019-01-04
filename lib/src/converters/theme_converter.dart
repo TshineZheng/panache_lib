@@ -107,9 +107,9 @@ Map<String, dynamic> themeToMap(ThemeData theme) {
     'primaryIconTheme': iconThemeToMap(theme.primaryIconTheme),
     'accentIconTheme': iconThemeToMap(theme.accentIconTheme),
     'sliderTheme': sliderThemeToMap(theme.sliderTheme),
+    'tabBarTheme': tabBarThemeToMap(theme.tabBarTheme),
     /* FIXME
-      'tabBarTheme': '${tabBarThemeToCode(theme.tabBarTheme)}',
-      'chipTheme': '${chipThemeToCode(theme.chipTheme)}',
+    'chipTheme': '${chipThemeToMap(theme.chipTheme)}',
       'dialogTheme': '${dialogThemeToCode(theme.dialogTheme)}',
       'primaryTextTheme': '${textThemeToCode(theme.primaryTextTheme)}',
       'accentTextTheme': '${textThemeToCode(theme.accentTextTheme)}',
@@ -156,9 +156,9 @@ ThemeData themeFromJson(String jsonTheme) {
       iconTheme: iconThemeFromMap(themeMap['iconTheme']),
       primaryIconTheme: iconThemeFromMap(themeMap['primaryIconTheme']),
       accentIconTheme: iconThemeFromMap(themeMap['accentIconTheme']),
+      sliderTheme: sliderThemeFromMap(themeMap['sliderTheme']),
+      tabBarTheme: tabBarThemeFromMap(themeMap['tabBarTheme']),
       /*FIXME*/
-      sliderTheme: defaultLightTheme.sliderTheme,
-      tabBarTheme: defaultLightTheme.tabBarTheme,
       chipTheme: defaultLightTheme.chipTheme,
       dialogTheme: defaultLightTheme.dialogTheme,
       primaryTextTheme: defaultLightTheme.primaryTextTheme,
@@ -252,6 +252,24 @@ String tabBarThemeToCode(TabBarTheme tabBarTheme) {
       labelColor: ${colorToCode(tabBarTheme.labelColor)},
       unselectedLabelColor: ${colorToCode(tabBarTheme.unselectedLabelColor)},
     )''';
+}
+
+/// TODO indicator Decoration
+Map<String, dynamic> tabBarThemeToMap(TabBarTheme tabBarTheme) {
+  return {
+    'indicatorSize':
+        TabBarIndicatorSize.values.indexOf(tabBarTheme.indicatorSize),
+    'labelColor': tabBarTheme.labelColor.value,
+    'unselectedLabelColor': tabBarTheme.unselectedLabelColor.value,
+  };
+}
+
+TabBarTheme tabBarThemeFromMap(Map<String, dynamic> data) {
+  return TabBarTheme(
+    indicatorSize: TabBarIndicatorSize.values[data['indicatorSize']],
+    labelColor: Color(data['labelColor']),
+    unselectedLabelColor: Color(data['unselectedLabelColor']),
+  );
 }
 
 String chipThemeToCode(ChipThemeData chipTheme) {
