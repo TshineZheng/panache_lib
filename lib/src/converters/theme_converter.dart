@@ -103,12 +103,11 @@ Map<String, dynamic> themeToMap(ThemeData theme) {
     'errorColor': theme.errorColor.value,
     'buttonTheme': buttonThemeToMap(theme.buttonTheme),
     'textTheme': textThemeToMap(theme.textTheme),
-    'iconTheme': '${iconThemeToMap(theme.iconTheme)}',
-    'primaryIconTheme': '${iconThemeToMap(theme.primaryIconTheme)}',
-    'accentIconTheme': '${iconThemeToMap(theme.accentIconTheme)}',
-
+    'iconTheme': iconThemeToMap(theme.iconTheme),
+    'primaryIconTheme': iconThemeToMap(theme.primaryIconTheme),
+    'accentIconTheme': iconThemeToMap(theme.accentIconTheme),
+    'sliderTheme': sliderThemeToMap(theme.sliderTheme),
     /* FIXME
-      'sliderTheme': '${sliderThemeToCode(theme.sliderTheme)}',
       'tabBarTheme': '${tabBarThemeToCode(theme.tabBarTheme)}',
       'chipTheme': '${chipThemeToCode(theme.chipTheme)}',
       'dialogTheme': '${dialogThemeToCode(theme.dialogTheme)}',
@@ -189,6 +188,52 @@ String sliderThemeToCode(SliderThemeData sliderTheme) {
       showValueIndicator: ${sliderTheme.showValueIndicator},
       valueIndicatorTextStyle: ${textStyleToCode(sliderTheme.valueIndicatorTextStyle)},
     )''';
+}
+
+Map<String, dynamic> sliderThemeToMap(SliderThemeData sliderTheme) {
+  return <String, dynamic>{
+    'activeTrackColor': sliderTheme.activeTrackColor.value,
+    'inactiveTrackColor': sliderTheme.inactiveTrackColor.value,
+    'disabledActiveTrackColor': sliderTheme.disabledActiveTrackColor.value,
+    'disabledInactiveTrackColor': sliderTheme.disabledInactiveTrackColor.value,
+    'activeTickMarkColor': sliderTheme.activeTickMarkColor.value,
+    'inactiveTickMarkColor': sliderTheme.inactiveTickMarkColor.value,
+    'disabledActiveTickMarkColor':
+        sliderTheme.disabledActiveTickMarkColor.value,
+    'disabledInactiveTickMarkColor':
+        sliderTheme.disabledInactiveTickMarkColor.value,
+    'thumbColor': sliderTheme.thumbColor.value,
+    'disabledThumbColor': sliderTheme.disabledThumbColor.value,
+    'thumbShape': {'type': 'RoundSliderThumbShape'},
+    'overlayColor': sliderTheme.overlayColor.value,
+    'valueIndicatorColor': sliderTheme.valueIndicatorColor.value,
+    'valueIndicatorShape': {'type': 'PaddleSliderValueIndicatorShape'},
+    'showValueIndicator':
+        ShowValueIndicator.values.indexOf(sliderTheme.showValueIndicator),
+    'valueIndicatorTextStyle':
+        textStyleToMap(sliderTheme.valueIndicatorTextStyle),
+  };
+}
+
+SliderThemeData sliderThemeFromMap(Map<String, dynamic> data) {
+  return SliderThemeData(
+    activeTrackColor: Color(data['activeTrackColor']),
+    inactiveTrackColor: Color(data['inactiveTrackColor']),
+    disabledActiveTrackColor: Color(data['disabledActiveTrackColor']),
+    disabledInactiveTrackColor: Color(data['disabledInactiveTrackColor']),
+    activeTickMarkColor: Color(data['activeTickMarkColor']),
+    inactiveTickMarkColor: Color(data['inactiveTickMarkColor']),
+    disabledActiveTickMarkColor: Color(data['disabledActiveTickMarkColor']),
+    disabledInactiveTickMarkColor: Color(data['disabledInactiveTickMarkColor']),
+    thumbColor: Color(data['thumbColor']),
+    disabledThumbColor: Color(data['disabledThumbColor']),
+    thumbShape: RoundSliderThumbShape(),
+    overlayColor: Color(data['overlayColor']),
+    valueIndicatorColor: Color(data['valueIndicatorColor']),
+    valueIndicatorShape: PaddleSliderValueIndicatorShape(),
+    showValueIndicator: ShowValueIndicator.values[data['showValueIndicator']],
+    valueIndicatorTextStyle: textStyleFromMap(data['valueIndicatorTextStyle']),
+  );
 }
 
 String instanceToCode(dynamic instance) =>

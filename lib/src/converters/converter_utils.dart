@@ -106,10 +106,10 @@ Map<String, dynamic> borderSideToMap(BorderSide side) {
 
 BorderRadius borderRadiusFromMap(Map<String, dynamic> data) {
   return BorderRadius.only(
-    topLeft: data['topLeft'],
-    topRight: data['topRight'],
-    bottomLeft: data['bottomLeft'],
-    bottomRight: data['bottomRight'],
+    topLeft: Radius.circular(data['topLeft']['x']),
+    topRight: Radius.circular(data['topRight']['x']),
+    bottomLeft: Radius.circular(data['bottomLeft']['x']),
+    bottomRight: Radius.circular(data['bottomRight']['x']),
   );
 }
 
