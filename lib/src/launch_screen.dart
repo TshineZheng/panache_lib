@@ -37,7 +37,7 @@ class LaunchScreenState extends State<LaunchScreen> {
 
   _openEditor() => Navigator.of(context).pushNamed('/editor');
   Future _loadTheme() async {
-    await widget.model.loadTheme();
+    await widget.model.loadTheme('new_theme');
     return _openEditor();
   }
 }

@@ -14,7 +14,7 @@ class BrightnessSelector extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final labelStyle = textTheme.subtitle;
     return Row(
-      mainAxisSize: MainAxisSize.min,
+      /*mainAxisSize: MainAxisSize.min,*/
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Padding(

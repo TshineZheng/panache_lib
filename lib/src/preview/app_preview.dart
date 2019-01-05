@@ -1,4 +1,8 @@
+import 'dart:typed_data';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:panache_lib/src/preview/subscreens/chips_preview.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -41,7 +45,9 @@ class AppPreviewContainerState extends State<AppPreviewContainer> {
                   child: Container(
                     width: widget.size.width,
                     height: widget.size.height,
-                    child: ThemePreviewApp(theme: model.theme),
+                    child: ThemePreviewApp(
+                      model: model,
+                    ),
                   ),
                 ),
               ),
@@ -58,9 +64,11 @@ class TabItem {
 }
 
 class ThemePreviewApp extends StatefulWidget {
-  final ThemeData theme;
+  final ThemeModel model;
 
-  const ThemePreviewApp({Key key, this.theme}) : super(key: key);
+  ThemeData get theme => model.theme;
+
+  const ThemePreviewApp({Key key, this.model}) : super(key: key);
 
   @override
   ThemePreviewAppState createState() => ThemePreviewAppState();
@@ -68,6 +76,9 @@ class ThemePreviewApp extends StatefulWidget {
 
 class ThemePreviewAppState extends State<ThemePreviewApp>
     with SingleTickerProviderStateMixin {
+  // RepaintBoundary key
+  GlobalKey _globalKey = new GlobalKey();
+
   final _tabsItem = [
     TabItem('Controls', Icons.check_box),
     TabItem('Buttons', Icons.touch_app),
@@ -102,53 +113,58 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
         showFAB = tabBarController.index == 0;
       });
     });
+    widget.model.initScreenshooter(_globalKey);
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'App Preview',
-      debugShowCheckedModeBanner: false,
-      home: AnimatedTheme(
-        data: widget.theme,
-        child: DefaultTabController(
-          length: 2,
-          child: Scaffold(
-            appBar: AppBar(
-              title: Text("App Preview"),
-              bottom: _buildTabBar(),
-              actions: <Widget>[
-                IconButton(icon: Icon(Icons.add), onPressed: () {}),
-                IconButton(icon: Icon(Icons.add_a_photo), onPressed: () {}),
-                IconButton(
-                    icon: Icon(Icons.menu),
-                    onPressed: () => Scaffold.of(context).openDrawer()),
-              ],
-            ),
-            floatingActionButton: tabBarController.index == 0
-                ? FloatingActionButton(
-                    child: Icon(
-                      Icons.check,
-                      color: widget.theme?.accentTextTheme?.button?.color,
-                    ),
-                    onPressed: () {})
-                : null,
-            drawer: Drawer(
-              child: ListView(
-                children: <Widget>[
-                  Text('Drawer'),
+    return RepaintBoundary(
+      key: _globalKey,
+      child: MaterialApp(
+        title: 'App Preview',
+        debugShowCheckedModeBanner: false,
+        home: AnimatedTheme(
+          data: widget.theme,
+          child: DefaultTabController(
+            length: _tabsItem.length,
+            child: Scaffold(
+              appBar: AppBar(
+                title: Text("App Preview"),
+                bottom: _buildTabBar(),
+                actions: <Widget>[
+                  IconButton(icon: Icon(Icons.add), onPressed: () {}),
+                  IconButton(
+                      icon: Icon(Icons.add_a_photo), onPressed: _screenshot),
+                  IconButton(
+                      icon: Icon(Icons.menu),
+                      onPressed: () => Scaffold.of(context).openDrawer()),
                 ],
               ),
+              floatingActionButton: tabBarController.index == 0
+                  ? FloatingActionButton(
+                      child: Icon(
+                        Icons.check,
+                        color: widget.theme?.accentTextTheme?.button?.color,
+                      ),
+                      onPressed: () {})
+                  : null,
+              drawer: Drawer(
+                child: ListView(
+                  children: <Widget>[
+                    Text('Drawer'),
+                  ],
+                ),
+              ),
+              body: TabBarView(controller: tabBarController, children: [
+                WidgetPreview1(theme: widget.theme),
+                ButtonPreview(theme: widget.theme),
+                InputsPreview(theme: widget.theme),
+                SliderPreview(theme: widget.theme),
+                ChipsPreview(theme: widget.theme),
+                TypographyPreview(theme: widget.theme)
+              ]),
+              bottomNavigationBar: BottomNavigationBar(items: bottomItems),
             ),
-            body: TabBarView(controller: tabBarController, children: [
-              WidgetPreview1(theme: widget.theme),
-              ButtonPreview(theme: widget.theme),
-              InputsPreview(theme: widget.theme),
-              SliderPreview(theme: widget.theme),
-              ChipsPreview(theme: widget.theme),
-              TypographyPreview(theme: widget.theme)
-            ]),
-            bottomNavigationBar: BottomNavigationBar(items: bottomItems),
           ),
         ),
       ),
@@ -158,10 +174,15 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
   _buildTabBar() => TabBar(
       isScrollable: true,
       controller: tabBarController,
-      tabs: _tabsItem
-          .map((t) => Tab(
-                text: t.text,
-                icon: Icon(t.icon),
-              ))
-          .toList());
+      tabs:
+          _tabsItem.map((t) => Tab(text: t.text, icon: Icon(t.icon))).toList());
+
+  _screenshot() async {
+    RenderRepaintBoundary boundary =
+        _globalKey.currentContext.findRenderObject();
+    final capture = await boundary.toImage();
+    ByteData bytedata = await capture.toByteData(format: ImageByteFormat.png);
+    final pngBytes = bytedata.buffer.asUint8List();
+    widget.model.screenshot(pngBytes);
+  }
 }

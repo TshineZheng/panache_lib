@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 
@@ -108,8 +109,8 @@ Map<String, dynamic> themeToMap(ThemeData theme) {
     'accentIconTheme': iconThemeToMap(theme.accentIconTheme),
     'sliderTheme': sliderThemeToMap(theme.sliderTheme),
     'tabBarTheme': tabBarThemeToMap(theme.tabBarTheme),
+    'chipTheme': chipThemeToMap(theme.chipTheme),
     /* FIXME
-    'chipTheme': '${chipThemeToMap(theme.chipTheme)}',
       'dialogTheme': '${dialogThemeToCode(theme.dialogTheme)}',
       'primaryTextTheme': '${textThemeToCode(theme.primaryTextTheme)}',
       'accentTextTheme': '${textThemeToCode(theme.accentTextTheme)}',
@@ -158,8 +159,8 @@ ThemeData themeFromJson(String jsonTheme) {
       accentIconTheme: iconThemeFromMap(themeMap['accentIconTheme']),
       sliderTheme: sliderThemeFromMap(themeMap['sliderTheme']),
       tabBarTheme: tabBarThemeFromMap(themeMap['tabBarTheme']),
+      chipTheme: chipThemeFromMap(themeMap['chipTheme']),
       /*FIXME*/
-      chipTheme: defaultLightTheme.chipTheme,
       dialogTheme: defaultLightTheme.dialogTheme,
       primaryTextTheme: defaultLightTheme.primaryTextTheme,
       accentTextTheme: defaultLightTheme.accentTextTheme,
@@ -257,16 +258,17 @@ String tabBarThemeToCode(TabBarTheme tabBarTheme) {
 /// TODO indicator Decoration
 Map<String, dynamic> tabBarThemeToMap(TabBarTheme tabBarTheme) {
   return {
-    'indicatorSize':
-        TabBarIndicatorSize.values.indexOf(tabBarTheme.indicatorSize),
-    'labelColor': tabBarTheme.labelColor.value,
-    'unselectedLabelColor': tabBarTheme.unselectedLabelColor.value,
+    'indicatorSize': tabBarTheme.indicatorSize != null
+        ? TabBarIndicatorSize.values.indexOf(tabBarTheme.indicatorSize)
+        : null,
+    'labelColor': tabBarTheme.labelColor?.value,
+    'unselectedLabelColor': tabBarTheme.unselectedLabelColor?.value,
   };
 }
 
 TabBarTheme tabBarThemeFromMap(Map<String, dynamic> data) {
   return TabBarTheme(
-    indicatorSize: TabBarIndicatorSize.values[data['indicatorSize']],
+    indicatorSize: TabBarIndicatorSize.values[max(0, data['indicatorSize'])],
     labelColor: Color(data['labelColor']),
     unselectedLabelColor: Color(data['unselectedLabelColor']),
   );
@@ -284,18 +286,47 @@ String chipThemeToCode(ChipThemeData chipTheme) {
       secondaryLabelStyle: ${textStyleToCode(chipTheme.secondaryLabelStyle)},
       secondarySelectedColor: ${colorToCode(chipTheme.secondarySelectedColor)},
       selectedColor: ${colorToCode(chipTheme.selectedColor)},
-      shape: ${chipShapeToCode(chipTheme)},
+      shape: ${buttonShapeToCode(chipTheme.shape)},
     )''';
 }
 
-String chipShapeToCode(ChipThemeData chipTheme) {
-  final shape = chipTheme.shape;
-  if (shape is StadiumBorder) {
-    return '''StadiumBorder(
-      side: BorderSide(
-          color: Color(0xff000000), width: 0.0, style: BorderStyle.none
-      )
-    )''';
-  }
-  return 'null';
+Map<String, dynamic> chipThemeToMap(ChipThemeData chipTheme) {
+  return {
+    'backgroundColor': chipTheme.backgroundColor.value,
+    'brightness': max(0, Brightness.values.indexOf(chipTheme.brightness)),
+    'deleteIconColor': chipTheme.deleteIconColor.value,
+    'disabledColor': chipTheme.disabledColor.value,
+    'labelPadding': paddingToMap(chipTheme.labelPadding),
+    'labelStyle': textStyleToMap(chipTheme.labelStyle),
+    'padding': paddingToMap(chipTheme.padding),
+    'secondaryLabelStyle': textStyleToMap(chipTheme.secondaryLabelStyle),
+    'secondarySelectedColor': chipTheme.secondarySelectedColor.value,
+    'selectedColor': chipTheme.selectedColor.value,
+    'shape': buttonShapeToMap(chipTheme.shape),
+  };
+}
+
+ChipThemeData chipThemeFromMap(Map<String, dynamic> data) {
+  return ChipThemeData(
+    backgroundColor: Color(data['backgroundColor']),
+    brightness: Brightness.values[data['brightness']],
+    deleteIconColor: Color(data['deleteIconColor']),
+    disabledColor: Color(data['disabledColor']),
+    labelPadding: paddingFromMap(data['labelPadding']),
+    labelStyle: textStyleFromMap(data['labelStyle']),
+    padding: paddingFromMap(data['padding']),
+    secondaryLabelStyle: textStyleFromMap(data['secondaryLabelStyle']),
+    secondarySelectedColor: Color(data['secondarySelectedColor']),
+    selectedColor: Color(data['selectedColor']),
+    shape: buttonShapeFromMap(data['shape']),
+  );
+}
+
+String getChipShapeBorderType(ShapeBorder border) {
+  if (border is RoundedRectangleBorder) return 'RoundedRectangleBorder';
+  if (border is StadiumBorder) return 'StadiumBorder';
+  if (border is CircleBorder) return 'CircleBorder';
+  if (border is BeveledRectangleBorder) return 'BeveledRectangleBorder';
+
+  return 'RoundedRectangleBorder';
 }

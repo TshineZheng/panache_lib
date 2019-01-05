@@ -55,12 +55,7 @@ ButtonThemeData buttonThemeFromMap(Map<String, dynamic> data) {
       textTheme: ButtonTextTheme.values[data['textTheme']],
       minWidth: (data['minWidth'] as int).toDouble(),
       height: (data['height'] as int).toDouble(),
-      padding: EdgeInsets.only(
-        left: (data['padding']['left'] as int).toDouble(),
-        top: (data['padding']['top'] as int).toDouble(),
-        right: (data['padding']['right'] as int).toDouble(),
-        bottom: (data['padding']['bottom'] as int).toDouble(),
-      ),
+      padding: paddingFromMap(data['padding']),
       shape: buttonShapeFromMap(data['shape']),
       buttonColor: Color(data['buttonColor']),
       disabledColor: Color(data['disabledColor']),
@@ -95,16 +90,6 @@ String buttonShapeToCode(ShapeBorder border) {
     return '''CircleBorder( side: ${borderSideToCode(border.side)} )''';
 
   return 'null';
-}
-
-ShapeBorder buttonShapeFromMap(Map<String, dynamic> data) {
-  if (data['type'] == 'RoundedRectangleBorder') {
-    return RoundedRectangleBorder(
-        borderRadius: borderRadiusFromMap(data['radius']),
-        side: borderSideFromMap(data['side']));
-  }
-
-  return RoundedRectangleBorder();
 }
 
 Map<String, dynamic> buttonShapeToMap(ShapeBorder border) {
@@ -143,6 +128,26 @@ Map<String, dynamic> buttonShapeToMap(ShapeBorder border) {
   return {
     'type': type,
   };
+}
+
+ShapeBorder buttonShapeFromMap(Map<String, dynamic> data) {
+  if (data['type'] == 'RoundedRectangleBorder')
+    return RoundedRectangleBorder(
+        borderRadius: borderRadiusFromMap(data['radius']),
+        side: borderSideFromMap(data['side']));
+
+  if (data['type'] == 'BeveledRectangleBorder')
+    return BeveledRectangleBorder(
+        borderRadius: borderRadiusFromMap(data['radius']),
+        side: borderSideFromMap(data['side']));
+
+  if (data['type'] == 'StadiumBorder')
+    return StadiumBorder(side: borderSideFromMap(data['side']));
+
+  if (data['type'] == 'CircleBorder')
+    return CircleBorder(side: borderSideFromMap(data['side']));
+
+  return RoundedRectangleBorder();
 }
 
 String getButtonShapeBorderType(ShapeBorder border) {

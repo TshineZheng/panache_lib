@@ -1,4 +1,8 @@
+import 'dart:typed_data';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -9,6 +13,10 @@ class ThemeModel extends Model {
   ThemeService _service;
 
   MaterialColor _primarySwatch = Colors.blue;
+
+  String _themeName;
+
+  GlobalKey<State<StatefulWidget>> _screenShooterKey;
 
   ThemeData get theme => _service.theme;
 
@@ -49,13 +57,30 @@ class ThemeModel extends Model {
     updateTheme(updatedTheme);
   }
 
-  void saveTheme() {
-    _service.saveTheme('new_theme');
+  void saveTheme() async {
+    final filename = 'theme-${DateTime.now().millisecondsSinceEpoch}';
+
+    RenderRepaintBoundary boundary =
+        _screenShooterKey.currentContext.findRenderObject();
+    final capture = await boundary.toImage();
+    ByteData bytedata = await capture.toByteData(format: ImageByteFormat.png);
+    final pngBytes = bytedata.buffer.asUint8List();
+
+    _service.screenshot(filename, pngBytes);
+    _service.saveTheme(filename);
   }
 
-  Future loadTheme() async {
-    final result = await _service.loadTheme('new_theme.json');
+  Future loadTheme(String name) async {
+    final result = await _service.loadTheme('$name.json');
     notifyListeners();
     return result;
+  }
+
+  void screenshot(Uint8List pngBytes) {
+    _service.screenshot(_themeName, pngBytes);
+  }
+
+  void initScreenshooter(GlobalKey<State<StatefulWidget>> screenShooterKey) {
+    _screenShooterKey = screenShooterKey;
   }
 }

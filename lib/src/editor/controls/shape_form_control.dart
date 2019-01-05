@@ -33,7 +33,7 @@ class ShapeFormControl extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final _labelStyle = labelStyle ?? textTheme.subtitle;
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+      padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         color: Colors.white,

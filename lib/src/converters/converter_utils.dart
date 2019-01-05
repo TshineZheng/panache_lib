@@ -15,6 +15,12 @@ Map<String, dynamic> paddingToMap(EdgeInsets padding) => {
       'bottom': padding.bottom.toInt(),
       'left': padding.left.toInt(),
     };
+EdgeInsetsGeometry paddingFromMap(Map<String, dynamic> data) => EdgeInsets.only(
+      left: (data['left'] as int).toDouble(),
+      top: (data['top'] as int).toDouble(),
+      right: (data['right'] as int).toDouble(),
+      bottom: (data['bottom'] as int).toDouble(),
+    );
 
 String colorToCode(Color color) {
   if (color == null) return 'null';

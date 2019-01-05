@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -53,6 +54,14 @@ class ThemeService {
     } catch (error) {
       print('ThemeService.saveTheme... $error');
     }
+  }
+
+  void screenshot(String filename, Uint8List pngBytes) async {
+    final screenshotName = '$filename.png';
+    final screenshotFile = File('${_dir.path}/themes/$screenshotName');
+    await screenshotFile.create(recursive: true);
+    await screenshotFile.writeAsBytes(pngBytes);
+    print('ThemeService.screenshot => $screenshotFile');
   }
 
   Future<ThemeData> loadTheme(String path) async {

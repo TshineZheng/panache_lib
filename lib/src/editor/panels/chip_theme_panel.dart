@@ -119,18 +119,19 @@ class ChipThemePanel extends StatelessWidget {
           Divider(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               ShapeFormControl(
                   onShapeChanged: (shapeBorder) =>
                       _updateChipTheme(chipTheme.copyWith(shape: shapeBorder)),
                   shape: chipTheme.shape,
                   labelStyle: labelStyle),
-              BrightnessSelector(
-                label: 'Brightness',
-                isDark: chipTheme.brightness == Brightness.dark,
-                onBrightnessChanged: (value) =>
-                    _onBrightnessChanged(value, labelStyle: appTextTheme.body1),
+              Expanded(
+                child: BrightnessSelector(
+                  label: 'Brightness',
+                  isDark: chipTheme.brightness == Brightness.dark,
+                  onBrightnessChanged: (value) => _onBrightnessChanged(value,
+                      labelStyle: appTextTheme.body1),
+                ),
               )
             ],
           ),
