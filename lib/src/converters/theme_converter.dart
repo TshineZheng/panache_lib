@@ -7,6 +7,7 @@ import '../utils/color_utils.dart';
 import 'button_theme_converters.dart';
 import 'converter_utils.dart';
 import 'icon_theme_converter.dart';
+import 'input_theme_converter.dart';
 import 'text_theme_converters.dart';
 
 final defaultLightTheme =
@@ -52,6 +53,7 @@ String themeToCode(ThemeData theme) {
     textTheme: ${textThemeToCode(theme.textTheme)},
     primaryTextTheme: ${textThemeToCode(theme.primaryTextTheme)},
     accentTextTheme: ${textThemeToCode(theme.accentTextTheme)},
+    inputDecorationTheme: ${inputDecorationThemeToCode(theme.inputDecorationTheme)},
     iconTheme: ${iconThemeToCode(theme.iconTheme)},
     primaryIconTheme: ${iconThemeToCode(theme.primaryIconTheme)},
     accentIconTheme: ${iconThemeToCode(theme.accentIconTheme)},
@@ -104,6 +106,8 @@ Map<String, dynamic> themeToMap(ThemeData theme) {
     'errorColor': theme.errorColor.value,
     'buttonTheme': buttonThemeToMap(theme.buttonTheme),
     'textTheme': textThemeToMap(theme.textTheme),
+    'inputDecorationTheme':
+        inputDecorationThemeToMap(theme.inputDecorationTheme),
     'iconTheme': iconThemeToMap(theme.iconTheme),
     'primaryIconTheme': iconThemeToMap(theme.primaryIconTheme),
     'accentIconTheme': iconThemeToMap(theme.accentIconTheme),
@@ -121,50 +125,60 @@ Map<String, dynamic> themeToMap(ThemeData theme) {
 ThemeData themeFromJson(String jsonTheme) {
   final Map<String, dynamic> themeMap = json.decode(jsonTheme);
   return ThemeData(
-      primarySwatch: swatchFor(color: Color(themeMap['primarySwatch'])),
-      brightness: Brightness.values[themeMap['brightness']],
-      primaryColor: Color(themeMap['primaryColor']),
-      primaryColorBrightness:
-          Brightness.values[themeMap['primaryColorBrightness']],
-      primaryColorLight: Color(themeMap['primaryColorLight']),
-      primaryColorDark: Color(themeMap['primaryColorDark']),
-      accentColor: Color(themeMap['accentColor']),
-      accentColorBrightness:
-          Brightness.values[themeMap['accentColorBrightness']],
-      canvasColor: Color(themeMap['canvasColor']),
-      scaffoldBackgroundColor: Color(themeMap['scaffoldBackgroundColor']),
-      bottomAppBarColor: Color(themeMap['bottomAppBarColor']),
-      cardColor: Color(themeMap['cardColor']),
-      dividerColor: Color(themeMap['dividerColor']),
-      highlightColor: Color(themeMap['highlightColor']),
-      splashColor: Color(themeMap['splashColor']),
-      selectedRowColor: Color(themeMap['selectedRowColor']),
-      unselectedWidgetColor: Color(themeMap['unselectedWidgetColor']),
-      disabledColor: Color(themeMap['disabledColor']),
-      buttonColor: Color(themeMap['buttonColor']),
-      toggleableActiveColor: Color(themeMap['toggleableActiveColor']),
-      secondaryHeaderColor: Color(themeMap['secondaryHeaderColor']),
-      textSelectionColor: Color(themeMap['textSelectionColor']),
-      cursorColor: Color(themeMap['cursorColor']),
-      textSelectionHandleColor: Color(themeMap['textSelectionHandleColor']),
-      backgroundColor: Color(themeMap['backgroundColor']),
-      dialogBackgroundColor: Color(themeMap['dialogBackgroundColor']),
-      indicatorColor: Color(themeMap['indicatorColor']),
-      hintColor: Color(themeMap['hintColor']),
-      errorColor: Color(themeMap['errorColor']),
-      buttonTheme: buttonThemeFromMap(themeMap['buttonTheme']),
-      textTheme: textThemeFromMap(themeMap['textTheme']),
-      iconTheme: iconThemeFromMap(themeMap['iconTheme']),
-      primaryIconTheme: iconThemeFromMap(themeMap['primaryIconTheme']),
-      accentIconTheme: iconThemeFromMap(themeMap['accentIconTheme']),
-      sliderTheme: sliderThemeFromMap(themeMap['sliderTheme']),
-      tabBarTheme: tabBarThemeFromMap(themeMap['tabBarTheme']),
-      chipTheme: chipThemeFromMap(themeMap['chipTheme']),
-      /*FIXME*/
-      dialogTheme: defaultLightTheme.dialogTheme,
-      primaryTextTheme: defaultLightTheme.primaryTextTheme,
-      accentTextTheme: defaultLightTheme.accentTextTheme,
-      platform: defaultLightTheme.platform);
+    primarySwatch: swatchFor(color: Color(themeMap['primarySwatch'])),
+    brightness: Brightness.values[themeMap['brightness']],
+    primaryColor: Color(themeMap['primaryColor']),
+    primaryColorBrightness:
+        Brightness.values[themeMap['primaryColorBrightness']],
+    primaryColorLight: Color(themeMap['primaryColorLight']),
+    primaryColorDark: Color(themeMap['primaryColorDark']),
+    accentColor: Color(themeMap['accentColor']),
+    accentColorBrightness: Brightness.values[themeMap['accentColorBrightness']],
+    canvasColor: Color(themeMap['canvasColor']),
+    scaffoldBackgroundColor: Color(themeMap['scaffoldBackgroundColor']),
+    bottomAppBarColor: Color(themeMap['bottomAppBarColor']),
+    cardColor: Color(themeMap['cardColor']),
+    dividerColor: Color(themeMap['dividerColor']),
+    highlightColor: Color(themeMap['highlightColor']),
+    splashColor: Color(themeMap['splashColor']),
+    selectedRowColor: Color(themeMap['selectedRowColor']),
+    unselectedWidgetColor: Color(themeMap['unselectedWidgetColor']),
+    disabledColor: Color(themeMap['disabledColor']),
+    buttonColor: Color(themeMap['buttonColor']),
+    toggleableActiveColor: Color(themeMap['toggleableActiveColor']),
+    secondaryHeaderColor: Color(themeMap['secondaryHeaderColor']),
+    textSelectionColor: Color(themeMap['textSelectionColor']),
+    cursorColor: Color(themeMap['cursorColor']),
+    textSelectionHandleColor: Color(themeMap['textSelectionHandleColor']),
+    backgroundColor: Color(themeMap['backgroundColor']),
+    dialogBackgroundColor: Color(themeMap['dialogBackgroundColor']),
+    indicatorColor: Color(themeMap['indicatorColor']),
+    hintColor: Color(themeMap['hintColor']),
+    errorColor: Color(themeMap['errorColor']),
+    buttonTheme: buttonThemeFromMap(themeMap['buttonTheme']),
+    textTheme: textThemeFromMap(themeMap['textTheme']),
+    iconTheme: iconThemeFromMap(themeMap['iconTheme']),
+    primaryIconTheme: iconThemeFromMap(themeMap['primaryIconTheme']),
+    accentIconTheme: iconThemeFromMap(themeMap['accentIconTheme']),
+    sliderTheme: sliderThemeFromMap(themeMap['sliderTheme']),
+    tabBarTheme: tabBarThemeFromMap(themeMap['tabBarTheme']),
+    chipTheme: chipThemeFromMap(themeMap['chipTheme']),
+    inputDecorationTheme:
+        inputDecorationThemeFromMap(themeMap['inputDecorationTheme']),
+    /*FIXME*/
+    dialogTheme: defaultLightTheme.dialogTheme,
+    primaryTextTheme: defaultLightTheme.primaryTextTheme,
+    accentTextTheme: defaultLightTheme.accentTextTheme,
+    platform: defaultLightTheme.platform,
+    colorScheme: defaultLightTheme.colorScheme,
+    /*
+    fontFamily:
+    pageTransitionsTheme:
+    materialTapTargetSize:
+    splashFactory:
+    typography:
+    */
+  );
 }
 
 int brightnessIndex(Brightness value) =>
