@@ -11,14 +11,28 @@ import 'converters/theme_converter.dart';
 typedef Future<Directory> DirectoryProvider();
 
 class ThemeService {
-  Directory _dir;
-  ThemeData _theme;
-  ThemeData get theme => _theme;
   final Function(String, String) themeExporter;
 
-  ThemeService({this.themeExporter, DirectoryProvider dirProvider}) {
-    dirProvider().then((dir) => _dir = dir);
-    initTheme();
+  final DirectoryProvider dirProvider;
+  Directory _dir;
+  Directory get dir => _dir;
+
+  ThemeData _theme;
+  ThemeData get theme => _theme;
+
+  List<File> _themes;
+  List<File> get themes => _themes;
+
+  VoidCallback _onChange;
+
+  ThemeService({this.themeExporter, this.dirProvider});
+
+  init(VoidCallback onChange) {
+    _onChange = onChange;
+    dirProvider().then((dir) async {
+      _dir = dir;
+      _onChange();
+    });
   }
 
   ThemeData _localize(ThemeData theme) =>
@@ -51,8 +65,9 @@ class ThemeService {
       print('ThemeService.saveTheme...\n${_themeFile.path}\n$jsonTheme');
       await _themeFile.create(recursive: true);
       await _themeFile.writeAsString(jsonTheme, flush: true);
+      _onChange();
     } catch (error) {
-      print('ThemeService.saveTheme... $error');
+      throw Exception('Error : The theme can\'t be saved.');
     }
   }
 

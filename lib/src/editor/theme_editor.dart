@@ -20,8 +20,6 @@ class ThemeEditor extends StatefulWidget {
 
 class ThemeEditorState extends State<ThemeEditor> {
   bool colorPanelExpanded = false;
-  bool primaryTextPanelExpanded = false;
-  bool accentTextPanelExpanded = false;
   bool buttonThemePanelExpanded = false;
   bool iconThemePanelExpanded = false;
   bool sliderThemePanelExpanded = false;
@@ -29,6 +27,8 @@ class ThemeEditorState extends State<ThemeEditor> {
   bool chipThemePanelExpanded = false;
   bool dialogThemePanelExpanded = false;
   bool textPanelExpanded = false;
+  bool primaryTextPanelExpanded = false;
+  bool accentTextPanelExpanded = false;
   bool inputsPanelExpanded = false;
 
   @override
@@ -87,8 +87,34 @@ class ThemeEditorState extends State<ThemeEditor> {
               _buildPanel(
                 widget.model,
                 'Text Theme',
-                child: TypographyThemePanel(),
+                child: TypographyThemePanel(
+                  model: widget.model,
+                  txtTheme: widget.model.theme.textTheme,
+                  themeRef: 'textTheme',
+                ),
                 expanded: textPanelExpanded,
+                icon: Icons.font_download,
+                color: primaryColor,
+              ),
+              _buildPanel(
+                widget.model,
+                'Primary Text Theme',
+                child: TypographyThemePanel(
+                    model: widget.model,
+                    themeRef: 'primaryTextTheme',
+                    txtTheme: widget.model.theme.primaryTextTheme),
+                expanded: primaryTextPanelExpanded,
+                icon: Icons.font_download,
+                color: primaryColor,
+              ),
+              _buildPanel(
+                widget.model,
+                'Accent Text Theme',
+                child: TypographyThemePanel(
+                    model: widget.model,
+                    themeRef: 'accentTextTheme',
+                    txtTheme: widget.model.theme.accentTextTheme),
+                expanded: accentTextPanelExpanded,
                 icon: Icons.font_download,
                 color: primaryColor,
               ),
@@ -144,12 +170,18 @@ class ThemeEditorState extends State<ThemeEditor> {
         textPanelExpanded = !isExpanded;
         break;
       case 6:
-        chipThemePanelExpanded = !isExpanded;
+        primaryTextPanelExpanded = !isExpanded;
         break;
       case 7:
-        iconThemePanelExpanded = !isExpanded;
+        accentTextPanelExpanded = !isExpanded;
         break;
       case 8:
+        chipThemePanelExpanded = !isExpanded;
+        break;
+      case 9:
+        iconThemePanelExpanded = !isExpanded;
+        break;
+      case 10:
         dialogThemePanelExpanded = !isExpanded;
         break;
     }

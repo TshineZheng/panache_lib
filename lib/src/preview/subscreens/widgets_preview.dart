@@ -22,7 +22,8 @@ class ButtonPreview extends StatelessWidget {
               spacing: 8.0,
               children: [
                 RaisedButton(
-                  onPressed: () {},
+                  onPressed: () => Scaffold.of(context)
+                      .showSnackBar(SnackBar(content: Text('Snack bar'))),
                   child: Text("A button"),
                 ),
                 RaisedButton.icon(

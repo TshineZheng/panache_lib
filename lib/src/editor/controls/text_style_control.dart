@@ -31,14 +31,14 @@ class TextStyleControl extends StatelessWidget {
   TextStyleControl(
     this.label, {
     Key key,
-    @required this.onColorChanged,
-    @required this.onSizeChanged,
-    @required this.onWeightChanged,
-    @required this.onFontStyleChanged,
     @required this.color,
     @required this.fontSize,
     @required this.isBold,
     @required this.isItalic,
+    @required this.onColorChanged,
+    @required this.onSizeChanged,
+    @required this.onWeightChanged,
+    @required this.onFontStyleChanged,
     this.maxFontSize: 112.0,
   }) : super(key: key);
 

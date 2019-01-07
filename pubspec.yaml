@@ -13,6 +13,7 @@ dependencies:
   scoped_model: ^1.0.1
   path_provider: any
   string_scanner: any
+  shared_preferences: ^0.4.3
 
 dev_dependencies:
   flutter_test:

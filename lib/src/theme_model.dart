@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
 
@@ -7,36 +8,74 @@ import 'package:flutter/widgets.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import 'converters/theme_converter.dart';
+import 'local_data.dart';
+import 'models.dart';
 import 'theme_service.dart';
+import 'utils/uuid.dart';
+
+typedef Future<Uint8List> ScreenShooter();
 
 class ThemeModel extends Model {
+  static ThemeModel of(BuildContext context) =>
+      ScopedModel.of<ThemeModel>(context);
+
   ThemeService _service;
+
+  PanacheTheme _currentTheme;
 
   MaterialColor _primarySwatch = Colors.blue;
 
   String _themeName;
 
-  GlobalKey<State<StatefulWidget>> _screenShooterKey;
+  ScreenShooter _screenShooter;
 
   ThemeData get theme => _service.theme;
 
   MaterialColor get primarySwatch => _primarySwatch;
 
+  Directory get dir => _service.dir;
+
   String get themeCode => themeToCode(theme);
 
-  ThemeModel({ThemeService service}) : _service = service;
+  Uuid _uuid = Uuid();
 
-  static ThemeModel of(BuildContext context) =>
-      ScopedModel.of<ThemeModel>(context);
+  final List<PanacheTheme> _themes;
 
-  void initTheme({
+  List<PanacheTheme> get themes => _themes;
+
+  String get uuid => _uuid.generateV4();
+
+  final LocalData localData;
+
+  ThemeModel({@required ThemeService service, @required this.localData})
+      : _service = service,
+        _themes = localData.themes {
+    _service.init(onChange);
+  }
+
+  void newTheme({
     @required MaterialColor primarySwatch,
     Brightness brightness: Brightness.light,
   }) {
     assert(primarySwatch != null);
+    final defaultThemeName = 'new-theme';
+    _currentTheme = PanacheTheme(
+        id: uuid,
+        name: defaultThemeName,
+        primarySwatch: primarySwatch,
+        brightness: brightness);
 
     _primarySwatch = primarySwatch;
     _service.initTheme(primarySwatch: primarySwatch, brightness: brightness);
+
+    _themes.add(_currentTheme);
+    _service.saveTheme(defaultThemeName);
+    localData.updateThemeList(_themes);
+
+    notifyListeners();
+  }
+
+  onChange() {
     notifyListeners();
   }
 
@@ -58,20 +97,15 @@ class ThemeModel extends Model {
   }
 
   void saveTheme() async {
-    final filename = 'theme-${DateTime.now().millisecondsSinceEpoch}';
-
-    RenderRepaintBoundary boundary =
-        _screenShooterKey.currentContext.findRenderObject();
-    final capture = await boundary.toImage();
-    ByteData bytedata = await capture.toByteData(format: ImageByteFormat.png);
-    final pngBytes = bytedata.buffer.asUint8List();
+    final filename = _currentTheme.id;
+    final pngBytes = await _screenShooter();
 
     _service.screenshot(filename, pngBytes);
     _service.saveTheme(filename);
   }
 
-  Future loadTheme(String name) async {
-    final result = await _service.loadTheme('$name.json');
+  Future loadTheme(PanacheTheme theme) async {
+    final result = await _service.loadTheme('${theme.id}.json');
     notifyListeners();
     return result;
   }
@@ -80,7 +114,7 @@ class ThemeModel extends Model {
     _service.screenshot(_themeName, pngBytes);
   }
 
-  void initScreenshooter(GlobalKey<State<StatefulWidget>> screenShooterKey) {
-    _screenShooterKey = screenShooterKey;
+  void initScreenshooter(ScreenShooter screenShooterKey) {
+    _screenShooter = screenShooterKey;
   }
 }

@@ -28,7 +28,7 @@ String textStyleToCode(TextStyle style) {
       color: ${colorToCode(style.color)},
       fontSize: ${style.fontSize},
       fontWeight: ${style.fontWeight},
-      fontStyle: ${style.fontStyle},
+      fontStyle: ${style.fontStyle ?? FontStyle.normal},
     )''';
 
   /* TODO

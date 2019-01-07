@@ -2,19 +2,26 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-String paddingToCode(EdgeInsets padding) => 'EdgeInsets.only('
-    'top:${padding.top},'
-    'bottom:${padding.bottom},'
-    'left:${padding.left}, '
-    'right:${padding.right}'
-    ')';
+String paddingToCode(EdgeInsets padding) {
+  padding ??= EdgeInsets.zero;
+  return 'EdgeInsets.only('
+      'top:${padding.top},'
+      'bottom:${padding.bottom},'
+      'left:${padding.left}, '
+      'right:${padding.right}'
+      ')';
+}
 
-Map<String, dynamic> paddingToMap(EdgeInsets padding) => {
-      'top': padding.top.toInt(),
-      'right': padding.right.toInt(),
-      'bottom': padding.bottom.toInt(),
-      'left': padding.left.toInt(),
-    };
+Map<String, dynamic> paddingToMap(EdgeInsets padding) {
+  padding ??= EdgeInsets.zero;
+  return {
+    'top': padding.top.toInt(),
+    'right': padding.right.toInt(),
+    'bottom': padding.bottom.toInt(),
+    'left': padding.left.toInt(),
+  };
+}
+
 EdgeInsetsGeometry paddingFromMap(Map<String, dynamic> data) => EdgeInsets.only(
       left: (data['left'] as int).toDouble(),
       top: (data['top'] as int).toDouble(),

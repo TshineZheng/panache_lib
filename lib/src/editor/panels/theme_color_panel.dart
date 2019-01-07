@@ -32,6 +32,21 @@ class ThemeColorPanel extends StatelessWidget {
                   isDark ? Brightness.dark : Brightness.light,
                 ),
           ),
+          getFieldsRow([
+            ColorSelector(
+                'Primary color light',
+                theme.primaryColorLight,
+                (c) => themeModel.updateColor(
+                    property: "primaryColorLight", color: c),
+                padding: 2),
+            ColorSelector(
+              'Primary color dark',
+              theme.primaryColorDark,
+              (c) => themeModel.updateColor(
+                  property: "primaryColorDark", color: c),
+              padding: 2,
+            ),
+          ]),
           getColorBrightnessSelector(
             label: 'Accent color',
             currentColor: theme.accentColor,
@@ -102,6 +117,21 @@ class ThemeColorPanel extends StatelessWidget {
               theme.backgroundColor,
               (c) =>
                   themeModel.updateColor(property: "backgroundColor", color: c),
+              padding: 2,
+            ),
+          ]),
+          getFieldsRow([
+            ColorSelector(
+              'BottomAppBar color',
+              theme.bottomAppBarColor,
+              (c) => themeModel.updateColor(
+                  property: "bottomAppBarColor", color: c),
+              padding: 2,
+            ),
+            ColorSelector(
+              'Text cursor color',
+              theme.cursorColor,
+              (c) => themeModel.updateColor(property: "cursorColor", color: c),
               padding: 2,
             ),
           ]),

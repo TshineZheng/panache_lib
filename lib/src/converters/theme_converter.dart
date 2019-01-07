@@ -20,7 +20,7 @@ String themeToCode(ThemeData theme) {
   return '''
   import 'package:flutter/material.dart';
   final ThemeData myTheme = ThemeData(
-    primarySwatch: ${swatchConstructorFor(color: theme.primaryColor)},
+    primarySwatch: ${materialSwatchCodeFor(color: theme.primaryColor)},
     brightness: ${theme.brightness},
     primaryColor: ${colorToCode(theme.primaryColor)},
     primaryColorBrightness: ${theme.primaryColorBrightness},
@@ -53,13 +53,27 @@ String themeToCode(ThemeData theme) {
     textTheme: ${textThemeToCode(theme.textTheme)},
     primaryTextTheme: ${textThemeToCode(theme.primaryTextTheme)},
     accentTextTheme: ${textThemeToCode(theme.accentTextTheme)},
-    inputDecorationTheme: ${inputDecorationThemeToCode(theme.inputDecorationTheme)},
+    inputDecorationTheme: ${inputDecorationThemeToCode(
+    theme.inputDecorationTheme,
+    theme.hintColor,
+    theme.textTheme.body1,
+    theme.brightness,
+  )},
     iconTheme: ${iconThemeToCode(theme.iconTheme)},
     primaryIconTheme: ${iconThemeToCode(theme.primaryIconTheme)},
     accentIconTheme: ${iconThemeToCode(theme.accentIconTheme)},
-    sliderTheme: ${sliderThemeToCode(theme.sliderTheme)},
-    tabBarTheme: ${tabBarThemeToCode(theme.tabBarTheme)},
-    chipTheme: ${chipThemeToCode(theme.chipTheme)},
+    sliderTheme: ${sliderThemeToCode(
+    theme.sliderTheme,
+    theme.accentTextTheme.body2,
+  )},
+    tabBarTheme: ${tabBarThemeToCode(
+    theme.tabBarTheme,
+    defaultLabelColor: theme.primaryTextTheme.body2.color,
+  )},
+    chipTheme: ${chipThemeToCode(
+    theme.chipTheme,
+    defaultLabelStyle: theme.textTheme.body2,
+  )},
     dialogTheme: ${dialogThemeToCode(theme.dialogTheme)},
   );
 ''';
@@ -106,18 +120,26 @@ Map<String, dynamic> themeToMap(ThemeData theme) {
     'errorColor': theme.errorColor.value,
     'buttonTheme': buttonThemeToMap(theme.buttonTheme),
     'textTheme': textThemeToMap(theme.textTheme),
-    'inputDecorationTheme':
-        inputDecorationThemeToMap(theme.inputDecorationTheme),
+    'primaryTextTheme': '${textThemeToCode(theme.primaryTextTheme)}',
+    'accentTextTheme': '${textThemeToCode(theme.accentTextTheme)}',
+    'inputDecorationTheme': inputDecorationThemeToMap(
+        theme.inputDecorationTheme,
+        theme.hintColor,
+        theme.textTheme.body1,
+        theme.brightness),
     'iconTheme': iconThemeToMap(theme.iconTheme),
     'primaryIconTheme': iconThemeToMap(theme.primaryIconTheme),
     'accentIconTheme': iconThemeToMap(theme.accentIconTheme),
-    'sliderTheme': sliderThemeToMap(theme.sliderTheme),
-    'tabBarTheme': tabBarThemeToMap(theme.tabBarTheme),
-    'chipTheme': chipThemeToMap(theme.chipTheme),
+    'sliderTheme':
+        sliderThemeToMap(theme.sliderTheme, theme.accentTextTheme.body2),
+    'tabBarTheme': tabBarThemeToMap(theme.tabBarTheme,
+        defaultLabelColor: theme.primaryTextTheme.body2.color),
+    'chipTheme': chipThemeToMap(
+      theme.chipTheme,
+      defaultLabelStyle: theme.textTheme.body2,
+    ),
+    'dialogTheme': '${dialogThemeToMap(theme.dialogTheme)}',
     /* FIXME
-      'dialogTheme': '${dialogThemeToCode(theme.dialogTheme)}',
-      'primaryTextTheme': '${textThemeToCode(theme.primaryTextTheme)}',
-      'accentTextTheme': '${textThemeToCode(theme.accentTextTheme)}',
       'platform': _theme.platform == TargetPlatform.iOS ? 'iOS' : 'android',*/
   };
 }
@@ -157,6 +179,8 @@ ThemeData themeFromJson(String jsonTheme) {
     errorColor: Color(themeMap['errorColor']),
     buttonTheme: buttonThemeFromMap(themeMap['buttonTheme']),
     textTheme: textThemeFromMap(themeMap['textTheme']),
+    primaryTextTheme: textThemeFromMap(themeMap['primaryTextTheme']),
+    accentTextTheme: textThemeFromMap(themeMap['accentTextTheme']),
     iconTheme: iconThemeFromMap(themeMap['iconTheme']),
     primaryIconTheme: iconThemeFromMap(themeMap['primaryIconTheme']),
     accentIconTheme: iconThemeFromMap(themeMap['accentIconTheme']),
@@ -165,10 +189,8 @@ ThemeData themeFromJson(String jsonTheme) {
     chipTheme: chipThemeFromMap(themeMap['chipTheme']),
     inputDecorationTheme:
         inputDecorationThemeFromMap(themeMap['inputDecorationTheme']),
+    dialogTheme: dialogThemeFromMap(themeMap['dialogTheme']),
     /*FIXME*/
-    dialogTheme: defaultLightTheme.dialogTheme,
-    primaryTextTheme: defaultLightTheme.primaryTextTheme,
-    accentTextTheme: defaultLightTheme.accentTextTheme,
     platform: defaultLightTheme.platform,
     colorScheme: defaultLightTheme.colorScheme,
     /*
@@ -184,7 +206,8 @@ ThemeData themeFromJson(String jsonTheme) {
 int brightnessIndex(Brightness value) =>
     Brightness.values.indexOf(value) ?? Brightness.light;
 
-String sliderThemeToCode(SliderThemeData sliderTheme) {
+String sliderThemeToCode(
+    SliderThemeData sliderTheme, TextStyle defaultValueIndicatorStyle) {
   return '''SliderThemeData(
       activeTrackColor: ${colorToCode(sliderTheme.activeTrackColor)},
       inactiveTrackColor: ${colorToCode(sliderTheme.inactiveTrackColor)},
@@ -201,11 +224,12 @@ String sliderThemeToCode(SliderThemeData sliderTheme) {
       valueIndicatorColor: ${colorToCode(sliderTheme.valueIndicatorColor)},
       valueIndicatorShape: ${instanceToCode(sliderTheme.valueIndicatorShape)},
       showValueIndicator: ${sliderTheme.showValueIndicator},
-      valueIndicatorTextStyle: ${textStyleToCode(sliderTheme.valueIndicatorTextStyle)},
+      valueIndicatorTextStyle: ${textStyleToCode(defaultValueIndicatorStyle.merge(sliderTheme.valueIndicatorTextStyle))},
     )''';
 }
 
-Map<String, dynamic> sliderThemeToMap(SliderThemeData sliderTheme) {
+Map<String, dynamic> sliderThemeToMap(
+    SliderThemeData sliderTheme, TextStyle defaultValueIndicatorStyle) {
   return <String, dynamic>{
     'activeTrackColor': sliderTheme.activeTrackColor.value,
     'inactiveTrackColor': sliderTheme.inactiveTrackColor.value,
@@ -225,8 +249,8 @@ Map<String, dynamic> sliderThemeToMap(SliderThemeData sliderTheme) {
     'valueIndicatorShape': {'type': 'PaddleSliderValueIndicatorShape'},
     'showValueIndicator':
         ShowValueIndicator.values.indexOf(sliderTheme.showValueIndicator),
-    'valueIndicatorTextStyle':
-        textStyleToMap(sliderTheme.valueIndicatorTextStyle),
+    'valueIndicatorTextStyle': textStyleToMap(
+        defaultValueIndicatorStyle.merge(sliderTheme.valueIndicatorTextStyle)),
   };
 }
 
@@ -256,64 +280,89 @@ String instanceToCode(dynamic instance) =>
 
 String dialogThemeToCode(DialogTheme iconTheme) {
   return '''DialogTheme(
-      shape: ${iconTheme.shape}
+      shape: ${buttonShapeToCode(iconTheme.shape ?? RoundedRectangleBorder())}
     )''';
 }
 
+Map<String, dynamic> dialogThemeToMap(DialogTheme iconTheme) =>
+    {'shape': buttonShapeToMap(iconTheme.shape ?? RoundedRectangleBorder())};
+
+DialogTheme dialogThemeFromMap(Map<String, dynamic> data) =>
+    DialogTheme(shape: buttonShapeFromMap(data));
+
 /// TODO indicator Decoration
-String tabBarThemeToCode(TabBarTheme tabBarTheme) {
+String tabBarThemeToCode(TabBarTheme tabBarTheme,
+    {@required Color defaultLabelColor}) {
+  final selectedColor = tabBarTheme.labelColor ?? defaultLabelColor;
+  final unselectedColor =
+      tabBarTheme.unselectedLabelColor ?? selectedColor.withAlpha(0xB2);
   return '''TabBarTheme(
-      indicatorSize: ${tabBarTheme.indicatorSize},
-      labelColor: ${colorToCode(tabBarTheme.labelColor)},
-      unselectedLabelColor: ${colorToCode(tabBarTheme.unselectedLabelColor)},
+      indicatorSize: ${tabBarTheme.indicatorSize ?? TabBarIndicatorSize.tab},
+      labelColor: ${colorToCode(selectedColor)},
+      unselectedLabelColor: ${colorToCode(unselectedColor)},
     )''';
 }
 
 /// TODO indicator Decoration
-Map<String, dynamic> tabBarThemeToMap(TabBarTheme tabBarTheme) {
+Map<String, dynamic> tabBarThemeToMap(TabBarTheme tabBarTheme,
+    {@required Color defaultLabelColor}) {
+  final selectedColor = tabBarTheme.labelColor ?? defaultLabelColor;
+  final unselectedColor =
+      tabBarTheme.unselectedLabelColor ?? selectedColor.withAlpha(0xB2);
   return {
-    'indicatorSize': tabBarTheme.indicatorSize != null
-        ? TabBarIndicatorSize.values.indexOf(tabBarTheme.indicatorSize)
-        : null,
-    'labelColor': tabBarTheme.labelColor?.value,
-    'unselectedLabelColor': tabBarTheme.unselectedLabelColor?.value,
+    'indicatorSize': TabBarIndicatorSize.values
+        .indexOf(tabBarTheme.indicatorSize ?? TabBarIndicatorSize.tab),
+    'labelColor': selectedColor.value,
+    'unselectedLabelColor': unselectedColor.value,
   };
 }
 
 TabBarTheme tabBarThemeFromMap(Map<String, dynamic> data) {
   return TabBarTheme(
-    indicatorSize: TabBarIndicatorSize.values[max(0, data['indicatorSize'])],
+    indicatorSize:
+        TabBarIndicatorSize.values[max(0, data['indicatorSize'] ?? 0)],
     labelColor: Color(data['labelColor']),
     unselectedLabelColor: Color(data['unselectedLabelColor']),
   );
 }
 
-String chipThemeToCode(ChipThemeData chipTheme) {
+String chipThemeToCode(ChipThemeData chipTheme,
+    {@required TextStyle defaultLabelStyle}) {
   return '''ChipThemeData(
       backgroundColor: ${colorToCode(chipTheme.backgroundColor)},
       brightness: ${chipTheme.brightness},
       deleteIconColor: ${colorToCode(chipTheme.deleteIconColor)},
       disabledColor: ${colorToCode(chipTheme.disabledColor)},
       labelPadding: ${paddingToCode(chipTheme.labelPadding)},
-      labelStyle: ${textStyleToCode(chipTheme.labelStyle)},
+      labelStyle: ${textStyleToCode(
+    defaultLabelStyle.merge(chipTheme.labelStyle),
+  )},
       padding: ${paddingToCode(chipTheme.padding)},
-      secondaryLabelStyle: ${textStyleToCode(chipTheme.secondaryLabelStyle)},
+      secondaryLabelStyle: ${textStyleToCode(
+    defaultLabelStyle.merge(
+      chipTheme.labelStyle.copyWith(color: chipTheme.selectedColor),
+    ),
+  )},
       secondarySelectedColor: ${colorToCode(chipTheme.secondarySelectedColor)},
       selectedColor: ${colorToCode(chipTheme.selectedColor)},
       shape: ${buttonShapeToCode(chipTheme.shape)},
     )''';
 }
 
-Map<String, dynamic> chipThemeToMap(ChipThemeData chipTheme) {
+Map<String, dynamic> chipThemeToMap(ChipThemeData chipTheme,
+    {@required TextStyle defaultLabelStyle}) {
   return {
     'backgroundColor': chipTheme.backgroundColor.value,
     'brightness': max(0, Brightness.values.indexOf(chipTheme.brightness)),
     'deleteIconColor': chipTheme.deleteIconColor.value,
     'disabledColor': chipTheme.disabledColor.value,
     'labelPadding': paddingToMap(chipTheme.labelPadding),
-    'labelStyle': textStyleToMap(chipTheme.labelStyle),
+    'labelStyle': textStyleToMap(
+      defaultLabelStyle.merge(chipTheme.labelStyle),
+    ),
     'padding': paddingToMap(chipTheme.padding),
-    'secondaryLabelStyle': textStyleToMap(chipTheme.secondaryLabelStyle),
+    'secondaryLabelStyle': textStyleToMap(defaultLabelStyle
+        .merge(chipTheme.labelStyle.copyWith(color: chipTheme.selectedColor))),
     'secondarySelectedColor': chipTheme.secondarySelectedColor.value,
     'selectedColor': chipTheme.selectedColor.value,
     'shape': buttonShapeToMap(chipTheme.shape),

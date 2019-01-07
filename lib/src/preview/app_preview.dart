@@ -86,6 +86,8 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
     TabItem('Slider', Icons.tune),
     TabItem('Chips', Icons.dns),
     TabItem('Text', Icons.text_fields),
+    TabItem('Primary Text', Icons.text_fields),
+    TabItem('Accent Text', Icons.text_fields),
     /*TabItem('Color scheme', Icons.color_lens),*/
   ];
 
@@ -98,10 +100,15 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
         {'label': 'Description', 'icon': Icons.description},
         {'label': 'Transform', 'icon': Icons.transform},
       ]
-          .map((item) => BottomNavigationBarItem(
+          .map<Widget>((item) => IconButton(
+                    icon: Icon(item['icon']),
+                    onPressed: () {},
+                  )
+              /*BottomNavigationBarItem(
                 icon: Icon(item['icon']),
                 title: Text(item['label']),
-              ))
+              )*/
+              )
           .toList();
 
   @override
@@ -113,7 +120,7 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
         showFAB = tabBarController.index == 0;
       });
     });
-    widget.model.initScreenshooter(_globalKey);
+    widget.model.initScreenshooter(_screenshot);
   }
 
   @override
@@ -144,10 +151,12 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
                   ? FloatingActionButton(
                       child: Icon(
                         Icons.check,
-                        color: widget.theme?.accentTextTheme?.button?.color,
+                        /*color: widget.theme?.accentTextTheme?.button?.color,*/
                       ),
                       onPressed: () {})
                   : null,
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.endDocked,
               drawer: Drawer(
                 child: ListView(
                   children: <Widget>[
@@ -161,9 +170,23 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
                 InputsPreview(theme: widget.theme),
                 SliderPreview(theme: widget.theme),
                 ChipsPreview(theme: widget.theme),
-                TypographyPreview(theme: widget.theme)
+                TypographyPreview(
+                  textTheme: widget.theme.textTheme,
+                  brightness: widget.theme.brightness,
+                ),
+                TypographyPreview(
+                  textTheme: widget.theme.primaryTextTheme,
+                  brightness: widget.theme.primaryColorBrightness,
+                ),
+                TypographyPreview(
+                  textTheme: widget.theme.accentTextTheme,
+                  brightness: widget.theme.accentColorBrightness,
+                ),
               ]),
-              bottomNavigationBar: BottomNavigationBar(items: bottomItems),
+              bottomNavigationBar: BottomAppBar(
+                child: Row(children: bottomItems),
+                shape: CircularNotchedRectangle(),
+              ),
             ),
           ),
         ),
@@ -177,12 +200,11 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
       tabs:
           _tabsItem.map((t) => Tab(text: t.text, icon: Icon(t.icon))).toList());
 
-  _screenshot() async {
+  Future<Uint8List> _screenshot() async {
     RenderRepaintBoundary boundary =
         _globalKey.currentContext.findRenderObject();
     final capture = await boundary.toImage();
     ByteData bytedata = await capture.toByteData(format: ImageByteFormat.png);
-    final pngBytes = bytedata.buffer.asUint8List();
-    widget.model.screenshot(pngBytes);
+    return bytedata.buffer.asUint8List();
   }
 }

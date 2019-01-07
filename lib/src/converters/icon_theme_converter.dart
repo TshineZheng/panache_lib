@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'converter_utils.dart';
 
-String iconThemeToCode(IconThemeData iconTheme) {
+String iconThemeToCode(IconThemeData theme) {
+  final iconTheme = IconThemeData.fallback().merge(theme);
   return '''IconThemeData(
       color: ${colorToCode(iconTheme.color)},
       opacity: ${iconTheme.opacity},
@@ -11,10 +12,11 @@ String iconThemeToCode(IconThemeData iconTheme) {
 }
 
 Map<String, dynamic> iconThemeToMap(IconThemeData theme) {
+  final iconTheme = IconThemeData.fallback().merge(theme);
   return {
-    'color': theme.color.value,
-    'opacity': theme.opacity,
-    'size': theme.size,
+    'color': iconTheme.color.value,
+    'opacity': iconTheme.opacity,
+    'size': iconTheme.size,
   };
 }
 

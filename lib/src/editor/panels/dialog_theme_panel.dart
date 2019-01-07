@@ -27,7 +27,7 @@ class DialogThemePanel extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: ShapeFormControl(
               shape: dialogTheme.shape,
               onShapeChanged: (shape) =>

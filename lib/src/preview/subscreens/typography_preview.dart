@@ -1,69 +1,77 @@
 import 'package:flutter/material.dart';
 
 class TypographyPreview extends StatelessWidget {
-  final ThemeData theme;
+  //final ThemeData theme;
 
-  const TypographyPreview({Key key, this.theme}) : super(key: key);
+  final TextTheme textTheme;
+  final Brightness brightness;
+
+  const TypographyPreview(
+      {Key key, @required this.textTheme, @required this.brightness})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
+      color: brightness == Brightness.dark
+          ? Colors.grey.shade700
+          : Colors.grey.shade100,
       padding: EdgeInsets.all(8.0),
       child: ListView(
         children: [
           Text(
             'Headline',
-            style: theme.textTheme.headline,
+            style: textTheme.headline,
           ),
           Text(
             'Subhead',
-            style: theme.textTheme.subhead,
+            style: textTheme.subhead,
           ),
           Text(
             'Title',
-            style: theme.textTheme.title,
+            style: textTheme.title,
           ),
           Text(
             'Subtitle',
-            style: theme.textTheme.subtitle,
+            style: textTheme.subtitle,
           ),
           Text(
             'Caption',
-            style: theme.textTheme.caption,
+            style: textTheme.caption,
           ),
           Text(
             'Overline',
-            style: theme.textTheme.overline,
+            style: textTheme.overline,
           ),
           Text(
             'Body 1',
-            style: theme.textTheme.body1,
+            style: textTheme.body1,
           ),
           Text(
             'Body 2',
-            style: theme.textTheme.body2,
+            style: textTheme.body2,
           ),
           FlatButton(
               child: Text(
                 'button',
-                style: theme.textTheme.button,
+                style: textTheme.button,
               ),
               onPressed: () {}),
           Text(
             'Display 1',
-            style: theme.textTheme.display1,
+            style: textTheme.display1,
           ),
           Text(
             'Display 2',
-            style: theme.textTheme.display2,
+            style: textTheme.display2,
           ),
           Text(
             'Display 3',
-            style: theme.textTheme.display3,
+            style: textTheme.display3,
           ),
           Text(
             'Display 4',
-            style: theme.textTheme.display4,
+            style: textTheme.display4,
           ),
         ],
       ),
