@@ -88,7 +88,7 @@ Map<String, dynamic> inputDecorationThemeToMap(
     'isDense': inputTheme.isDense,
     'contentPadding': paddingToMap(
         inputTheme.contentPadding ?? getDefaultContentPadding(inputTheme)),
-    'isCollapsed ': inputTheme.isCollapsed,
+    'isCollapsed': inputTheme.isCollapsed,
     'prefixStyle': textStyleToMap(inputTheme.prefixStyle ?? defaultHintStyle),
     'suffixStyle': textStyleToMap(inputTheme.suffixStyle ?? defaultHintStyle),
     'counterStyle': textStyleToMap(inputTheme.counterStyle ?? defaultHintStyle),

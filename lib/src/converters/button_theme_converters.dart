@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import '../utils/constants.dart';
@@ -35,7 +37,7 @@ Map<String, dynamic> buttonThemeToMap(ButtonThemeData buttonTheme) {
   //ButtonThemeData
   return {
     'type': 'ButtonThemeData',
-    'textTheme': ButtonTextTheme.values.indexOf(buttonTheme.textTheme),
+    'textTheme': max(0, ButtonTextTheme.values.indexOf(buttonTheme.textTheme)),
     'minWidth': buttonTheme.minWidth.toInt(),
     'height': buttonTheme.height.toInt(),
     'padding': paddingToMap(buttonTheme.padding),
@@ -52,7 +54,7 @@ Map<String, dynamic> buttonThemeToMap(ButtonThemeData buttonTheme) {
 
 ButtonThemeData buttonThemeFromMap(Map<String, dynamic> data) {
   return ButtonThemeData(
-      textTheme: ButtonTextTheme.values[data['textTheme']],
+      textTheme: ButtonTextTheme.values[max(0, data['textTheme'])],
       minWidth: (data['minWidth'] as int).toDouble(),
       height: (data['height'] as int).toDouble(),
       padding: paddingFromMap(data['padding']),

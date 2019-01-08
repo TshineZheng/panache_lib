@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:panache_lib/src/converters/button_theme_converters.dart';
 
-import 'converters/mock_button_theme.dart';
+import 'mock_button_theme.dart';
 
 void main() {
   ButtonThemeData buttonTheme;

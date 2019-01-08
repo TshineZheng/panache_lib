@@ -60,6 +60,9 @@ class GlobalThemePropertiesControl extends StatelessWidget {
           model.theme.textTheme));
 
   void _onSwatchSelection(ThemeModel model, MaterialColor swatch) {
-    model.newTheme(primarySwatch: swatch, brightness: model.theme.brightness);
+    model.updateTheme(ThemeData.localize(
+        ThemeData(primarySwatch: swatch, brightness: model.theme.brightness),
+        model.theme.textTheme));
+    //model.newTheme(primarySwatch: swatch, brightness: model.theme.brightness);
   }
 }

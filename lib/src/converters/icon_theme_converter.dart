@@ -23,7 +23,7 @@ Map<String, dynamic> iconThemeToMap(IconThemeData theme) {
 IconThemeData iconThemeFromMap(Map<String, dynamic> data) {
   return IconThemeData(
     color: Color(data['color']),
-    opacity: double.parse(data['opacity'] ?? '1.0'),
-    size: double.parse(data['size'] ?? '12.0'),
+    opacity: data['opacity'] ?? 1.0,
+    size: data['size'] ?? 12.0,
   );
 }

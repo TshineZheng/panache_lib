@@ -120,8 +120,8 @@ Map<String, dynamic> themeToMap(ThemeData theme) {
     'errorColor': theme.errorColor.value,
     'buttonTheme': buttonThemeToMap(theme.buttonTheme),
     'textTheme': textThemeToMap(theme.textTheme),
-    'primaryTextTheme': '${textThemeToCode(theme.primaryTextTheme)}',
-    'accentTextTheme': '${textThemeToCode(theme.accentTextTheme)}',
+    'primaryTextTheme': textThemeToMap(theme.primaryTextTheme),
+    'accentTextTheme': textThemeToMap(theme.accentTextTheme),
     'inputDecorationTheme': inputDecorationThemeToMap(
         theme.inputDecorationTheme,
         theme.hintColor,
@@ -138,7 +138,7 @@ Map<String, dynamic> themeToMap(ThemeData theme) {
       theme.chipTheme,
       defaultLabelStyle: theme.textTheme.body2,
     ),
-    'dialogTheme': '${dialogThemeToMap(theme.dialogTheme)}',
+    'dialogTheme': dialogThemeToMap(theme.dialogTheme),
     /* FIXME
       'platform': _theme.platform == TargetPlatform.iOS ? 'iOS' : 'android',*/
   };
@@ -148,14 +148,15 @@ ThemeData themeFromJson(String jsonTheme) {
   final Map<String, dynamic> themeMap = json.decode(jsonTheme);
   return ThemeData(
     primarySwatch: swatchFor(color: Color(themeMap['primarySwatch'])),
-    brightness: Brightness.values[themeMap['brightness']],
+    brightness: Brightness.values[max(0, themeMap['brightness'])],
     primaryColor: Color(themeMap['primaryColor']),
     primaryColorBrightness:
-        Brightness.values[themeMap['primaryColorBrightness']],
+        Brightness.values[max(0, themeMap['primaryColorBrightness'])],
     primaryColorLight: Color(themeMap['primaryColorLight']),
     primaryColorDark: Color(themeMap['primaryColorDark']),
     accentColor: Color(themeMap['accentColor']),
-    accentColorBrightness: Brightness.values[themeMap['accentColorBrightness']],
+    accentColorBrightness:
+        Brightness.values[max(0, themeMap['accentColorBrightness'])],
     canvasColor: Color(themeMap['canvasColor']),
     scaffoldBackgroundColor: Color(themeMap['scaffoldBackgroundColor']),
     bottomAppBarColor: Color(themeMap['bottomAppBarColor']),
@@ -204,7 +205,7 @@ ThemeData themeFromJson(String jsonTheme) {
 }
 
 int brightnessIndex(Brightness value) =>
-    Brightness.values.indexOf(value) ?? Brightness.light;
+    max(0, Brightness.values.indexOf(value));
 
 String sliderThemeToCode(
     SliderThemeData sliderTheme, TextStyle defaultValueIndicatorStyle) {
@@ -247,8 +248,8 @@ Map<String, dynamic> sliderThemeToMap(
     'overlayColor': sliderTheme.overlayColor.value,
     'valueIndicatorColor': sliderTheme.valueIndicatorColor.value,
     'valueIndicatorShape': {'type': 'PaddleSliderValueIndicatorShape'},
-    'showValueIndicator':
-        ShowValueIndicator.values.indexOf(sliderTheme.showValueIndicator),
+    'showValueIndicator': max(
+        0, ShowValueIndicator.values.indexOf(sliderTheme.showValueIndicator)),
     'valueIndicatorTextStyle': textStyleToMap(
         defaultValueIndicatorStyle.merge(sliderTheme.valueIndicatorTextStyle)),
   };
@@ -270,7 +271,8 @@ SliderThemeData sliderThemeFromMap(Map<String, dynamic> data) {
     overlayColor: Color(data['overlayColor']),
     valueIndicatorColor: Color(data['valueIndicatorColor']),
     valueIndicatorShape: PaddleSliderValueIndicatorShape(),
-    showValueIndicator: ShowValueIndicator.values[data['showValueIndicator']],
+    showValueIndicator:
+        ShowValueIndicator.values[max(0, data['showValueIndicator'])],
     valueIndicatorTextStyle: textStyleFromMap(data['valueIndicatorTextStyle']),
   );
 }
@@ -310,8 +312,8 @@ Map<String, dynamic> tabBarThemeToMap(TabBarTheme tabBarTheme,
   final unselectedColor =
       tabBarTheme.unselectedLabelColor ?? selectedColor.withAlpha(0xB2);
   return {
-    'indicatorSize': TabBarIndicatorSize.values
-        .indexOf(tabBarTheme.indicatorSize ?? TabBarIndicatorSize.tab),
+    'indicatorSize':
+        max(0, TabBarIndicatorSize.values.indexOf(tabBarTheme.indicatorSize)),
     'labelColor': selectedColor.value,
     'unselectedLabelColor': unselectedColor.value,
   };
@@ -372,7 +374,7 @@ Map<String, dynamic> chipThemeToMap(ChipThemeData chipTheme,
 ChipThemeData chipThemeFromMap(Map<String, dynamic> data) {
   return ChipThemeData(
     backgroundColor: Color(data['backgroundColor']),
-    brightness: Brightness.values[data['brightness']],
+    brightness: Brightness.values[max(0, data['brightness'])],
     deleteIconColor: Color(data['deleteIconColor']),
     disabledColor: Color(data['disabledColor']),
     labelPadding: paddingFromMap(data['labelPadding']),

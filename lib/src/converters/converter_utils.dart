@@ -66,7 +66,7 @@ Map<String, dynamic> colorSchemeToMap(ColorScheme scheme) {
     'onSurface': scheme.onSurface.value,
     'onBackground': scheme.onBackground.value,
     'onError': scheme.onError.value,
-    'brightness': Brightness.values.indexOf(scheme.brightness),
+    'brightness': max(0, Brightness.values.indexOf(scheme.brightness)),
   };
 }
 
@@ -84,7 +84,7 @@ ColorScheme colorSchemeFromMap(Map<String, dynamic> data) {
     onSurface: Color(data['onSurface']),
     onBackground: Color(data['onBackground']),
     onError: Color(data['onError']),
-    brightness: Brightness.values[data['brightness']],
+    brightness: Brightness.values[max(0, data['brightness'])],
   );
 }
 
@@ -131,6 +131,6 @@ BorderSide borderSideFromMap(dynamic data) {
   return BorderSide(
     color: data['color'],
     width: double.parse(data['width']) ?? 1.0,
-    style: BorderStyle.values[data['style']],
+    style: BorderStyle.values[max(0, data['style'])],
   );
 }

@@ -27,7 +27,7 @@ String textStyleToCode(TextStyle style) {
   return '''TextStyle(
       color: ${colorToCode(style.color)},
       fontSize: ${style.fontSize},
-      fontWeight: ${style.fontWeight},
+      fontWeight: ${style.fontWeight ?? FontWeight.normal},
       fontStyle: ${style.fontStyle ?? FontStyle.normal},
     )''';
 
@@ -71,9 +71,8 @@ Map<String, dynamic> textStyleToMap(TextStyle style) {
   return <String, dynamic>{
     'color': style.color.value,
     'fontSize': style.fontSize,
-    'fontWeight':
-        FontWeight.values.indexOf(style.fontWeight) ?? FontWeight.normal,
-    'fontStyle': FontStyle.values.indexOf(style.fontStyle) ?? FontStyle.normal,
+    'fontWeight': max(0, FontWeight.values.indexOf(style.fontWeight)),
+    'fontStyle': max(0, FontStyle.values.indexOf(style.fontStyle)),
     /* TODO
     'letterSpacing': style.letterSpacing,
     'wordSpacing': style.wordSpacing,

@@ -69,7 +69,7 @@ class ThemeModel extends Model {
     _service.initTheme(primarySwatch: primarySwatch, brightness: brightness);
 
     _themes.add(_currentTheme);
-    _service.saveTheme(defaultThemeName);
+    //_service.saveTheme(uuid);
     localData.updateThemeList(_themes);
 
     notifyListeners();
@@ -81,6 +81,7 @@ class ThemeModel extends Model {
 
   void updateTheme(ThemeData updatedTheme) {
     _service.updateTheme(updatedTheme);
+    saveTheme();
     notifyListeners();
   }
 
@@ -105,16 +106,18 @@ class ThemeModel extends Model {
   }
 
   Future loadTheme(PanacheTheme theme) async {
+    _currentTheme = theme;
     final result = await _service.loadTheme('${theme.id}.json');
     notifyListeners();
     return result;
   }
 
-  void screenshot(Uint8List pngBytes) {
+  /*void screenshot(Uint8List pngBytes) {
     _service.screenshot(_themeName, pngBytes);
-  }
+  }*/
 
   void initScreenshooter(ScreenShooter screenShooterKey) {
     _screenShooter = screenShooterKey;
+    saveTheme();
   }
 }
