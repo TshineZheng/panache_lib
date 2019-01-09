@@ -60,7 +60,9 @@ class LaunchScreenState extends State<LaunchScreen> {
                         child: FlatButton(
                           child: Text(
                             editMode ? 'Done' : 'Edit',
-                            style: TextStyle(fontWeight: FontWeight.normal),
+                            style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                color: Colors.blueGrey),
                           ),
                           onPressed: () => setState(() => editMode = !editMode),
                         ),
@@ -71,7 +73,8 @@ class LaunchScreenState extends State<LaunchScreen> {
                         child: ListView(
                           padding: EdgeInsets.symmetric(
                               vertical: 16.0, horizontal: 16),
-                          /*shrinkWrap: true,*/ itemExtent: 180,
+                          shrinkWrap: true,
+                          itemExtent: 180,
                           scrollDirection: Axis.horizontal,
                           semanticChildCount: model.themes?.length ?? 0,
                           children: _buildThemeThumbs(model.themes ?? [],

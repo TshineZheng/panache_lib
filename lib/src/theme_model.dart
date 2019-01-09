@@ -121,7 +121,7 @@ class ThemeModel extends Model {
 
   void initScreenshooter(ScreenShooter screenShooterKey) {
     _screenShooter = screenShooterKey;
-    Future.delayed(aSecond, () => saveTheme());
+    Future.delayed(aSecond * 2, () => saveTheme());
   }
 
   Future<bool> exportThemeToDrive() async {
@@ -135,8 +135,12 @@ class ThemeModel extends Model {
   deleteTheme(PanacheTheme theme) async {
     localData.deleteTheme(theme);
     _themes.remove(theme);
-    await File('${dir.path}/themes/${theme.id}.png').delete();
-    await File('${dir.path}/themes/${theme.id}.json').delete();
+    final screenshot = File('${dir.path}/themes/${theme.id}.png');
+    if (await screenshot.exists()) await screenshot.delete();
+
+    final dataFile = File('${dir.path}/themes/${theme.id}.json');
+    if (await dataFile.exists()) await dataFile.delete();
+
     notifyListeners();
   }
 }

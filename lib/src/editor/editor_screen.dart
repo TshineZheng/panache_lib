@@ -22,19 +22,21 @@ class PanacheEditorScreenState extends State<PanacheEditorScreen> {
       return Scaffold(
         backgroundColor: Colors.grey.shade300,
         appBar: AppBar(
-          title: Text('Panache'),
+          /*title: Text('Panache'),*/
           actions: <Widget>[
             FlatButton.icon(
               textColor: Colors.blueGrey.shade50,
               icon: Icon(Icons.mobile_screen_share),
               label: Text('App preview'),
-              onPressed: () => setState(() => showCode = false),
+              onPressed:
+                  showCode ? () => setState(() => showCode = false) : null,
             ),
             FlatButton.icon(
               textColor: Colors.blueGrey.shade50,
               icon: Icon(Icons.keyboard),
               label: Text('Code preview'),
-              onPressed: () => setState(() => showCode = true),
+              onPressed:
+                  showCode ? null : () => setState(() => showCode = true),
             ),
             FlatButton.icon(
               onPressed: model.saveTheme,

@@ -6,7 +6,7 @@ import 'text_theme_converters.dart';
 String inputDecorationThemeToCode(InputDecorationTheme inputTheme,
     Color hintColor, TextStyle bodyStyle, Brightness brightness) {
   final defaultHintStyle = TextStyle(color: hintColor).merge(bodyStyle);
-
+  final defaultBorder = inputTheme.border ?? UnderlineInputBorder();
   return '''
   InputDecorationTheme(
     labelStyle: ${textStyleToCode(inputTheme.labelStyle ?? defaultHintStyle)},
@@ -16,19 +16,31 @@ String inputDecorationThemeToCode(InputDecorationTheme inputTheme,
     errorMaxLines: ${inputTheme.errorMaxLines},
     hasFloatingPlaceholder: ${inputTheme.hasFloatingPlaceholder},
     isDense: ${inputTheme.isDense},
-    contentPadding: ${paddingToCode(inputTheme.contentPadding ?? getDefaultContentPadding(inputTheme))},
+    contentPadding: ${paddingToCode(
+    inputTheme.contentPadding ?? getDefaultContentPadding(inputTheme),
+  )},
     isCollapsed : ${inputTheme.isCollapsed},
     prefixStyle: ${textStyleToCode(inputTheme.prefixStyle ?? defaultHintStyle)},
     suffixStyle: ${textStyleToCode(inputTheme.suffixStyle ?? defaultHintStyle)},
-    counterStyle: ${textStyleToCode(inputTheme.counterStyle ?? defaultHintStyle)},
+    counterStyle: ${textStyleToCode(
+    inputTheme.counterStyle ?? defaultHintStyle,
+  )},
     filled: ${inputTheme.filled},
     fillColor: ${colorToCode(_getFillColor(inputTheme, brightness))},
-    errorBorder: ${inputBorderToCode(inputTheme.errorBorder ?? inputTheme.border)},
-    focusedBorder: ${inputBorderToCode(inputTheme.focusedBorder ?? inputTheme.border)},
-    focusedErrorBorder: ${inputBorderToCode(inputTheme.focusedErrorBorder ?? inputTheme.border)},
-    disabledBorder: ${inputBorderToCode(inputTheme.disabledBorder ?? inputTheme.border)},
-    enabledBorder: ${inputBorderToCode(inputTheme.enabledBorder ?? inputTheme.border)},
-    border: ${inputBorderToCode(inputTheme.border)},
+    errorBorder: ${inputBorderToCode(inputTheme.errorBorder ?? defaultBorder)},
+    focusedBorder: ${inputBorderToCode(
+    inputTheme.focusedBorder ?? defaultBorder,
+  )},
+    focusedErrorBorder: ${inputBorderToCode(
+    inputTheme.focusedErrorBorder ?? defaultBorder,
+  )},
+    disabledBorder: ${inputBorderToCode(
+    inputTheme.disabledBorder ?? defaultBorder,
+  )},
+    enabledBorder: ${inputBorderToCode(
+    inputTheme.enabledBorder ?? defaultBorder,
+  )},
+    border: ${inputBorderToCode(defaultBorder)},
   )''';
 }
 
@@ -78,28 +90,33 @@ Map<String, dynamic> inputDecorationThemeToMap(
   Brightness brightness,
 ) {
   final defaultHintStyle = TextStyle(color: hintColor).merge(bodyStyle);
+  final defaultBorder = inputTheme.border ?? UnderlineInputBorder();
   return {
     'labelStyle': textStyleToMap(inputTheme.labelStyle ?? defaultHintStyle),
     'helperStyle': textStyleToMap(inputTheme.helperStyle ?? defaultHintStyle),
     'hintStyle': textStyleToMap(inputTheme.hintStyle ?? defaultHintStyle),
     'errorStyle': textStyleToMap(inputTheme.errorStyle ?? defaultHintStyle),
+    'prefixStyle': textStyleToMap(inputTheme.prefixStyle ?? defaultHintStyle),
+    'suffixStyle': textStyleToMap(inputTheme.suffixStyle ?? defaultHintStyle),
+    'counterStyle': textStyleToMap(inputTheme.counterStyle ?? defaultHintStyle),
     'errorMaxLines': inputTheme.errorMaxLines,
     'hasFloatingPlaceholder': inputTheme.hasFloatingPlaceholder,
     'isDense': inputTheme.isDense,
     'contentPadding': paddingToMap(
         inputTheme.contentPadding ?? getDefaultContentPadding(inputTheme)),
     'isCollapsed': inputTheme.isCollapsed,
-    'prefixStyle': textStyleToMap(inputTheme.prefixStyle ?? defaultHintStyle),
-    'suffixStyle': textStyleToMap(inputTheme.suffixStyle ?? defaultHintStyle),
-    'counterStyle': textStyleToMap(inputTheme.counterStyle ?? defaultHintStyle),
     'filled': inputTheme.filled,
     'fillColor': _getFillColor(inputTheme, brightness).value,
-    'errorBorder': inputBorderToMap(inputTheme.errorBorder),
-    'focusedBorder': inputBorderToMap(inputTheme.focusedBorder),
-    'focusedErrorBorder': inputBorderToMap(inputTheme.focusedErrorBorder),
-    'disabledBorder': inputBorderToMap(inputTheme.disabledBorder),
-    'enabledBorder': inputBorderToMap(inputTheme.enabledBorder),
-    'border': inputBorderToMap(inputTheme.border)
+    'errorBorder': inputBorderToMap(inputTheme.errorBorder ?? defaultBorder),
+    'focusedBorder':
+        inputBorderToMap(inputTheme.focusedBorder ?? defaultBorder),
+    'focusedErrorBorder':
+        inputBorderToMap(inputTheme.focusedErrorBorder ?? defaultBorder),
+    'disabledBorder':
+        inputBorderToMap(inputTheme.disabledBorder ?? defaultBorder),
+    'enabledBorder':
+        inputBorderToMap(inputTheme.enabledBorder ?? defaultBorder),
+    'border': inputBorderToMap(defaultBorder)
   };
 }
 
@@ -109,7 +126,7 @@ Map<String, dynamic> inputBorderToMap(InputBorder border) {
   if (border is UnderlineInputBorder) {
     return {
       'type': type,
-      'radius': borderRadiusToMap(border.borderRadius),
+      'radius': borderRadiusToMap(border.borderRadius ?? BorderRadius.zero),
       'side': borderSideToMap(border.borderSide)
     };
   }
@@ -117,7 +134,7 @@ Map<String, dynamic> inputBorderToMap(InputBorder border) {
   if (border is OutlineInputBorder) {
     return {
       'type': type,
-      'radius': borderRadiusToMap(border.borderRadius),
+      'radius': borderRadiusToMap(border.borderRadius ?? BorderRadius.zero),
       'side': borderSideToMap(border.borderSide),
       'gapPadding': border.gapPadding
     };
@@ -157,7 +174,7 @@ InputDecorationTheme inputDecorationThemeFromMap(Map<String, dynamic> data) {
 InputBorder inputBorderFromMap(Map<String, dynamic> data) {
   if (data['type'] == 'UnderlineInputBorder') {
     return UnderlineInputBorder(
-        borderRadius: borderRadiusFromMap(data['borderRadius']),
+        borderRadius: borderRadiusFromMap(data['radius']),
         borderSide: borderSideFromMap(data['borderSide']));
   }
 

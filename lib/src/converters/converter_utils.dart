@@ -111,7 +111,7 @@ String borderSideToCode(BorderSide side) {
 
 Map<String, dynamic> borderSideToMap(BorderSide side) {
   return <String, dynamic>{
-    'color': side.color,
+    'color': side.color.value,
     'width': side.width.toStringAsFixed(0),
     'style': max(0, BorderStyle.values.indexOf(side.style)),
   };
