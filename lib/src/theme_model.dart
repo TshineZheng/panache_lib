@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:quiver/time.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import 'converters/theme_converter.dart';
@@ -18,6 +19,12 @@ typedef Future<Uint8List> ScreenShooter();
 class ThemeModel extends Model {
   static ThemeModel of(BuildContext context) =>
       ScopedModel.of<ThemeModel>(context);
+
+  final CloudService _cloudService;
+
+  final List<PanacheTheme> _themes;
+
+  final LocalData localData;
 
   ThemeService _service;
 
@@ -39,16 +46,16 @@ class ThemeModel extends Model {
 
   Uuid _uuid = Uuid();
 
-  final List<PanacheTheme> _themes;
-
   List<PanacheTheme> get themes => _themes;
 
   String get uuid => _uuid.generateV4();
 
-  final LocalData localData;
-
-  ThemeModel({@required ThemeService service, @required this.localData})
-      : _service = service,
+  ThemeModel({
+    @required CloudService cloudService,
+    @required ThemeService service,
+    @required this.localData,
+  })  : _service = service,
+        _cloudService = cloudService,
         _themes = localData.themes {
     _service.init(onChange);
   }
@@ -112,12 +119,32 @@ class ThemeModel extends Model {
     return result;
   }
 
-  /*void screenshot(Uint8List pngBytes) {
-    _service.screenshot(_themeName, pngBytes);
-  }*/
-
   void initScreenshooter(ScreenShooter screenShooterKey) {
     _screenShooter = screenShooterKey;
-    saveTheme();
+    Future.delayed(aSecond, () => saveTheme());
   }
+
+  Future<bool> exportThemeToDrive() async {
+    if (!_cloudService.authenticated) await _cloudService.login();
+
+    final result = await _cloudService.save(themeToCode(_service.theme));
+    print('ThemeModel.exportThemeToDrive... $result');
+    return result != null;
+  }
+
+  deleteTheme(PanacheTheme theme) async {
+    localData.deleteTheme(theme);
+    _themes.remove(theme);
+    await File('${dir.path}/themes/${theme.id}.png').delete();
+    await File('${dir.path}/themes/${theme.id}.json').delete();
+    notifyListeners();
+  }
+}
+
+abstract class CloudService {
+  bool get authenticated => null;
+
+  login();
+  logout();
+  Future save(String content);
 }

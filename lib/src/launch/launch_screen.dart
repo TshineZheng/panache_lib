@@ -22,6 +22,8 @@ class LaunchScreenState extends State<LaunchScreen> {
 
   Brightness initialBrightness = Brightness.light;
 
+  bool editMode = false;
+
   @override
   void initState() {
     super.initState();
@@ -29,7 +31,8 @@ class LaunchScreenState extends State<LaunchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    print('LaunchScreenState.build... ');
+    imageCache.clear();
     return Scaffold(
       backgroundColor: Colors.blueGrey.shade50,
       body: SafeArea(child: ScopedModelDescendant<ThemeModel>(
@@ -40,10 +43,7 @@ class LaunchScreenState extends State<LaunchScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             mainAxisSize: MainAxisSize.max,
             children: [
-              Text(
-                'Panache',
-                style: textTheme.display1,
-              ),
+              PanacheLogo(),
               ConstrainedBox(
                 constraints: BoxConstraints.tightFor(width: 520),
                 child: NewThemePanel(
@@ -54,18 +54,31 @@ class LaunchScreenState extends State<LaunchScreen> {
                     onNewTheme: () => _newTheme(model)),
               ),
               model.themes?.isNotEmpty ?? false
-                  ? Container(
-                      color: Colors.blueGrey.shade200,
-                      padding: EdgeInsets.symmetric(vertical: 18.0),
-                      constraints: BoxConstraints.expand(height: 280),
-                      child: ListView(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        semanticChildCount: model.themes?.length ?? 0,
-                        children: _buildThemeThumbs(model.themes ?? [],
-                            basePath: '${model.dir?.path ?? ''}/themes'),
+                  ? Column(children: [
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: FlatButton(
+                          child: Text(
+                            editMode ? 'Done' : 'Edit',
+                            style: TextStyle(fontWeight: FontWeight.normal),
+                          ),
+                          onPressed: () => setState(() => editMode = !editMode),
+                        ),
                       ),
-                    )
+                      Container(
+                        color: Colors.blueGrey.shade200,
+                        constraints: BoxConstraints.expand(height: 300),
+                        child: ListView(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 16.0, horizontal: 16),
+                          /*shrinkWrap: true,*/ itemExtent: 180,
+                          scrollDirection: Axis.horizontal,
+                          semanticChildCount: model.themes?.length ?? 0,
+                          children: _buildThemeThumbs(model.themes ?? [],
+                              basePath: '${model.dir?.path ?? ''}/themes'),
+                        ),
+                      )
+                    ])
                   : SizedBox()
             ],
           ),
@@ -86,9 +99,13 @@ class LaunchScreenState extends State<LaunchScreen> {
   }) =>
       themes
           .map<Widget>((f) => ScreenshotRenderer(
+                key: UniqueKey(),
                 theme: f,
+                removable: editMode,
                 basePath: basePath,
                 onThemeSelection: (PanacheTheme theme) => _loadTheme(theme),
+                onDeleteTheme: (PanacheTheme theme) =>
+                    widget.model.deleteTheme(theme),
               ))
           .toList();
 
@@ -103,5 +120,22 @@ class LaunchScreenState extends State<LaunchScreen> {
   Future _loadTheme(PanacheTheme theme) async {
     await widget.model.loadTheme(theme);
     return _editTheme();
+  }
+}
+
+class PanacheLogo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Image.asset('logo.png', package: 'panache_lib', width: 60),
+        ),
+        Text('Panache', style: textTheme.display1),
+      ],
+    );
   }
 }

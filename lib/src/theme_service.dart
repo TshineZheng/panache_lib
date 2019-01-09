@@ -62,7 +62,7 @@ class ThemeService {
     try {
       final _themeFile = File('${_dir.path}/themes/$filename.json');
       final jsonTheme = json.encode(map);
-      print('ThemeService.saveTheme...\n${_themeFile.path}\n$jsonTheme');
+      //print('ThemeService.saveTheme...\n${_themeFile.path}');
       await _themeFile.create(recursive: true);
       await _themeFile.writeAsString(jsonTheme, flush: true);
       _onChange();

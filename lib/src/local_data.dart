@@ -24,4 +24,8 @@ class LocalData {
   PanacheTheme themeDataFromJson(String data) => PanacheTheme.fromJson(data);
 
   void clear() => _prefs.remove(_themeKey);
+
+  void deleteTheme(PanacheTheme theme) {
+    updateThemeList(themes.where((t) => t.id != theme.id).toList());
+  }
 }

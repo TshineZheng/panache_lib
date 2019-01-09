@@ -21,7 +21,7 @@ class ThemeCodePreview extends StatelessWidget {
       constraints: BoxConstraints.expand(),
       decoration: BoxDecoration(
           border: Border(left: BorderSide(color: Colors.blueGrey.shade800)),
-          color: Colors.blueGrey.shade700),
+          color: Colors.blueGrey.shade900),
       padding: EdgeInsets.only(top: 24, left: 24),
       child: SingleChildScrollView(
         child: RichText(

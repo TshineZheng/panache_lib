@@ -42,11 +42,18 @@ class PanacheEditorScreenState extends State<PanacheEditorScreen> {
               icon: Icon(Icons.save),
               label: Text('Save'),
             ),
+            /*
             FlatButton.icon(
               onPressed: model.exportTheme,
               textColor: Colors.yellow,
-              icon: Icon(Icons.save),
+              icon: Icon(Icons.insert_drive_file),
               label: Text('Export'),
+            ),*/
+            FlatButton.icon(
+              onPressed: model.exportThemeToDrive,
+              textColor: Colors.yellow,
+              icon: Icon(Icons.cloud_upload),
+              label: Text('Drive'),
             ),
           ],
         ),
