@@ -169,7 +169,7 @@ class TextStyleControl extends StatelessWidget {
             getFieldsRow([
               PanacheDropdown<SelectionItem<TextDecoration>>(
                 label: 'Decoration',
-                selection: style.decorationStyle != null
+                selection: style.decoration != null
                     ? _textDecorations
                         .firstWhere((item) => item.value == style.decoration)
                     : _textDecorations.first,
