@@ -20,35 +20,35 @@ class TypographyPreview extends StatelessWidget {
       child: ListView(
         children: [
           Text(
-            'Headline',
+            'Headline\nThe quick brown fox jumps over the lazy dog\n',
             style: textTheme.headline,
           ),
           Text(
-            'Subhead',
+            'Subhead\nThe quick brown fox jumps over the lazy dog\n',
             style: textTheme.subhead,
           ),
           Text(
-            'Title',
+            'Title\nThe quick brown fox jumps over the lazy dog\n',
             style: textTheme.title,
           ),
           Text(
-            'Subtitle',
+            'Subtitle\nThe quick brown fox jumps over the lazy dog\n',
             style: textTheme.subtitle,
           ),
           Text(
-            'Caption',
+            'Caption\nThe quick brown fox jumps over the lazy dog\n',
             style: textTheme.caption,
           ),
           Text(
-            'Overline',
+            'Overline\nThe quick brown fox jumps over the lazy dog\n',
             style: textTheme.overline,
           ),
           Text(
-            'Body 1',
+            'Body 1\nThe quick brown fox jumps over the lazy dog\nThe quick brown fox jumps over the lazy dog\nThe quick brown fox jumps over the lazy dog\n',
             style: textTheme.body1,
           ),
           Text(
-            'Body 2',
+            'Body 2\nThe quick brown fox jumps over the lazy dog\nThe quick brown fox jumps over the lazy dog\nThe quick brown fox jumps over the lazy dog\n',
             style: textTheme.body2,
           ),
           FlatButton(

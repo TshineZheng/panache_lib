@@ -105,7 +105,6 @@ Map<String, dynamic> borderRadiusToMap(BorderRadiusGeometry radius) {
 }
 
 String borderSideToCode(BorderSide side) {
-  //if (side.style == BorderStyle.none) return 'BorderSide.none';
   return 'BorderSide(color: ${side.color}, width: ${side.width}, style: ${side.style}, )';
 }
 
@@ -127,7 +126,7 @@ BorderRadius borderRadiusFromMap(Map<String, dynamic> data) {
 }
 
 BorderSide borderSideFromMap(dynamic data) {
-  if (data == 'none') return BorderSide.none;
+  if (data == null || data == 'none') return BorderSide.none;
   return BorderSide(
     color: data['color'],
     width: double.parse(data['width']) ?? 1.0,

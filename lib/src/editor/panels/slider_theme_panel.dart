@@ -183,11 +183,8 @@ class SliderThemePanel extends StatelessWidget {
   Widget _buildValueIndicatorTextStyleControl() {
     return TextStyleControl(
       'Value indicator text style',
-      fontSize: indicatorStyle.fontSize ?? 12,
+      style: indicatorStyle,
       maxFontSize: 20,
-      color: indicatorStyle.color,
-      isBold: indicatorStyle.fontWeight == FontWeight.bold,
-      isItalic: indicatorStyle.fontStyle == FontStyle.italic,
       onColorChanged: (c) => _updateSliderTheme(sliderTheme.copyWith(
           valueIndicatorTextStyle: indicatorStyle.copyWith(color: c))),
       onFontStyleChanged: (bool isItalic) =>

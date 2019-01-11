@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:panache_lib/src/editor/controls/control_container.dart';
 
 class SliderPropertyControl extends StatefulWidget {
   final String label;
@@ -24,7 +25,7 @@ class SliderPropertyControl extends StatefulWidget {
 
   @override
   SliderPropertyControlState createState() {
-    return new SliderPropertyControlState();
+    return SliderPropertyControlState();
   }
 }
 
@@ -47,72 +48,64 @@ class SliderPropertyControlState extends State<SliderPropertyControl> {
     final constraints = widget.maxWidth != null
         ? BoxConstraints(maxWidth: widget.maxWidth)
         : BoxConstraints();
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 8),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: Colors.white,
-        ),
-        child: widget.vertical
-            ? Column(
-                children: [
-                  Text(
-                    "${widget.label}",
-                    style: textTheme.subtitle,
+    return ControlContainerBorder(
+      child: widget.vertical
+          ? Column(
+              children: [
+                Text(
+                  "${widget.label}",
+                  style: textTheme.subtitle,
+                ),
+                ConstrainedBox(
+                  constraints: constraints,
+                  child: Slider(
+                    value: updatedValue,
+                    min: widget.min,
+                    max: widget.max,
+                    divisions: widget.showDivisions
+                        ? (widget.max - widget.min) ~/ 4
+                        : null,
+                    onChangeEnd: widget.onValueChanged,
+                    onChanged: (value) {
+                      setState(() {
+                        updatedValue = value;
+                      });
+                    },
                   ),
-                  ConstrainedBox(
-                    constraints: constraints,
-                    child: Slider(
-                      value: updatedValue,
-                      min: widget.min,
-                      max: widget.max,
-                      divisions: widget.showDivisions
-                          ? (widget.max - widget.min) ~/ 4
-                          : null,
-                      onChangeEnd: widget.onValueChanged,
-                      onChanged: (value) {
-                        setState(() {
-                          updatedValue = value;
-                        });
-                      },
-                    ),
+                ),
+                Text("${updatedValue.toStringAsFixed(2)}"),
+              ],
+            )
+          : Row(
+              children: [
+                Text(
+                  "${widget.label}",
+                  style: textTheme.subtitle,
+                ),
+                ConstrainedBox(
+                  constraints: constraints,
+                  child: Slider(
+                    value: updatedValue,
+                    min: widget.min,
+                    max: widget.max,
+                    label: '$updatedValue',
+                    divisions: widget.showDivisions
+                        ? (widget.max - widget.min) ~/ 4
+                        : null,
+                    onChangeEnd: widget.onValueChanged,
+                    onChanged: (value) {
+                      setState(() {
+                        updatedValue = value;
+                      });
+                    },
                   ),
-                  Text("${updatedValue.toStringAsFixed(2)}"),
-                ],
-              )
-            : Row(
-                children: [
-                  Text(
-                    "${widget.label}",
-                    style: textTheme.subtitle,
-                  ),
-                  ConstrainedBox(
-                    constraints: constraints,
-                    child: Slider(
-                      value: updatedValue,
-                      min: widget.min,
-                      max: widget.max,
-                      label: '$updatedValue',
-                      divisions: widget.showDivisions
-                          ? (widget.max - widget.min) ~/ 4
-                          : null,
-                      onChangeEnd: widget.onValueChanged,
-                      onChanged: (value) {
-                        setState(() {
-                          updatedValue = value;
-                        });
-                      },
-                    ),
-                  ),
-                  Text(
-                    "${updatedValue.toStringAsFixed(2)}",
-                    style: textTheme.overline,
-                  ),
-                ],
-              ),
-      ),
+                ),
+                Text(
+                  "${updatedValue.toStringAsFixed(2)}",
+                  style: textTheme.overline,
+                ),
+              ],
+            ),
     );
   }
 }

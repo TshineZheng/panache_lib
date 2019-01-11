@@ -71,10 +71,7 @@ class ChipThemePanel extends StatelessWidget {
           TextStyleControl(
             'Label Style',
             key: Key('chip_textstyle'),
-            color: chipLabelStyle.color,
-            fontSize: chipLabelStyle.fontSize ?? 24,
-            isBold: chipLabelStyle.fontWeight == FontWeight.bold,
-            isItalic: chipLabelStyle.fontStyle == FontStyle.italic,
+            style: chipLabelStyle,
             onColorChanged: (color) => _updateChipTheme(chipTheme.copyWith(
                 labelStyle: chipTheme.labelStyle.copyWith(color: color))),
             onSizeChanged: (size) => chipTheme.copyWith(
@@ -94,10 +91,7 @@ class ChipThemePanel extends StatelessWidget {
           TextStyleControl(
             'Secondary Label Style',
             key: Key('chip_alternative_textstyle'),
-            color: chipSecondaryLabelStyle.color,
-            fontSize: chipSecondaryLabelStyle.fontSize ?? 24,
-            isBold: chipSecondaryLabelStyle.fontWeight == FontWeight.bold,
-            isItalic: chipSecondaryLabelStyle.fontStyle == FontStyle.italic,
+            style: chipSecondaryLabelStyle,
             onColorChanged: (color) => _updateChipTheme(
                   chipTheme.copyWith(
                       secondaryLabelStyle:

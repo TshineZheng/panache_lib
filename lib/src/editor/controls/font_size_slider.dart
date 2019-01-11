@@ -1,36 +1,73 @@
 import 'package:flutter/material.dart';
 
-class FontSizeSelector extends StatelessWidget {
+import 'control_container.dart';
+
+class FontSizeSelector extends StatefulWidget {
   final double value;
   final double min;
   final double max;
+  final bool vertical;
   final ValueChanged<double> onValueChanged;
 
   FontSizeSelector(this.value, this.onValueChanged,
-      {this.min: 0.0, this.max: 112.0})
+      {this.min: 0.0, this.max: 112.0, this.vertical})
       : assert(value != null),
         assert(min != null),
         assert(max != null),
         assert(min <= max);
 
   @override
+  FontSizeSelectorState createState() {
+    return new FontSizeSelectorState();
+  }
+}
+
+class FontSizeSelectorState extends State<FontSizeSelector> {
+  double visibleValue;
+
+  @override
+  void initState() {
+    super.initState();
+    visibleValue = widget.value;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(8.0),
-      child: Row(
+    final textTheme = Theme.of(context).textTheme;
+    return ControlContainerBorder(
+      child: Flex(
+        direction: widget.vertical ? Axis.vertical : Axis.horizontal,
         children: [
-          Text("Font size"),
           ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 120.0),
+            constraints: BoxConstraints(maxWidth: 160.0),
             child: Slider(
-              value: value,
-              onChanged: onValueChanged,
-              divisions: (max - min) ~/ 2,
-              min: min,
-              max: max,
+              value: visibleValue,
+              onChanged: (currentValue) =>
+                  setState(() => visibleValue = currentValue),
+              onChangeEnd: widget.onValueChanged,
+              divisions: (widget.max - widget.min) ~/ 2,
+              min: widget.min,
+              max: widget.max,
+              label: '${visibleValue.toStringAsFixed(0)}',
             ),
           ),
-          Text("${value.toStringAsFixed(1)}"),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              RichText(
+                text: TextSpan(
+                    text: 'Font size ',
+                    style: textTheme.subtitle,
+                    children: [
+                      TextSpan(
+                        text: widget.value.toStringAsFixed(1),
+                        style: textTheme.body1,
+                      )
+                    ]),
+              ),
+              /*Text("Font size : ${value.toStringAsFixed(1)}"),*/
+            ],
+          ),
         ],
       ),
     );

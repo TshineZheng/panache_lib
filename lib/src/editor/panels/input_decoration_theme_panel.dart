@@ -151,10 +151,7 @@ class InputDecorationThemePanel extends StatelessWidget {
           TextStyleControl(
             'Label style',
             maxFontSize: 32,
-            color: labelStyle.color,
-            isBold: labelStyle.fontWeight == FontWeight.bold,
-            isItalic: labelStyle.fontStyle == FontStyle.italic,
-            fontSize: labelStyle.fontSize,
+            style: labelStyle,
             onSizeChanged: (double value) => _updateInputDecorationTheme(
                 _copyInputDecorationThemeWith(inputTheme,
                     labelStyle: labelStyle.copyWith(fontSize: value))),
@@ -176,10 +173,7 @@ class InputDecorationThemePanel extends StatelessWidget {
           TextStyleControl(
             'Hint style',
             maxFontSize: 32,
-            color: hintStyle.color,
-            isBold: hintStyle.fontWeight == FontWeight.bold,
-            isItalic: hintStyle.fontStyle == FontStyle.italic,
-            fontSize: hintStyle.fontSize,
+            style: hintStyle,
             onSizeChanged: (double value) => _updateInputDecorationTheme(
                 _copyInputDecorationThemeWith(inputTheme,
                     hintStyle: hintStyle.copyWith(fontSize: value))),
@@ -201,10 +195,7 @@ class InputDecorationThemePanel extends StatelessWidget {
           TextStyleControl(
             'Helper style',
             maxFontSize: 24,
-            color: helperStyle.color,
-            isBold: helperStyle.fontWeight == FontWeight.bold,
-            isItalic: helperStyle.fontStyle == FontStyle.italic,
-            fontSize: helperStyle.fontSize,
+            style: helperStyle,
             onSizeChanged: (double value) => _updateInputDecorationTheme(
                 _copyInputDecorationThemeWith(inputTheme,
                     helperStyle: helperStyle.copyWith(fontSize: value))),
@@ -226,10 +217,7 @@ class InputDecorationThemePanel extends StatelessWidget {
           TextStyleControl(
             'Error style',
             maxFontSize: 24,
-            color: errorStyle.color,
-            isBold: errorStyle.fontWeight == FontWeight.bold,
-            isItalic: errorStyle.fontStyle == FontStyle.italic,
-            fontSize: errorStyle.fontSize,
+            style: errorStyle,
             onSizeChanged: (double value) => _updateInputDecorationTheme(
                 _copyInputDecorationThemeWith(inputTheme,
                     errorStyle: errorStyle.copyWith(fontSize: value))),
@@ -251,10 +239,7 @@ class InputDecorationThemePanel extends StatelessWidget {
           TextStyleControl(
             'Prefix style',
             maxFontSize: 24,
-            color: prefixStyle.color,
-            isBold: prefixStyle.fontWeight == FontWeight.bold,
-            isItalic: prefixStyle.fontStyle == FontStyle.italic,
-            fontSize: prefixStyle.fontSize,
+            style: prefixStyle,
             onSizeChanged: (double value) => _updateInputDecorationTheme(
                 _copyInputDecorationThemeWith(inputTheme,
                     prefixStyle: prefixStyle.copyWith(fontSize: value))),
@@ -276,10 +261,7 @@ class InputDecorationThemePanel extends StatelessWidget {
           TextStyleControl(
             'Suffix style',
             maxFontSize: 24,
-            color: suffixStyle.color,
-            isBold: suffixStyle.fontWeight == FontWeight.bold,
-            isItalic: suffixStyle.fontStyle == FontStyle.italic,
-            fontSize: suffixStyle.fontSize,
+            style: suffixStyle,
             onSizeChanged: (double value) => _updateInputDecorationTheme(
                 _copyInputDecorationThemeWith(inputTheme,
                     suffixStyle: suffixStyle.copyWith(fontSize: value))),
@@ -301,10 +283,7 @@ class InputDecorationThemePanel extends StatelessWidget {
           TextStyleControl(
             'Counter style',
             maxFontSize: 24,
-            color: counterStyle.color,
-            isBold: counterStyle.fontWeight == FontWeight.bold,
-            isItalic: counterStyle.fontStyle == FontStyle.italic,
-            fontSize: counterStyle.fontSize,
+            style: counterStyle,
             onSizeChanged: (double value) => _updateInputDecorationTheme(
                 _copyInputDecorationThemeWith(inputTheme,
                     counterStyle: counterStyle.copyWith(fontSize: value))),
