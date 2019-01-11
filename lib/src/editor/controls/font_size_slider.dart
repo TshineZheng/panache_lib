@@ -38,35 +38,26 @@ class FontSizeSelectorState extends State<FontSizeSelector> {
       child: Flex(
         direction: widget.vertical ? Axis.vertical : Axis.horizontal,
         children: [
-          ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 160.0),
-            child: Slider(
-              value: visibleValue,
-              onChanged: (currentValue) =>
-                  setState(() => visibleValue = currentValue),
-              onChangeEnd: widget.onValueChanged,
-              divisions: (widget.max - widget.min) ~/ 2,
-              min: widget.min,
-              max: widget.max,
-              label: '${visibleValue.toStringAsFixed(0)}',
-            ),
+          Slider(
+            value: visibleValue,
+            onChanged: (currentValue) =>
+                setState(() => visibleValue = currentValue),
+            onChangeEnd: widget.onValueChanged,
+            divisions: (widget.max - widget.min) ~/ 2,
+            min: widget.min,
+            max: widget.max,
+            label: '${visibleValue.toStringAsFixed(0)}',
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              RichText(
-                text: TextSpan(
-                    text: 'Font size ',
-                    style: textTheme.subtitle,
-                    children: [
-                      TextSpan(
-                        text: widget.value.toStringAsFixed(1),
-                        style: textTheme.body1,
-                      )
-                    ]),
-              ),
-              /*Text("Font size : ${value.toStringAsFixed(1)}"),*/
-            ],
+          RichText(
+            text: TextSpan(
+                text: 'Font size ',
+                style: textTheme.subtitle,
+                children: [
+                  TextSpan(
+                    text: widget.value.toStringAsFixed(1),
+                    style: textTheme.body1,
+                  )
+                ]),
           ),
         ],
       ),

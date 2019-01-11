@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:panache_lib/src/editor/controls/control_container.dart';
 
 import '../../utils/color_utils.dart';
 import '../color_swatch.dart';
@@ -24,34 +25,26 @@ class ColorSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    return Padding(
-      padding: EdgeInsets.all(padding),
-      child: Container(
-        padding: EdgeInsets.all(8.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: Colors.white,
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(
-              child: Text.rich(
-                TextSpan(
-                    text: '$label\n',
-                    style: Theme.of(context).textTheme.subtitle,
-                    children: [
-                      TextSpan(
-                          text: colorLabel,
-                          style: textTheme.overline.copyWith(height: 1.5)
-                          /*kDarkTextStyle.copyWith(height: 2)*/)
-                    ]),
-              ),
+    return ControlContainerBorder(
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Flexible(
+            child: Text.rich(
+              TextSpan(
+                  text: '$label\n',
+                  style: Theme.of(context).textTheme.subtitle,
+                  children: [
+                    TextSpan(
+                        text: colorLabel,
+                        style: textTheme.overline.copyWith(height: 1.5)
+                        /*kDarkTextStyle.copyWith(height: 2)*/)
+                  ]),
             ),
-            ColorSwatchControl(color: value, onSelection: onSelection),
-          ],
-        ),
+          ),
+          ColorSwatchControl(color: value, onSelection: onSelection),
+        ],
       ),
     );
   }

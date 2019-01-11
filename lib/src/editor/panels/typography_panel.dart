@@ -17,16 +17,13 @@ class TypographyThemePanel extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    //final model = ThemeModel.of(context);
-    return Container(
-      color: Colors.grey.shade200,
-      padding: kPadding,
-      child: Column(
-        children: _buildTextThemeEditorFields(model),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Container(
+        color: Colors.grey.shade200,
+        padding: kPadding,
+        child: Column(
+          children: _buildTextThemeEditorFields(model),
+        ),
+      );
 
   List<Widget> _buildTextThemeEditorFields(ThemeModel model) {
     final headline = txtTheme.headline;
@@ -77,73 +74,77 @@ class TypographyThemePanel extends StatelessWidget {
             style: data.style, spacing: spacing, styleName: data.styleName),
         onLineHeightChanged: (double lineHeight) => onLineHeightChanged(
             style: data.style, height: lineHeight, styleName: data.styleName),
+        onDecorationChanged: (TextDecoration decoration) => onDecorationChanged(
+            style: data.style,
+            decoration: decoration,
+            styleName: data.styleName),
+        onDecorationStyleChanged: (TextDecorationStyle decorationStyle) =>
+            onDecorationStyleChanged(
+                style: data.style,
+                decorationStyle: decorationStyle,
+                styleName: data.styleName),
+        onDecorationColorChanged: (Color color) => onDecorationColorChanged(
+            style: data.style,
+            decorationColor: color,
+            styleName: data.styleName),
       );
     }).toList();
   }
 
-  void apply(Map<Symbol, dynamic> args) {
+  void apply(TextStyle style, String styleName) {
+    final styleArgs = <Symbol, dynamic>{};
+    styleArgs[Symbol(styleName)] = style;
+
+    final args = <Symbol, dynamic>{};
+    args[Symbol(themeRef)] = Function.apply(txtTheme.copyWith, null, styleArgs);
     model.updateTheme(Function.apply(model.theme.copyWith, null, args));
   }
 
-  void onColorChanged({TextStyle style, Color color, String styleName}) {
-    final args = <Symbol, dynamic>{};
-    final styleArgs = <Symbol, dynamic>{};
-    styleArgs[Symbol(styleName)] = style.copyWith(color: color);
-    args[Symbol(themeRef)] = Function.apply(txtTheme.copyWith, null, styleArgs);
-    apply(args);
-  }
+  void onColorChanged({TextStyle style, Color color, String styleName}) =>
+      apply(style.copyWith(color: color), styleName);
 
-  void onSizeChanged({TextStyle style, double size, String styleName}) {
-    final args = <Symbol, dynamic>{};
-    final styleArgs = <Symbol, dynamic>{};
-    styleArgs[Symbol(styleName)] = style.copyWith(fontSize: size);
-    args[Symbol(themeRef)] = Function.apply(txtTheme.copyWith, null, styleArgs);
-    apply(args);
-  }
+  void onSizeChanged({TextStyle style, double size, String styleName}) =>
+      apply(style.copyWith(fontSize: size), styleName);
 
-  void onWeightChanged({TextStyle style, bool isBold, String styleName}) {
-    final args = <Symbol, dynamic>{};
-    final styleArgs = <Symbol, dynamic>{};
-    styleArgs[Symbol(styleName)] = style.copyWith(
-        fontWeight: isBold ? FontWeight.bold : FontWeight.normal);
-    args[Symbol(themeRef)] = Function.apply(txtTheme.copyWith, null, styleArgs);
-    apply(args);
-  }
+  void onWeightChanged({TextStyle style, bool isBold, String styleName}) =>
+      apply(
+        style.copyWith(
+            fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
+        styleName,
+      );
 
-  void onFontStyleChanged({TextStyle style, bool isItalic, String styleName}) {
-    final args = <Symbol, dynamic>{};
-    final styleArgs = <Symbol, dynamic>{};
-    styleArgs[Symbol(styleName)] = style.copyWith(
-        fontStyle: isItalic ? FontStyle.italic : FontStyle.normal);
-    args[Symbol(themeRef)] = Function.apply(txtTheme.copyWith, null, styleArgs);
-    apply(args);
-  }
+  void onFontStyleChanged({TextStyle style, bool isItalic, String styleName}) =>
+      apply(
+        style.copyWith(
+            fontStyle: isItalic ? FontStyle.italic : FontStyle.normal),
+        styleName,
+      );
 
   void onLetterSpacingChanged(
-      {TextStyle style, double spacing, String styleName}) {
-    final args = <Symbol, dynamic>{};
-    final styleArgs = <Symbol, dynamic>{};
-    styleArgs[Symbol(styleName)] = style.copyWith(letterSpacing: spacing);
-    args[Symbol(themeRef)] = Function.apply(txtTheme.copyWith, null, styleArgs);
-    apply(args);
-  }
+          {TextStyle style, double spacing, String styleName}) =>
+      apply(style.copyWith(letterSpacing: spacing), styleName);
 
   void onWordSpacingChanged(
-      {TextStyle style, double spacing, String styleName}) {
-    final args = <Symbol, dynamic>{};
-    final styleArgs = <Symbol, dynamic>{};
-    styleArgs[Symbol(styleName)] = style.copyWith(wordSpacing: spacing);
-    args[Symbol(themeRef)] = Function.apply(txtTheme.copyWith, null, styleArgs);
-    apply(args);
-  }
+          {TextStyle style, double spacing, String styleName}) =>
+      apply(style.copyWith(wordSpacing: spacing), styleName);
 
-  void onLineHeightChanged({TextStyle style, double height, String styleName}) {
-    final args = <Symbol, dynamic>{};
-    final styleArgs = <Symbol, dynamic>{};
-    styleArgs[Symbol(styleName)] = style.copyWith(height: height);
-    args[Symbol(themeRef)] = Function.apply(txtTheme.copyWith, null, styleArgs);
-    apply(args);
-  }
+  void onLineHeightChanged(
+          {TextStyle style, double height, String styleName}) =>
+      apply(style.copyWith(height: height), styleName);
+
+  void onDecorationChanged(
+          {TextStyle style, TextDecoration decoration, String styleName}) =>
+      apply(style.copyWith(decoration: decoration), styleName);
+
+  void onDecorationStyleChanged(
+          {TextStyle style,
+          TextDecorationStyle decorationStyle,
+          String styleName}) =>
+      apply(style.copyWith(decorationStyle: decorationStyle), styleName);
+
+  void onDecorationColorChanged(
+          {TextStyle style, Color decorationColor, String styleName}) =>
+      apply(style.copyWith(decorationColor: decorationColor), styleName);
 }
 
 class TextStyleControlData {
