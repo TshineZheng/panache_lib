@@ -14,7 +14,9 @@ import 'subscreens/typography_preview.dart';
 import 'subscreens/widgets_preview.dart';
 
 const kIPhone5 = const Size(640 / 2, 1136 / 2);
+
 const kIPhone6 = const Size(750 / 2, 1334 / 2);
+
 const kS6 = const Size(1440 / 4, 2560 / 4);
 
 class AppPreviewContainer extends StatefulWidget {
@@ -201,10 +203,16 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
           _tabsItem.map((t) => Tab(text: t.text, icon: Icon(t.icon))).toList());
 
   Future<Uint8List> _screenshot() async {
+    ByteData bytedata;
     RenderRepaintBoundary boundary =
         _globalKey.currentContext.findRenderObject();
-    final capture = await boundary.toImage();
-    ByteData bytedata = await capture.toByteData(format: ImageByteFormat.png);
-    return bytedata.buffer.asUint8List();
+    try {
+      final capture = await boundary.toImage();
+      bytedata = await capture.toByteData(format: ImageByteFormat.png);
+    } catch (error) {
+      print('ThemePreviewAppState._screenshot => ERROR !\n$error');
+    }
+
+    return bytedata != null ? bytedata.buffer.asUint8List() : null;
   }
 }

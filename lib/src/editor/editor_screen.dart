@@ -3,6 +3,7 @@ import 'package:scoped_model/scoped_model.dart';
 
 import '../preview/app_preview.dart';
 import '../theme_model.dart';
+import 'drive_menu.dart';
 import 'theme_editor.dart';
 
 class PanacheEditorScreen extends StatefulWidget {
@@ -18,7 +19,7 @@ class PanacheEditorScreenState extends State<PanacheEditorScreen> {
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<ThemeModel>(
-        builder: (BuildContext context, Widget child, model) {
+        builder: (BuildContext context, Widget child, ThemeModel model) {
       return Scaffold(
         backgroundColor: Colors.grey.shade300,
         appBar: AppBar(
@@ -38,25 +39,13 @@ class PanacheEditorScreenState extends State<PanacheEditorScreen> {
               onPressed:
                   showCode ? null : () => setState(() => showCode = true),
             ),
-            FlatButton.icon(
-              onPressed: model.saveTheme,
-              textColor: Colors.yellow,
-              icon: Icon(Icons.save),
-              label: Text('Save'),
-            ),
+            DriveMenu(model: model)
             /*
-            FlatButton.icon(
-              onPressed: model.exportTheme,
-              textColor: Colors.yellow,
-              icon: Icon(Icons.insert_drive_file),
-              label: Text('Export'),
+            IconButton(
+              onPressed: model.saveTheme,
+              color: Colors.yellow,
+              icon: Icon(Icons.save),
             ),*/
-            FlatButton.icon(
-              onPressed: model.exportThemeToDrive,
-              textColor: Colors.yellow,
-              icon: Icon(Icons.cloud_upload),
-              label: Text('Drive'),
-            ),
           ],
         ),
         body: Row(

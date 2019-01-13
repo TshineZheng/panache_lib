@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'converters/theme_converter.dart';
+import '../converters/theme_converter.dart';
 
 typedef Future<Directory> DirectoryProvider();
 

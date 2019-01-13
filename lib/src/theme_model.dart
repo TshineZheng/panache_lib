@@ -5,13 +5,14 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:panache_lib/src/services/theme_service.dart';
 import 'package:quiver/time.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import 'converters/theme_converter.dart';
 import 'local_data.dart';
 import 'models.dart';
-import 'theme_service.dart';
+import 'services/cloud_service.dart';
 import 'utils/uuid.dart';
 
 typedef Future<Uint8List> ScreenShooter();
@@ -24,31 +25,30 @@ class ThemeModel extends Model {
 
   final List<PanacheTheme> _themes;
 
-  final LocalData localData;
+  final Uuid _uuid = Uuid();
 
   ThemeService _service;
 
   PanacheTheme _currentTheme;
 
-  MaterialColor _primarySwatch = Colors.blue;
-
-  String _themeName;
-
   ScreenShooter _screenShooter;
+
+  final LocalData localData;
 
   ThemeData get theme => _service.theme;
 
-  MaterialColor get primarySwatch => _primarySwatch;
+  MaterialColor get primarySwatch => _currentTheme.primarySwatch;
 
   Directory get dir => _service.dir;
 
   String get themeCode => themeToCode(theme);
 
-  Uuid _uuid = Uuid();
-
   List<PanacheTheme> get themes => _themes;
 
   String get uuid => _uuid.generateV4();
+
+  User _currentUser;
+  User get user => _currentUser;
 
   ThemeModel({
     @required CloudService cloudService,
@@ -58,6 +58,10 @@ class ThemeModel extends Model {
         _cloudService = cloudService,
         _themes = localData.themes {
     _service.init(onChange);
+    _cloudService.currentUser$.listen((user) {
+      _currentUser = user;
+      notifyListeners();
+    });
   }
 
   void newTheme({
@@ -72,19 +76,15 @@ class ThemeModel extends Model {
         primarySwatch: primarySwatch,
         brightness: brightness);
 
-    _primarySwatch = primarySwatch;
     _service.initTheme(primarySwatch: primarySwatch, brightness: brightness);
 
     _themes.add(_currentTheme);
-    //_service.saveTheme(uuid);
     localData.updateThemeList(_themes);
 
     notifyListeners();
   }
 
-  onChange() {
-    notifyListeners();
-  }
+  onChange() => notifyListeners();
 
   void updateTheme(ThemeData updatedTheme) {
     _service.updateTheme(updatedTheme);
@@ -106,7 +106,9 @@ class ThemeModel extends Model {
 
   void saveTheme() async {
     final filename = _currentTheme.id;
+
     final pngBytes = await _screenShooter();
+    if (pngBytes == null || pngBytes.length == 0) return;
 
     _service.screenshot(filename, pngBytes);
     _service.saveTheme(filename);
@@ -124,12 +126,14 @@ class ThemeModel extends Model {
     Future.delayed(aSecond * 2, () => saveTheme());
   }
 
-  Future<bool> exportThemeToDrive() async {
-    if (!_cloudService.authenticated) await _cloudService.login();
+  Future<dynamic> exportThemeToDrive() async {
+    bool authenticated = await _cloudService.authenticated;
+    if (!authenticated) authenticated = await _cloudService.login();
 
+    if (!authenticated) return false;
     final result = await _cloudService.save(themeToCode(_service.theme));
     print('ThemeModel.exportThemeToDrive... $result');
-    return result != null;
+    return result.originalFilename ?? result.name;
   }
 
   deleteTheme(PanacheTheme theme) async {
@@ -143,12 +147,15 @@ class ThemeModel extends Model {
 
     notifyListeners();
   }
-}
 
-abstract class CloudService {
-  bool get authenticated => null;
+  Future<bool> login() async {
+    final result = await _cloudService.login();
+    notifyListeners();
+    return result;
+  }
 
-  login();
-  logout();
-  Future save(String content);
+  void logout() async {
+    await _cloudService.logout();
+    notifyListeners();
+  }
 }
