@@ -8,6 +8,8 @@ import '../controls/shape_form_control.dart';
 import '../controls/text_style_control.dart';
 import '../editor_utils.dart';
 
+const _themeRef = 'chipTheme';
+
 class ChipThemePanel extends StatelessWidget {
   final ThemeModel model;
 
@@ -20,7 +22,7 @@ class ChipThemePanel extends StatelessWidget {
     final appTextTheme = Theme.of(context).textTheme;
     final labelStyle = appTextTheme.subtitle;
     final chipLabelStyle = chipTheme.labelStyle;
-    final chipSecondaryLabelStyle = chipTheme.secondaryLabelStyle;
+    final secondaryLabelStyle = chipTheme.secondaryLabelStyle;
 
     return Container(
       padding: kPadding,
@@ -68,47 +70,18 @@ class ChipThemePanel extends StatelessWidget {
             ),
           ]),
           Divider(),
-          TextStyleControl(
-            'Label Style',
-            key: Key('chip_textstyle'),
-            style: chipLabelStyle,
-            onColorChanged: (color) => _updateChipTheme(chipTheme.copyWith(
-                labelStyle: chipTheme.labelStyle.copyWith(color: color))),
-            onSizeChanged: (size) => chipTheme.copyWith(
-                labelStyle: chipTheme.labelStyle.copyWith(fontSize: size)),
-            onWeightChanged: (isBold) => _updateChipTheme(chipTheme.copyWith(
-                labelStyle: chipTheme.labelStyle.copyWith(
-                    fontWeight: isBold ? FontWeight.bold : FontWeight.normal))),
-            onFontStyleChanged: (isItalic) => _updateChipTheme(
-                  chipTheme.copyWith(
-                      labelStyle: chipTheme.labelStyle.copyWith(
-                          fontStyle:
-                              isItalic ? FontStyle.italic : FontStyle.normal)),
-                ),
-            maxFontSize: 32,
+          _buildTextStyleControl(
+            key: 'chip_textstyle',
+            textStyle: chipLabelStyle,
+            label: 'Label Style',
+            styleName: 'labelStyle',
           ),
           Divider(),
-          TextStyleControl(
-            'Secondary Label Style',
-            key: Key('chip_alternative_textstyle'),
-            style: chipSecondaryLabelStyle,
-            onColorChanged: (color) => _updateChipTheme(
-                  chipTheme.copyWith(
-                      secondaryLabelStyle:
-                          chipTheme.secondaryLabelStyle.copyWith(color: color)),
-                ),
-            onSizeChanged: (size) => _updateChipTheme(
-                  chipTheme.copyWith(
-                      secondaryLabelStyle: chipTheme.secondaryLabelStyle
-                          .copyWith(fontSize: size)),
-                ),
-            onWeightChanged: (isBold) => _updateChipTheme(chipTheme.copyWith(
-                secondaryLabelStyle: chipTheme.secondaryLabelStyle.copyWith(
-                    fontWeight: isBold ? FontWeight.bold : FontWeight.normal))),
-            onFontStyleChanged: (isItalic) => chipTheme.copyWith(
-                secondaryLabelStyle: chipTheme.secondaryLabelStyle.copyWith(
-                    fontStyle: isItalic ? FontStyle.italic : FontStyle.normal)),
-            maxFontSize: 32,
+          _buildTextStyleControl(
+            key: 'chip_alternative_textstyle',
+            textStyle: secondaryLabelStyle,
+            label: 'Secondary Label Style',
+            styleName: 'secondaryLabelStyle',
           ),
           Divider(),
           Row(
@@ -132,6 +105,54 @@ class ChipThemePanel extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  TextStyleControl _buildTextStyleControl({
+    @required String key,
+    @required String label,
+    @required TextStyle textStyle,
+    @required String styleName,
+  }) {
+    return TextStyleControl(
+      label,
+      key: Key(key),
+      style: textStyle,
+      maxFontSize: 32,
+      onColorChanged: (color) =>
+          apply(textStyle.copyWith(color: color), styleName),
+      onSizeChanged: (size) =>
+          apply(textStyle.copyWith(fontSize: size), styleName),
+      onWeightChanged: (isBold) => apply(
+          textStyle.copyWith(
+              fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
+          styleName),
+      onFontStyleChanged: (isItalic) => apply(
+          textStyle.copyWith(
+              fontStyle: isItalic ? FontStyle.italic : FontStyle.normal),
+          styleName),
+      onLetterSpacingChanged: (double value) =>
+          apply(textStyle.copyWith(letterSpacing: value), styleName),
+      onLineHeightChanged: (double value) =>
+          apply(textStyle.copyWith(height: value), styleName),
+      onWordSpacingChanged: (double value) =>
+          apply(textStyle.copyWith(wordSpacing: value), styleName),
+      onDecorationChanged: (TextDecoration value) =>
+          apply(textStyle.copyWith(decoration: value), styleName),
+      onDecorationStyleChanged: (TextDecorationStyle value) =>
+          apply(textStyle.copyWith(decorationStyle: value), styleName),
+      onDecorationColorChanged: (Color value) =>
+          apply(textStyle.copyWith(decorationColor: value), styleName),
+    );
+  }
+
+  void apply(TextStyle style, String styleName) {
+    final styleArgs = <Symbol, dynamic>{};
+    styleArgs[Symbol(styleName)] = style;
+
+    final args = <Symbol, dynamic>{};
+    args[Symbol(_themeRef)] =
+        Function.apply(chipTheme.copyWith, null, styleArgs);
+    model.updateTheme(Function.apply(model.theme.copyWith, null, args));
   }
 
   void _onBrightnessChanged(Brightness value, {TextStyle labelStyle}) {

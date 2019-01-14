@@ -9,16 +9,14 @@ import '../controls/switcher_control.dart';
 import '../controls/text_style_control.dart';
 import '../editor_utils.dart';
 
+const _themeRef = 'inputDecorationTheme';
+
 class InputDecorationThemePanel extends StatelessWidget {
   final ThemeModel model;
 
   InputDecorationTheme get inputTheme => model.theme.inputDecorationTheme;
 
   InputDecorationThemePanel(this.model);
-
-  /*Color get selectedColor =>
-      model.theme.tabBarTheme.labelColor ??
-      model.theme.primaryTextTheme.body2.color;*/
 
   @override
   Widget build(BuildContext context) {
@@ -148,158 +146,53 @@ class InputDecorationThemePanel extends StatelessWidget {
                     hasFloatingPlaceholder: value,
                   ))),
           Divider(),
-          TextStyleControl(
-            'Label style',
-            maxFontSize: 32,
-            style: labelStyle,
-            onSizeChanged: (double value) => _updateInputDecorationTheme(
-                _copyInputDecorationThemeWith(inputTheme,
-                    labelStyle: labelStyle.copyWith(fontSize: value))),
-            onColorChanged: (Color value) => _updateInputDecorationTheme(
-                _copyInputDecorationThemeWith(inputTheme,
-                    labelStyle: labelStyle.copyWith(color: value))),
-            onWeightChanged: (isBold) => _updateInputDecorationTheme(
-                _copyInputDecorationThemeWith(inputTheme,
-                    labelStyle: labelStyle.copyWith(
-                        fontWeight:
-                            isBold ? FontWeight.bold : FontWeight.normal))),
-            onFontStyleChanged: (isItalic) => _updateInputDecorationTheme(
-                _copyInputDecorationThemeWith(inputTheme,
-                    labelStyle: labelStyle.copyWith(
-                        fontStyle:
-                            isItalic ? FontStyle.italic : FontStyle.normal))),
+          _buildTextStyleControl(
+            key: 'ctrl-label_style',
+            textStyle: labelStyle,
+            label: 'Label style',
+            styleName: 'labelStyle',
           ),
           Divider(),
-          TextStyleControl(
-            'Hint style',
-            maxFontSize: 32,
-            style: hintStyle,
-            onSizeChanged: (double value) => _updateInputDecorationTheme(
-                _copyInputDecorationThemeWith(inputTheme,
-                    hintStyle: hintStyle.copyWith(fontSize: value))),
-            onColorChanged: (Color value) => _updateInputDecorationTheme(
-                _copyInputDecorationThemeWith(inputTheme,
-                    hintStyle: hintStyle.copyWith(color: value))),
-            onWeightChanged: (isBold) => _updateInputDecorationTheme(
-                _copyInputDecorationThemeWith(inputTheme,
-                    hintStyle: hintStyle.copyWith(
-                        fontWeight:
-                            isBold ? FontWeight.bold : FontWeight.normal))),
-            onFontStyleChanged: (isItalic) => _updateInputDecorationTheme(
-                _copyInputDecorationThemeWith(inputTheme,
-                    hintStyle: hintStyle.copyWith(
-                        fontStyle:
-                            isItalic ? FontStyle.italic : FontStyle.normal))),
+          _buildTextStyleControl(
+            key: 'ctrl-hint_style',
+            textStyle: hintStyle,
+            label: 'Hint style',
+            styleName: 'hintStyle',
           ),
           Divider(),
-          TextStyleControl(
-            'Helper style',
-            maxFontSize: 24,
-            style: helperStyle,
-            onSizeChanged: (double value) => _updateInputDecorationTheme(
-                _copyInputDecorationThemeWith(inputTheme,
-                    helperStyle: helperStyle.copyWith(fontSize: value))),
-            onColorChanged: (Color value) => _updateInputDecorationTheme(
-                _copyInputDecorationThemeWith(inputTheme,
-                    helperStyle: helperStyle.copyWith(color: value))),
-            onWeightChanged: (isBold) => _updateInputDecorationTheme(
-                _copyInputDecorationThemeWith(inputTheme,
-                    helperStyle: helperStyle.copyWith(
-                        fontWeight:
-                            isBold ? FontWeight.bold : FontWeight.normal))),
-            onFontStyleChanged: (isItalic) => _updateInputDecorationTheme(
-                _copyInputDecorationThemeWith(inputTheme,
-                    helperStyle: helperStyle.copyWith(
-                        fontStyle:
-                            isItalic ? FontStyle.italic : FontStyle.normal))),
+          _buildTextStyleControl(
+            key: 'ctrl-helper_style',
+            textStyle: helperStyle,
+            label: 'Helper style',
+            styleName: 'helperStyle',
           ),
           Divider(),
-          TextStyleControl(
-            'Error style',
-            maxFontSize: 24,
-            style: errorStyle,
-            onSizeChanged: (double value) => _updateInputDecorationTheme(
-                _copyInputDecorationThemeWith(inputTheme,
-                    errorStyle: errorStyle.copyWith(fontSize: value))),
-            onColorChanged: (Color value) => _updateInputDecorationTheme(
-                _copyInputDecorationThemeWith(inputTheme,
-                    errorStyle: errorStyle.copyWith(color: value))),
-            onWeightChanged: (isBold) => _updateInputDecorationTheme(
-                _copyInputDecorationThemeWith(inputTheme,
-                    errorStyle: errorStyle.copyWith(
-                        fontWeight:
-                            isBold ? FontWeight.bold : FontWeight.normal))),
-            onFontStyleChanged: (isItalic) => _updateInputDecorationTheme(
-                _copyInputDecorationThemeWith(inputTheme,
-                    errorStyle: errorStyle.copyWith(
-                        fontStyle:
-                            isItalic ? FontStyle.italic : FontStyle.normal))),
+          _buildTextStyleControl(
+            key: 'ctrl-error_style',
+            textStyle: errorStyle,
+            label: 'Error style',
+            styleName: 'errorStyle',
           ),
           Divider(),
-          TextStyleControl(
-            'Prefix style',
-            maxFontSize: 24,
-            style: prefixStyle,
-            onSizeChanged: (double value) => _updateInputDecorationTheme(
-                _copyInputDecorationThemeWith(inputTheme,
-                    prefixStyle: prefixStyle.copyWith(fontSize: value))),
-            onColorChanged: (Color value) => _updateInputDecorationTheme(
-                _copyInputDecorationThemeWith(inputTheme,
-                    prefixStyle: prefixStyle.copyWith(color: value))),
-            onWeightChanged: (isBold) => _updateInputDecorationTheme(
-                _copyInputDecorationThemeWith(inputTheme,
-                    prefixStyle: prefixStyle.copyWith(
-                        fontWeight:
-                            isBold ? FontWeight.bold : FontWeight.normal))),
-            onFontStyleChanged: (isItalic) => _updateInputDecorationTheme(
-                _copyInputDecorationThemeWith(inputTheme,
-                    prefixStyle: prefixStyle.copyWith(
-                        fontStyle:
-                            isItalic ? FontStyle.italic : FontStyle.normal))),
+          _buildTextStyleControl(
+            key: 'ctrl-prefix_style',
+            textStyle: prefixStyle,
+            label: 'Prefix style',
+            styleName: 'prefixStyle',
           ),
           Divider(),
-          TextStyleControl(
-            'Suffix style',
-            maxFontSize: 24,
-            style: suffixStyle,
-            onSizeChanged: (double value) => _updateInputDecorationTheme(
-                _copyInputDecorationThemeWith(inputTheme,
-                    suffixStyle: suffixStyle.copyWith(fontSize: value))),
-            onColorChanged: (Color value) => _updateInputDecorationTheme(
-                _copyInputDecorationThemeWith(inputTheme,
-                    suffixStyle: suffixStyle.copyWith(color: value))),
-            onWeightChanged: (isBold) => _updateInputDecorationTheme(
-                _copyInputDecorationThemeWith(inputTheme,
-                    suffixStyle: suffixStyle.copyWith(
-                        fontWeight:
-                            isBold ? FontWeight.bold : FontWeight.normal))),
-            onFontStyleChanged: (isItalic) => _updateInputDecorationTheme(
-                _copyInputDecorationThemeWith(inputTheme,
-                    suffixStyle: suffixStyle.copyWith(
-                        fontStyle:
-                            isItalic ? FontStyle.italic : FontStyle.normal))),
+          _buildTextStyleControl(
+            key: 'ctrl-suffix_style',
+            textStyle: suffixStyle,
+            label: 'Suffix style',
+            styleName: 'suffixStyle',
           ),
           Divider(),
-          TextStyleControl(
-            'Counter style',
-            maxFontSize: 24,
-            style: counterStyle,
-            onSizeChanged: (double value) => _updateInputDecorationTheme(
-                _copyInputDecorationThemeWith(inputTheme,
-                    counterStyle: counterStyle.copyWith(fontSize: value))),
-            onColorChanged: (Color value) => _updateInputDecorationTheme(
-                _copyInputDecorationThemeWith(inputTheme,
-                    counterStyle: counterStyle.copyWith(color: value))),
-            onWeightChanged: (isBold) => _updateInputDecorationTheme(
-                _copyInputDecorationThemeWith(inputTheme,
-                    counterStyle: counterStyle.copyWith(
-                        fontWeight:
-                            isBold ? FontWeight.bold : FontWeight.normal))),
-            onFontStyleChanged: (isItalic) => _updateInputDecorationTheme(
-                _copyInputDecorationThemeWith(inputTheme,
-                    counterStyle: counterStyle.copyWith(
-                        fontStyle:
-                            isItalic ? FontStyle.italic : FontStyle.normal))),
+          _buildTextStyleControl(
+            key: 'ctrl-counter_style',
+            textStyle: counterStyle,
+            label: 'Counter style',
+            styleName: 'counterStyle',
           ),
           Divider(),
           Padding(
@@ -324,6 +217,54 @@ class InputDecorationThemePanel extends StatelessWidget {
 
   void _updateInputDecorationTheme(InputDecorationTheme inputTheme) =>
       model.updateTheme(model.theme.copyWith(inputDecorationTheme: inputTheme));
+
+  TextStyleControl _buildTextStyleControl({
+    @required String key,
+    @required String label,
+    @required TextStyle textStyle,
+    @required String styleName,
+  }) {
+    return TextStyleControl(
+      label,
+      key: Key(key),
+      style: textStyle,
+      maxFontSize: 24,
+      onColorChanged: (color) =>
+          apply(textStyle.copyWith(color: color), styleName),
+      onSizeChanged: (size) =>
+          apply(textStyle.copyWith(fontSize: size), styleName),
+      onWeightChanged: (isBold) => apply(
+          textStyle.copyWith(
+              fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
+          styleName),
+      onFontStyleChanged: (isItalic) => apply(
+          textStyle.copyWith(
+              fontStyle: isItalic ? FontStyle.italic : FontStyle.normal),
+          styleName),
+      onLetterSpacingChanged: (double value) =>
+          apply(textStyle.copyWith(letterSpacing: value), styleName),
+      onLineHeightChanged: (double value) =>
+          apply(textStyle.copyWith(height: value), styleName),
+      onWordSpacingChanged: (double value) =>
+          apply(textStyle.copyWith(wordSpacing: value), styleName),
+      onDecorationChanged: (TextDecoration value) =>
+          apply(textStyle.copyWith(decoration: value), styleName),
+      onDecorationStyleChanged: (TextDecorationStyle value) =>
+          apply(textStyle.copyWith(decorationStyle: value), styleName),
+      onDecorationColorChanged: (Color value) =>
+          apply(textStyle.copyWith(decorationColor: value), styleName),
+    );
+  }
+
+  void apply(TextStyle style, String styleName) {
+    final styleArgs = <Symbol, dynamic>{};
+    styleArgs[Symbol(styleName)] = style;
+
+    final args = <Symbol, dynamic>{};
+    args[Symbol(_themeRef)] =
+        Function.apply(_copyInputDecorationThemeWith, [inputTheme], styleArgs);
+    model.updateTheme(Function.apply(model.theme.copyWith, null, args));
+  }
 }
 
 InputDecorationTheme _copyInputDecorationThemeWith(

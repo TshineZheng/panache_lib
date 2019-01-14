@@ -60,33 +60,33 @@ class TypographyThemePanel extends StatelessWidget {
       return TextStyleControl(
         data.styleName,
         style: data.style,
-        onColorChanged: (c) => onColorChanged(
-            style: data.style, color: c, styleName: data.styleName),
-        onSizeChanged: (s) => onSizeChanged(
-            style: data.style, size: s, styleName: data.styleName),
-        onWeightChanged: (isBold) => onWeightChanged(
-            style: data.style, isBold: isBold, styleName: data.styleName),
-        onFontStyleChanged: (fontStyle) => onFontStyleChanged(
-            style: data.style, isItalic: fontStyle, styleName: data.styleName),
-        onLetterSpacingChanged: (double spacing) => onLetterSpacingChanged(
-            style: data.style, spacing: spacing, styleName: data.styleName),
-        onWordSpacingChanged: (double spacing) => onWordSpacingChanged(
-            style: data.style, spacing: spacing, styleName: data.styleName),
-        onLineHeightChanged: (double lineHeight) => onLineHeightChanged(
-            style: data.style, height: lineHeight, styleName: data.styleName),
-        onDecorationChanged: (TextDecoration decoration) => onDecorationChanged(
-            style: data.style,
-            decoration: decoration,
-            styleName: data.styleName),
+        onColorChanged: (color) =>
+            apply(data.style.copyWith(color: color), data.styleName),
+        onSizeChanged: (size) =>
+            apply(data.style.copyWith(fontSize: size), data.styleName),
+        onWeightChanged: (isBold) => apply(
+              data.style.copyWith(
+                  fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
+              data.styleName,
+            ),
+        onFontStyleChanged: (isItalic) => apply(
+              data.style.copyWith(
+                  fontStyle: isItalic ? FontStyle.italic : FontStyle.normal),
+              data.styleName,
+            ),
+        onLetterSpacingChanged: (double spacing) =>
+            apply(data.style.copyWith(letterSpacing: spacing), data.styleName),
+        onWordSpacingChanged: (double spacing) =>
+            apply(data.style.copyWith(wordSpacing: spacing), data.styleName),
+        onLineHeightChanged: (double lineHeight) =>
+            apply(data.style.copyWith(height: lineHeight), data.styleName),
+        onDecorationChanged: (TextDecoration decoration) =>
+            apply(data.style.copyWith(decoration: decoration), data.styleName),
         onDecorationStyleChanged: (TextDecorationStyle decorationStyle) =>
-            onDecorationStyleChanged(
-                style: data.style,
-                decorationStyle: decorationStyle,
-                styleName: data.styleName),
-        onDecorationColorChanged: (Color color) => onDecorationColorChanged(
-            style: data.style,
-            decorationColor: color,
-            styleName: data.styleName),
+            apply(data.style.copyWith(decorationStyle: decorationStyle),
+                data.styleName),
+        onDecorationColorChanged: (Color color) =>
+            apply(data.style.copyWith(decorationColor: color), data.styleName),
       );
     }).toList();
   }
@@ -99,52 +99,6 @@ class TypographyThemePanel extends StatelessWidget {
     args[Symbol(themeRef)] = Function.apply(txtTheme.copyWith, null, styleArgs);
     model.updateTheme(Function.apply(model.theme.copyWith, null, args));
   }
-
-  void onColorChanged({TextStyle style, Color color, String styleName}) =>
-      apply(style.copyWith(color: color), styleName);
-
-  void onSizeChanged({TextStyle style, double size, String styleName}) =>
-      apply(style.copyWith(fontSize: size), styleName);
-
-  void onWeightChanged({TextStyle style, bool isBold, String styleName}) =>
-      apply(
-        style.copyWith(
-            fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
-        styleName,
-      );
-
-  void onFontStyleChanged({TextStyle style, bool isItalic, String styleName}) =>
-      apply(
-        style.copyWith(
-            fontStyle: isItalic ? FontStyle.italic : FontStyle.normal),
-        styleName,
-      );
-
-  void onLetterSpacingChanged(
-          {TextStyle style, double spacing, String styleName}) =>
-      apply(style.copyWith(letterSpacing: spacing), styleName);
-
-  void onWordSpacingChanged(
-          {TextStyle style, double spacing, String styleName}) =>
-      apply(style.copyWith(wordSpacing: spacing), styleName);
-
-  void onLineHeightChanged(
-          {TextStyle style, double height, String styleName}) =>
-      apply(style.copyWith(height: height), styleName);
-
-  void onDecorationChanged(
-          {TextStyle style, TextDecoration decoration, String styleName}) =>
-      apply(style.copyWith(decoration: decoration), styleName);
-
-  void onDecorationStyleChanged(
-          {TextStyle style,
-          TextDecorationStyle decorationStyle,
-          String styleName}) =>
-      apply(style.copyWith(decorationStyle: decorationStyle), styleName);
-
-  void onDecorationColorChanged(
-          {TextStyle style, Color decorationColor, String styleName}) =>
-      apply(style.copyWith(decorationColor: decorationColor), styleName);
 }
 
 class TextStyleControlData {

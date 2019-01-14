@@ -197,57 +197,30 @@ class SliderThemePanel extends StatelessWidget {
       onWeightChanged: (bool isBold) => _updateSliderTheme(sliderTheme.copyWith(
           valueIndicatorTextStyle: indicatorStyle.copyWith(
               fontWeight: isBold ? FontWeight.bold : FontWeight.normal))),
+      onLetterSpacingChanged: (double value) => _updateSliderTheme(
+          sliderTheme.copyWith(
+              valueIndicatorTextStyle: sliderTheme.valueIndicatorTextStyle
+                  .copyWith(letterSpacing: value))),
+      onLineHeightChanged: (double value) => _updateSliderTheme(
+          sliderTheme.copyWith(
+              valueIndicatorTextStyle:
+                  sliderTheme.valueIndicatorTextStyle.copyWith(height: value))),
+      onWordSpacingChanged: (double value) => _updateSliderTheme(
+          sliderTheme.copyWith(
+              valueIndicatorTextStyle: sliderTheme.valueIndicatorTextStyle
+                  .copyWith(wordSpacing: value))),
+      onDecorationChanged: (TextDecoration value) => _updateSliderTheme(
+          sliderTheme.copyWith(
+              valueIndicatorTextStyle: sliderTheme.valueIndicatorTextStyle
+                  .copyWith(decoration: value))),
+      onDecorationStyleChanged: (TextDecorationStyle value) =>
+          _updateSliderTheme(sliderTheme.copyWith(
+              valueIndicatorTextStyle: sliderTheme.valueIndicatorTextStyle
+                  .copyWith(decorationStyle: value))),
+      onDecorationColorChanged: (Color value) => _updateSliderTheme(
+          sliderTheme.copyWith(
+              valueIndicatorTextStyle: sliderTheme.valueIndicatorTextStyle
+                  .copyWith(decorationColor: value))),
     );
   }
 }
-
-/*
-final _thumbShapeOptions = [
-  ThumbShapeOption(label: 'Round', shape: RoundSliderThumbShape()),
-];
-
-class ThumbShapeOption {
-  final String label;
-  final SliderComponentShape shape;
-
-  ThumbShapeOption({this.label, this.shape});
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ThumbShapeOption &&
-          runtimeType == other.runtimeType &&
-          label == other.label &&
-          shape == other.shape;
-
-  @override
-  int get hashCode => label.hashCode ^ shape.hashCode;
-}
-
-class _ThumbShapeControl extends StatelessWidget {
-  final SliderComponentShape shape;
-  final ValueChanged<SliderComponentShape> onShapeChanged;
-
-  const _ThumbShapeControl({Key key, this.shape, this.onShapeChanged})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final selectedOption = _thumbShapeOptions.firstWhere(
-        (options) => options.shape.runtimeType == shape.runtimeType);
-    print('_ThumbShapeControl.build... $selectedOption');
-    return DropdownButton(
-        hint: Text('select a shape'),
-        value: selectedOption.shape,
-        items: _buildThumbShapeOptions(),
-        onChanged: (value) => onShapeChanged(value));
-  }
-
-  List<DropdownMenuItem<SliderComponentShape>> _buildThumbShapeOptions() {
-    return _thumbShapeOptions
-        .map((option) =>
-            DropdownMenuItem(child: Text(option.label), value: option.shape))
-        .toList();
-  }
-}
-*/
