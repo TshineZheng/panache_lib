@@ -12,12 +12,12 @@ class DriveMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
-      child: Padding(
-        padding: const EdgeInsets.only(right: 16.0),
-        child: model.user != null
-            ? Image.network(model.user.avatarPath, width: 32)
-            : null,
-      ),
+      child: model.user != null
+          ? Padding(
+              padding: const EdgeInsets.only(right: 16.0),
+              child: Image.network(model.user.avatarPath, width: 32),
+            )
+          : null,
       icon: model.user != null ? null : Icon(Icons.cloud_upload),
       itemBuilder: (BuildContext context) => _buildActions(),
       onSelected: (DriveAction action) {
