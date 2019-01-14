@@ -1,3 +1,3 @@
-# flutterial_components
+# Panache_lib
 
-Flutterial preview components package
+companion library for [Panache](https://github.com/rxlabz/panache) project
