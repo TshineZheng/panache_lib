@@ -209,6 +209,7 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
     try {
       final capture = await boundary.toImage();
       bytedata = await capture.toByteData(format: ImageByteFormat.png);
+      if (bytedata.lengthInBytes == 0) bytedata = null;
     } catch (error) {
       print('ThemePreviewAppState._screenshot => ERROR !\n$error');
     }

@@ -54,7 +54,7 @@ class ColorSchemeControl extends StatelessWidget {
           ),
           GridView.count(
             shrinkWrap: true,
-            childAspectRatio: 3.8,
+            childAspectRatio: 2.8,
             controller: ScrollController(keepScrollOffset: false),
             semanticChildCount: colors.length,
             crossAxisCount: 2,

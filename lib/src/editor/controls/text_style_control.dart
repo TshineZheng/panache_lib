@@ -7,7 +7,7 @@ import '../editor_utils.dart';
 import 'color_selector.dart';
 import 'font_size_slider.dart';
 
-class TextStyleControl extends StatelessWidget {
+class TextStyleControl extends StatefulWidget {
   final String label;
 
   final ValueChanged<Color> onColorChanged;
@@ -57,6 +57,8 @@ class TextStyleControl extends StatelessWidget {
 
   final TextStyle style;
 
+  final bool expanded;
+
   TextStyleControl(
     this.label, {
     Key key,
@@ -71,6 +73,7 @@ class TextStyleControl extends StatelessWidget {
     @required this.onDecorationChanged,
     @required this.onDecorationStyleChanged,
     @required this.onDecorationColorChanged,
+    this.expanded: false,
     this.maxFontSize: 112.0,
   })  : this.color = style.color ?? Colors.black,
         this.backgroundColor = style.color ?? Colors.transparent,
@@ -87,8 +90,107 @@ class TextStyleControl extends StatelessWidget {
         super(key: key);
 
   @override
+  TextStyleControlState createState() {
+    return new TextStyleControlState();
+  }
+}
+
+class TextStyleControlState extends State<TextStyleControl> {
+  bool expanded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    //expanded = widget.expanded;
+  }
+
+  @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+
+    final controls = [
+      getFieldsRow([
+        ColorSelector(
+          'Color',
+          widget.color,
+          widget.onColorChanged,
+          padding: 0,
+        ),
+        FontSizeSelector(
+          widget.fontSize,
+          widget.onSizeChanged,
+          min: 8.0,
+          max: widget.maxFontSize,
+          vertical: true,
+        )
+      ]),
+      getFieldsRow([
+        SwitcherControl(
+            checked: widget.isBold,
+            checkedLabel: 'Bold',
+            onChange: widget.onWeightChanged),
+        SwitcherControl(
+            checked: widget.isItalic,
+            checkedLabel: 'Italic',
+            onChange: widget.onFontStyleChanged),
+        SliderPropertyControl(
+          widget.lineHeight,
+          widget.onLineHeightChanged,
+          label: 'Line height',
+          min: 1,
+          max: 3,
+          showDivisions: false,
+          vertical: true,
+        ),
+      ]),
+      getFieldsRow([
+        SliderPropertyControl(
+          widget.letterSpacing,
+          widget.onLetterSpacingChanged,
+          label: 'Letter spacing',
+          min: -5,
+          max: 5,
+          showDivisions: false,
+          vertical: true,
+        ),
+        SliderPropertyControl(
+          widget.wordSpacing,
+          widget.onWordSpacingChanged,
+          label: 'Word spacing',
+          min: -5,
+          max: 5,
+          showDivisions: false,
+          vertical: true,
+        ),
+      ]),
+      getFieldsRow([
+        PanacheDropdown<SelectionItem<TextDecoration>>(
+          label: 'Decoration',
+          selection: widget.style.decoration != null
+              ? _textDecorations
+                  .firstWhere((item) => item.value == widget.style.decoration)
+              : _textDecorations.first,
+          collection: _textDecorations,
+          onValueChanged: (decoration) =>
+              widget.onDecorationChanged(decoration.value),
+        ),
+        PanacheDropdown<SelectionItem<TextDecorationStyle>>(
+          label: 'Decoration style',
+          selection: widget.style.decorationStyle != null
+              ? _textDecorationStyles.firstWhere(
+                  (item) => item.value == widget.style.decorationStyle)
+              : _textDecorationStyles.first,
+          collection: _textDecorationStyles,
+          onValueChanged: (decorationStyle) =>
+              widget.onDecorationStyleChanged(decorationStyle.value),
+        ),
+      ]),
+      ColorSelector(
+          'Decoration color',
+          widget.style.decorationColor ?? Colors.black,
+          widget.onDecorationColorChanged)
+    ];
+
     return Padding(
       padding: const EdgeInsets.only(top: 12.0, bottom: 6.0),
       child: Container(
@@ -102,100 +204,31 @@ class TextStyleControl extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 12.0),
-              child: Text(
-                label,
-                style: textTheme.title,
-                textAlign: TextAlign.left,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    widget.label,
+                    style: textTheme.title,
+                    textAlign: TextAlign.left,
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.add_box),
+                    onPressed: toggle,
+                  )
+                ],
               ),
             ),
-            getFieldsRow([
-              ColorSelector(
-                'Color',
-                color,
-                onColorChanged,
-                padding: 0,
-              ),
-              FontSizeSelector(
-                fontSize,
-                onSizeChanged,
-                min: 8.0,
-                max: maxFontSize,
-                vertical: true,
-              )
-            ]),
-            getFieldsRow([
-              ControlContainerBorder(
-                child: SwitcherControl(
-                    checked: isBold,
-                    checkedLabel: 'Bold',
-                    onChange: onWeightChanged),
-              ),
-              ControlContainerBorder(
-                child: SwitcherControl(
-                    checked: isItalic,
-                    checkedLabel: 'Italic',
-                    onChange: onFontStyleChanged),
-              ),
-              SliderPropertyControl(
-                lineHeight,
-                onLineHeightChanged,
-                label: 'Line height',
-                min: 1,
-                max: 3,
-                showDivisions: false,
-                vertical: true,
-              ),
-            ]),
-            getFieldsRow([
-              SliderPropertyControl(
-                letterSpacing,
-                onLetterSpacingChanged,
-                label: 'Letter spacing',
-                min: -5,
-                max: 5,
-                showDivisions: false,
-                vertical: true,
-              ),
-              SliderPropertyControl(
-                wordSpacing,
-                onWordSpacingChanged,
-                label: 'Word spacing',
-                min: -5,
-                max: 5,
-                showDivisions: false,
-                vertical: true,
-              ),
-            ]),
-            getFieldsRow([
-              PanacheDropdown<SelectionItem<TextDecoration>>(
-                label: 'Decoration',
-                selection: style.decoration != null
-                    ? _textDecorations
-                        .firstWhere((item) => item.value == style.decoration)
-                    : _textDecorations.first,
-                collection: _textDecorations,
-                onValueChanged: (decoration) =>
-                    onDecorationChanged(decoration.value),
-              ),
-              PanacheDropdown<SelectionItem<TextDecorationStyle>>(
-                label: 'Decoration style',
-                selection: style.decorationStyle != null
-                    ? _textDecorationStyles.firstWhere(
-                        (item) => item.value == style.decorationStyle)
-                    : _textDecorationStyles.first,
-                collection: _textDecorationStyles,
-                onValueChanged: (decorationStyle) =>
-                    onDecorationStyleChanged(decorationStyle.value),
-              ),
-              ColorSelector(
-                  'Decoration color',
-                  style.decorationColor ?? Colors.black,
-                  onDecorationColorChanged)
-            ]),
-          ],
+          ]..addAll(expanded ? controls : []),
         ),
       ),
     );
+  }
+
+  void toggle() {
+    setState(() {
+      expanded = !expanded;
+    });
   }
 }
 

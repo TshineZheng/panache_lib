@@ -36,7 +36,7 @@ class InputBorderControl extends StatelessWidget {
     final _labelStyle = labelStyle ?? textTheme.subtitle;
     return Padding(
       padding:
-          EdgeInsets.symmetric(vertical: padding, horizontal: vertical ? 4 : 0),
+          EdgeInsets.symmetric(vertical: padding, horizontal: vertical ? 2 : 0),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
@@ -51,8 +51,8 @@ class InputBorderControl extends StatelessWidget {
           children: <Widget>[
             Padding(
               padding: EdgeInsets.only(
-                right: vertical ? 0 : 16.0,
-                bottom: vertical ? 10 : 0,
+                right: vertical ? 0 : 4.0,
+                /*bottom: vertical ? 6 : 0,*/
               ),
               child: Text(
                 label,
@@ -60,9 +60,9 @@ class InputBorderControl extends StatelessWidget {
               ),
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 12.0),
+              padding: EdgeInsets.symmetric(horizontal: 2.0),
               child: DropdownButton(
-                  style: textTheme.body2,
+                  style: textTheme.body2.copyWith(fontSize: 13),
                   value: _getShapeType(border),
                   items: borders.map(_getShapeMenuItem).toList(),
                   onChanged: (type) => onShapeChanged(_buildBorder(type))),

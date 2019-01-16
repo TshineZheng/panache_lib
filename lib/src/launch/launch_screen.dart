@@ -32,6 +32,8 @@ class LaunchScreenState extends State<LaunchScreen> {
   @override
   Widget build(BuildContext context) {
     print('LaunchScreenState.build... ');
+    final mqSize = MediaQuery.of(context).size;
+    print('LaunchScreenState.build... mqSize $mqSize');
     imageCache.clear();
     return Scaffold(
       backgroundColor: Colors.blueGrey.shade50,

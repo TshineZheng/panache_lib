@@ -36,6 +36,7 @@ class InputDecorationThemePanel extends StatelessWidget {
       color: Colors.grey.shade100,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           getFieldsRow([
             SwitcherControl(
@@ -56,6 +57,7 @@ class InputDecorationThemePanel extends StatelessWidget {
           getFieldsRow([
             InputBorderControl(
               label: 'Border',
+              padding: 2,
               axis: Axis.vertical,
               border: inputTheme.border,
               onShapeChanged: (InputBorder value) {
@@ -65,6 +67,7 @@ class InputDecorationThemePanel extends StatelessWidget {
             ),
             InputBorderControl(
               label: 'Error border',
+              padding: 2,
               axis: Axis.vertical,
               border: inputTheme.errorBorder,
               onShapeChanged: (InputBorder value) {
@@ -78,6 +81,7 @@ class InputDecorationThemePanel extends StatelessWidget {
             InputBorderControl(
               label: 'Enabled border',
               axis: Axis.vertical,
+              padding: 2,
               border: inputTheme.enabledBorder,
               onShapeChanged: (InputBorder value) {
                 _updateInputDecorationTheme(_copyInputDecorationThemeWith(
@@ -88,6 +92,7 @@ class InputDecorationThemePanel extends StatelessWidget {
             InputBorderControl(
               label: 'Disabled border',
               axis: Axis.vertical,
+              padding: 2,
               border: inputTheme.disabledBorder,
               onShapeChanged: (InputBorder value) {
                 _updateInputDecorationTheme(_copyInputDecorationThemeWith(
@@ -100,6 +105,7 @@ class InputDecorationThemePanel extends StatelessWidget {
             InputBorderControl(
               label: 'Focused border',
               axis: Axis.vertical,
+              padding: 2,
               border: inputTheme.focusedBorder,
               onShapeChanged: (InputBorder value) {
                 _updateInputDecorationTheme(_copyInputDecorationThemeWith(
@@ -110,6 +116,7 @@ class InputDecorationThemePanel extends StatelessWidget {
             InputBorderControl(
               label: 'Focused error border',
               axis: Axis.vertical,
+              padding: 2,
               border: inputTheme.focusedErrorBorder,
               onShapeChanged: (InputBorder value) {
                 _updateInputDecorationTheme(_copyInputDecorationThemeWith(

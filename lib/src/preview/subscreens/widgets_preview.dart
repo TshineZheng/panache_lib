@@ -160,25 +160,26 @@ class WidgetPreview1 extends StatelessWidget {
                 padding: const EdgeInsets.all(24.0),
                 child: Column(
                   children: <Widget>[
-                    CircleAvatar(
-                      child: Icon(Icons.person_pin),
-                    ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        RaisedButton(
-                          child: Text('Datepicker'),
-                          onPressed: () => showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(1900),
-                              lastDate: DateTime(2100)),
+                        CircleAvatar(
+                          child: Icon(Icons.person_pin),
                         ),
-                        RaisedButton(
-                          child: Text('Open Dialog'),
-                          onPressed: () => _showDialog(context),
-                        ),
+                        Text('Circle Avatar')
                       ],
+                    ),
+                    RaisedButton(
+                      child: Text('Datepicker'),
+                      onPressed: () => showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(1900),
+                          lastDate: DateTime(2100)),
+                    ),
+                    RaisedButton(
+                      child: Text('Dialog'),
+                      onPressed: () => _showDialog(context),
                     ),
                   ],
                 ),

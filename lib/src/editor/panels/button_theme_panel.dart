@@ -62,22 +62,17 @@ class ButtonThemePanel extends StatelessWidget {
               padding: 2,
             ),
           ]),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10.0),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildButtonTextThemeSelector(buttonTheme.textTheme,
-                      labelStyle: labelStyle,
-                      dropdownTextStyle: dropdownTextStyle),
-                  ShapeFormControl(
-                    onShapeChanged: (shape) => _onButtonThemeChanged(
-                        buttonTheme.copyWith(shape: shape)),
-                    shape: buttonTheme.shape,
-                    labelStyle: labelStyle,
-                  )
-                ]),
-          ),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            _buildButtonTextThemeSelector(buttonTheme.textTheme,
+                labelStyle: labelStyle, dropdownTextStyle: dropdownTextStyle),
+            ShapeFormControl(
+              onShapeChanged: (shape) =>
+                  _onButtonThemeChanged(buttonTheme.copyWith(shape: shape)),
+              shape: buttonTheme.shape,
+              labelStyle: labelStyle,
+              direction: Axis.vertical,
+            )
+          ]),
           Padding(
             padding: const EdgeInsets.only(bottom: 4.0),
             child: Row(
@@ -95,6 +90,7 @@ class ButtonThemePanel extends StatelessWidget {
                 SwitcherControl(
                   label: 'Align dropdown',
                   checked: buttonTheme.alignedDropdown,
+                  direction: Axis.vertical,
                   onChange: (aligned) => _onButtonThemeChanged(
                       buttonTheme.copyWith(alignedDropdown: aligned)),
                 ),
@@ -142,31 +138,33 @@ class ButtonThemePanel extends StatelessWidget {
 
   Widget _buildButtonTextThemeSelector(ButtonTextTheme buttonTextTheme,
       {TextStyle labelStyle, TextStyle dropdownTextStyle}) {
-    return Container(
-      padding: const EdgeInsets.all(4.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: Colors.white,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: Text(
-              'Text theme',
-              style: labelStyle,
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.all(4.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: Colors.white,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(right: 16.0),
+              child: Text(
+                'Text theme',
+                style: labelStyle,
+              ),
             ),
-          ),
-          DropdownButton(
-              style: dropdownTextStyle,
-              value: buttonTextTheme,
-              items: ButtonTextTheme.values
-                  .map(_buildButtonTextThemeSelectorItem)
-                  .toList(growable: false),
-              onChanged: (newButtonTextTheme) => _onButtonThemeChanged(
-                  buttonTheme.copyWith(textTheme: newButtonTextTheme))),
-        ],
+            DropdownButton(
+                style: dropdownTextStyle,
+                value: buttonTextTheme,
+                items: ButtonTextTheme.values
+                    .map(_buildButtonTextThemeSelectorItem)
+                    .toList(growable: false),
+                onChanged: (newButtonTextTheme) => _onButtonThemeChanged(
+                    buttonTheme.copyWith(textTheme: newButtonTextTheme))),
+          ],
+        ),
       ),
     );
   }

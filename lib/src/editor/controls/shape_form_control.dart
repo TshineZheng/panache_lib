@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'control_container.dart';
+
 enum BorderShapes {
   BeveledRectangleBorder,
   CircleBorder,
@@ -21,10 +23,13 @@ class ShapeFormControl extends StatelessWidget {
 
   final TextStyle labelStyle;
 
+  final Axis direction;
+
   const ShapeFormControl(
       {Key key,
       @required this.onShapeChanged,
       @required this.shape,
+      this.direction: Axis.horizontal,
       this.labelStyle})
       : super(key: key);
 
@@ -32,13 +37,9 @@ class ShapeFormControl extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final _labelStyle = labelStyle ?? textTheme.subtitle;
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 8),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: Colors.white,
-      ),
-      child: Row(
+    return ControlContainerBorder(
+      child: Flex(
+        direction: direction,
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -50,7 +51,7 @@ class ShapeFormControl extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 12.0),
+            padding: EdgeInsets.symmetric(horizontal: 4.0),
             child: DropdownButton(
                 style: textTheme.body2,
                 value: _getShapeType(shape),

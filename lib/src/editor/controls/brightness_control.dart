@@ -20,7 +20,7 @@ class BrightnessSelector extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(right: 16.0),
           child: Text(
-            "$label",
+            label,
             style: labelStyle,
           ),
         ),
