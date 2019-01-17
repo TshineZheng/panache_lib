@@ -1,14 +1,16 @@
+import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:panache_lib/src/preview/subscreens/chips_preview.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../theme_model.dart';
 import 'code_preview.dart';
+import 'subscreens/chips_preview.dart';
 import 'subscreens/inputs_preview.dart';
+import 'subscreens/others_preview.dart';
 import 'subscreens/slider_preview.dart';
 import 'subscreens/typography_preview.dart';
 import 'subscreens/widgets_preview.dart';
@@ -18,6 +20,13 @@ const kIPhone5 = const Size(640 / 2, 1136 / 2);
 const kIPhone6 = const Size(750 / 2, 1334 / 2);
 
 const kS6 = const Size(1440 / 4, 2560 / 4);
+
+class TabItem {
+  final String text;
+  final IconData icon;
+
+  TabItem(this.text, this.icon);
+}
 
 class AppPreviewContainer extends StatefulWidget {
   final Size size;
@@ -58,13 +67,6 @@ class AppPreviewContainerState extends State<AppPreviewContainer> {
   }
 }
 
-class TabItem {
-  final String text;
-  final IconData icon;
-
-  TabItem(this.text, this.icon);
-}
-
 class ThemePreviewApp extends StatefulWidget {
   final ThemeModel model;
 
@@ -87,6 +89,7 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
     TabItem('Inputs', Icons.keyboard),
     TabItem('Slider', Icons.tune),
     TabItem('Chips', Icons.dns),
+    TabItem('Others', Icons.people),
     TabItem('Text', Icons.text_fields),
     TabItem('Primary Text', Icons.text_fields),
     TabItem('Accent Text', Icons.text_fields),
@@ -172,6 +175,7 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
                 InputsPreview(theme: widget.theme),
                 SliderPreview(theme: widget.theme),
                 ChipsPreview(theme: widget.theme),
+                OthersPreview(theme: widget.theme),
                 TypographyPreview(
                   textTheme: widget.theme.textTheme,
                   brightness: widget.theme.brightness,
@@ -204,14 +208,17 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
 
   Future<Uint8List> _screenshot() async {
     ByteData bytedata;
-    RenderRepaintBoundary boundary =
-        _globalKey.currentContext.findRenderObject();
+    RenderRepaintBoundary boundary;
+
+    if (_globalKey.currentContext == null) return Future.value(null);
     try {
+      boundary = _globalKey.currentContext.findRenderObject();
       final capture = await boundary.toImage();
       bytedata = await capture.toByteData(format: ImageByteFormat.png);
       if (bytedata.lengthInBytes == 0) bytedata = null;
     } catch (error) {
       print('ThemePreviewAppState._screenshot => ERROR !\n$error');
+      return Future.value(null);
     }
 
     return bytedata != null ? bytedata.buffer.asUint8List() : null;

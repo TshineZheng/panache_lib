@@ -23,7 +23,6 @@ class PanacheEditorScreenState extends State<PanacheEditorScreen> {
       return Scaffold(
         backgroundColor: Colors.grey.shade300,
         appBar: AppBar(
-          /*title: Text('Panache'),*/
           actions: <Widget>[
             FlatButton.icon(
               textColor: Colors.blueGrey.shade50,

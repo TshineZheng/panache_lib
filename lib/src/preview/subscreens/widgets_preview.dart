@@ -132,94 +132,96 @@ class WidgetPreview1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+    final bodyStyle = textTheme.body2.copyWith(fontSize: 12);
     return Padding(
       padding: EdgeInsets.all(8.0),
       child: ListView(
         children: [
-          Row(
+          Container(
+            padding: EdgeInsets.all(12.0),
+            decoration: BoxDecoration(
+                color: theme.primaryColorDark,
+                borderRadius: BorderRadius.circular(4)),
+            child: Text(
+                'Active color : ThemeData.unselectedWidgetColor\n'
+                'Active selected color : ThemeData.toggleableActiveColor\n'
+                'Disabled color : ThemeData.disabledColor',
+                style: theme.primaryTextTheme.body2.copyWith(height: 1.4)),
+          ),
+          Divider(),
+          Text('Checkbox', style: textTheme.subtitle),
+          Column(
             children: [
-              Checkbox(value: true, onChanged: (v) {}),
-              Checkbox(value: false, onChanged: (v) {}),
-              Checkbox(value: true, onChanged: null),
-              Checkbox(value: false, onChanged: null),
+              Row(
+                children: <Widget>[
+                  Checkbox(value: false, onChanged: (v) {}),
+                  Text('Checkbox', style: bodyStyle)
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Checkbox(value: true, onChanged: (v) {}),
+                  Text('Selected Checkbox', style: bodyStyle)
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Checkbox(value: false, onChanged: null),
+                  Text('Disabled Checkbox', style: bodyStyle)
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Checkbox(value: true, onChanged: null),
+                  Text('Selected Disabled Checkbox', style: bodyStyle)
+                ],
+              ),
             ],
           ),
           Divider(),
-          Row(
+          Text('Radio buttons', style: textTheme.subtitle),
+          Column(
             children: [
-              Radio(value: false, onChanged: (v) {}, groupValue: null),
-              Radio(value: true, onChanged: (v) {}, groupValue: true),
-              Switch(value: false, onChanged: (v) {}),
-              Switch(value: true, onChanged: (v) {}),
+              Row(children: [
+                Radio(value: false, onChanged: (v) {}, groupValue: null),
+                Text('RadioButton', style: bodyStyle)
+              ]),
+              Row(children: [
+                Radio(value: false, groupValue: null, onChanged: null),
+                Text('RadioButton - disabled', style: bodyStyle)
+              ]),
+              Row(children: [
+                Radio(value: true, onChanged: (v) {}, groupValue: true),
+                Text('RadioButton - selected', style: bodyStyle)
+              ]),
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        CircleAvatar(
-                          child: Icon(Icons.person_pin),
-                        ),
-                        Text('Circle Avatar')
-                      ],
-                    ),
-                    RaisedButton(
-                      child: Text('Datepicker'),
-                      onPressed: () => showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(1900),
-                          lastDate: DateTime(2100)),
-                    ),
-                    RaisedButton(
-                      child: Text('Dialog'),
-                      onPressed: () => _showDialog(context),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Text('Progress'),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          Divider(),
+          Text('Switchs', style: textTheme.subtitle),
+          Column(
             children: [
-              SizedBox(
-                width: 200,
-                child: LinearProgressIndicator(
-                  value: 0.57,
-                ),
-              ),
-              CircularProgressIndicator(
-                value: 0.57,
-                backgroundColor: Colors.yellow,
-              ),
+              Row(children: [
+                Switch(value: false, onChanged: (v) {}),
+                Text('Switch', style: bodyStyle)
+              ]),
+              Row(children: [
+                Switch(value: true, onChanged: (v) {}),
+                Text('selected', style: bodyStyle)
+              ]),
+              Row(children: [
+                Switch(value: false, onChanged: null),
+                Text('disabled', style: bodyStyle)
+              ]),
+              Row(children: [
+                Switch(value: true, onChanged: null),
+                Text('disabled selected', style: bodyStyle)
+              ]),
             ],
           ),
         ],
       ),
     );
   }
-
-  void _showDialog(context) => showDialog(
-        context: context,
-        builder: (BuildContext context) => Theme(
-            child: Dialog(
-              child: Container(
-                width: 420.0,
-                height: 420.0,
-                child: Text(
-                  'a simple dialog',
-                  style: theme.textTheme.headline,
-                ),
-              ),
-            ),
-            data: theme),
-      );
 }

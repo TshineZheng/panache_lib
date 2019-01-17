@@ -81,10 +81,12 @@ class ThemeColorPanel extends StatelessWidget {
               padding: 2,
             ),
             ColorSelector(
-              'Toggleable Active Color',
-              theme.toggleableActiveColor,
-              (c) => themeModel.updateColor(
-                  property: "toggleableActiveColor", color: c),
+              'Disabled color',
+              theme.disabledColor,
+              (color) => themeModel.updateTheme(theme.copyWith(
+                  disabledColor: color,
+                  buttonTheme:
+                      theme.buttonTheme.copyWith(disabledColor: color))),
               padding: 2,
             ),
           ]),
@@ -104,21 +106,19 @@ class ThemeColorPanel extends StatelessWidget {
           ]),
           getFieldsRow([
             ColorSelector(
-              'Disabled color',
-              theme.disabledColor,
-              (color) => themeModel.updateTheme(theme.copyWith(
-                  disabledColor: color,
-                  buttonTheme:
-                      theme.buttonTheme.copyWith(disabledColor: color))),
+              'Unselected widget color',
+              theme.unselectedWidgetColor,
+              (c) => themeModel.updateColor(
+                  property: "unselectedWidgetColor", color: c),
               padding: 2,
             ),
             ColorSelector(
-              'Background color',
-              theme.backgroundColor,
-              (c) =>
-                  themeModel.updateColor(property: "backgroundColor", color: c),
+              'Toggleable Active Color',
+              theme.toggleableActiveColor,
+              (c) => themeModel.updateColor(
+                  property: "toggleableActiveColor", color: c),
               padding: 2,
-            ),
+            )
           ]),
           getFieldsRow([
             ColorSelector(
@@ -204,10 +204,10 @@ class ThemeColorPanel extends StatelessWidget {
               padding: 2,
             ),
             ColorSelector(
-              'Unselected widget color',
-              theme.unselectedWidgetColor,
-              (c) => themeModel.updateColor(
-                  property: "unselectedWidgetColor", color: c),
+              'Background color',
+              theme.backgroundColor,
+              (c) =>
+                  themeModel.updateColor(property: "backgroundColor", color: c),
               padding: 2,
             ),
           ]),
