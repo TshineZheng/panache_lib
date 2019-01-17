@@ -52,21 +52,18 @@ class SliderPropertyControlState extends State<SliderPropertyControl> {
         child: Flex(
       direction: widget.vertical ? Axis.vertical : Axis.horizontal,
       children: [
-        ConstrainedBox(
-          constraints: constraints,
-          child: Slider(
-            value: updatedValue,
-            min: widget.min,
-            max: widget.max,
-            divisions:
-                widget.showDivisions ? (widget.max - widget.min) ~/ 4 : null,
-            onChangeEnd: widget.onValueChanged,
-            onChanged: (value) {
-              setState(() {
-                updatedValue = value;
-              });
-            },
-          ),
+        Slider(
+          value: updatedValue,
+          min: widget.min,
+          max: widget.max,
+          divisions:
+              widget.showDivisions ? (widget.max - widget.min) ~/ 4 : null,
+          onChangeEnd: widget.onValueChanged,
+          onChanged: (value) {
+            setState(() {
+              updatedValue = value;
+            });
+          },
         ),
         RichText(
           text: TextSpan(

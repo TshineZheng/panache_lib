@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../theme_model.dart';
 import '../../utils/constants.dart';
-import '../controls/brightness_control.dart';
 import '../controls/color_selector.dart';
 import '../controls/shape_form_control.dart';
+import '../controls/switcher_control.dart';
 import '../controls/text_style_control.dart';
 import '../editor_utils.dart';
 
@@ -92,14 +92,23 @@ class ChipThemePanel extends StatelessWidget {
                       _updateChipTheme(chipTheme.copyWith(shape: shapeBorder)),
                   shape: chipTheme.shape,
                   labelStyle: labelStyle),
-              Expanded(
+              SwitcherControl(
+                checked: chipTheme.brightness == Brightness.dark,
+                checkedLabel: 'Dark',
+                direction: Axis.vertical,
+                onChange: (value) => _onBrightnessChanged(
+                    value ? Brightness.dark : Brightness.light,
+                    labelStyle: appTextTheme.body1),
+              ),
+              /*Expanded(
                 child: BrightnessSelector(
                   label: 'Brightness',
+                  direction: Axis.horizontal,
                   isDark: chipTheme.brightness == Brightness.dark,
                   onBrightnessChanged: (value) => _onBrightnessChanged(value,
                       labelStyle: appTextTheme.body1),
                 ),
-              )
+              )*/
             ],
           ),
         ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:panache_lib/src/editor/editor_utils.dart';
 
 import '../../theme_model.dart';
 import '../../utils/constants.dart';
@@ -32,115 +33,98 @@ class IconThemePanel extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Expanded(
-                child: ColorSelector(
-                  'Color',
-                  iconTheme.color,
-                  (color) => _updateIconTheme(iconTheme.copyWith(color: color)),
-                  padding: 4,
-                ),
-              ),
-              SliderPropertyControl(
-                iconTheme.size ?? 12,
-                (size) => _updateIconTheme(iconTheme.copyWith(size: size)),
-                label: 'Size',
-                min: 8,
-                max: 64,
-                maxWidth: 140.0,
-                vertical: true,
-              ),
-              SliderPropertyControl(
-                iconTheme.opacity ?? 1.0,
-                (opacity) =>
-                    _updateIconTheme(iconTheme.copyWith(opacity: opacity)),
-                label: 'Opacity',
-                min: 0.0,
-                max: 1.0,
-                maxWidth: 140.0,
-                vertical: true,
-                showDivisions: false,
-              ),
-            ]),
+          Text('Icon theme', style: textTheme.subhead),
+          ColorSelector(
+            'Color',
+            iconTheme.color,
+            (color) => _updateIconTheme(iconTheme.copyWith(color: color)),
+            padding: 4,
           ),
-          Text(
-            'Primary icon theme',
-            style: textTheme.subhead,
+          getFieldsRow([
+            SliderPropertyControl(
+              iconTheme.size ?? 12,
+              (size) => _updateIconTheme(iconTheme.copyWith(size: size)),
+              label: 'Size',
+              min: 8,
+              max: 64,
+              maxWidth: 140.0,
+              vertical: true,
+            ),
+            SliderPropertyControl(
+              iconTheme.opacity ?? 1.0,
+              (opacity) =>
+                  _updateIconTheme(iconTheme.copyWith(opacity: opacity)),
+              label: 'Opacity',
+              min: 0.0,
+              max: 1.0,
+              vertical: true,
+              showDivisions: false,
+            ),
+          ]),
+          Divider(
+            height: 32,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: Row(children: [
-              Expanded(
-                child: ColorSelector(
-                  'Color',
-                  primaryIconTheme.color,
-                  (color) => _updatePrimaryIconTheme(
-                      primaryIconTheme.copyWith(color: color)),
-                  padding: 0,
-                ),
-              ),
-              SliderPropertyControl(
-                primaryIconTheme.size ?? 12,
-                (size) => _updatePrimaryIconTheme(
-                    primaryIconTheme.copyWith(size: size)),
-                label: 'Size',
-                min: 8,
-                max: 64,
-                vertical: true,
-              ),
-              SliderPropertyControl(
-                primaryIconTheme.opacity ?? 1.0,
-                (opacity) => _updatePrimaryIconTheme(
-                    primaryIconTheme.copyWith(opacity: opacity)),
-                label: 'Opacity',
-                min: 0.0,
-                max: 1.0,
-                maxWidth: 100.0,
-                vertical: true,
-                showDivisions: false,
-              ),
-            ]),
+          Text('Primary icon theme', style: textTheme.subhead),
+          ColorSelector(
+            'Color',
+            primaryIconTheme.color,
+            (color) => _updatePrimaryIconTheme(
+                primaryIconTheme.copyWith(color: color)),
+            padding: 0,
           ),
-          Text(
-            'Accent icon theme',
-            style: textTheme.subhead,
+          getFieldsRow([
+            SliderPropertyControl(
+              primaryIconTheme.size ?? 12,
+              (size) => _updatePrimaryIconTheme(
+                  primaryIconTheme.copyWith(size: size)),
+              label: 'Size',
+              min: 8,
+              max: 64,
+              vertical: true,
+            ),
+            SliderPropertyControl(
+              primaryIconTheme.opacity ?? 1.0,
+              (opacity) => _updatePrimaryIconTheme(
+                  primaryIconTheme.copyWith(opacity: opacity)),
+              label: 'Opacity',
+              min: 0.0,
+              max: 1.0,
+              vertical: true,
+              showDivisions: false,
+            ),
+          ]),
+          Divider(
+            height: 32,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: Row(children: [
-              Expanded(
-                child: ColorSelector(
-                  'Color',
-                  accentIconTheme.color,
-                  (color) => _updateAccentIconTheme(
-                      accentIconTheme.copyWith(color: color)),
-                  padding: 0,
-                ),
-              ),
-              SliderPropertyControl(
-                accentIconTheme.size ?? 12,
-                (size) => _updateAccentIconTheme(
-                    accentIconTheme.copyWith(size: size)),
-                label: 'Size',
-                min: 8,
-                max: 64,
-                vertical: true,
-              ),
-              SliderPropertyControl(
-                accentIconTheme.opacity ?? 1.0,
-                (opacity) => _updateAccentIconTheme(
-                    accentIconTheme.copyWith(opacity: opacity)),
-                label: 'Opacity',
-                min: 0.0,
-                max: 1.0,
-                maxWidth: 100.0,
-                vertical: true,
-                showDivisions: false,
-              ),
-            ]),
+          Text('Accent icon theme', style: textTheme.subhead),
+          ColorSelector(
+            'Color',
+            accentIconTheme.color,
+            (color) =>
+                _updateAccentIconTheme(accentIconTheme.copyWith(color: color)),
+            padding: 0,
           ),
+          getFieldsRow([
+            SliderPropertyControl(
+              accentIconTheme.size ?? 12,
+              (size) =>
+                  _updateAccentIconTheme(accentIconTheme.copyWith(size: size)),
+              label: 'Size',
+              min: 8,
+              max: 64,
+              vertical: true,
+            ),
+            SliderPropertyControl(
+              accentIconTheme.opacity ?? 1.0,
+              (opacity) => _updateAccentIconTheme(
+                  accentIconTheme.copyWith(opacity: opacity)),
+              label: 'Opacity',
+              min: 0.0,
+              max: 1.0,
+              vertical: true,
+              showDivisions: false,
+            ),
+          ]),
         ],
       ),
     );

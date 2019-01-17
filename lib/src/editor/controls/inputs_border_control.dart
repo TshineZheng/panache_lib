@@ -62,7 +62,7 @@ class InputBorderControl extends StatelessWidget {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 2.0),
               child: DropdownButton(
-                  style: textTheme.body2.copyWith(fontSize: 13),
+                  style: textTheme.body2,
                   value: _getShapeType(border),
                   items: borders.map(_getShapeMenuItem).toList(),
                   onChanged: (type) => onShapeChanged(_buildBorder(type))),
@@ -74,7 +74,7 @@ class InputBorderControl extends StatelessWidget {
   }
 
   DropdownMenuItem<InputBorders> _getShapeMenuItem(InputBorders shape) =>
-      DropdownMenuItem(value: shape, child: Text('$shape'.split('.').last));
+      DropdownMenuItem(value: shape, child: Text(_shapeLabel(shape)));
 
   InputBorder _buildBorder(InputBorders shape) {
     switch (shape) {
@@ -84,6 +84,17 @@ class InputBorderControl extends StatelessWidget {
         return InputBorder.none;
       default:
         return UnderlineInputBorder();
+    }
+  }
+
+  String _shapeLabel(InputBorders shape) {
+    switch (shape) {
+      case InputBorders.OutlineInputBorder:
+        return 'Outline';
+      case InputBorders.None:
+        return 'None';
+      default:
+        return 'Underline';
     }
   }
 

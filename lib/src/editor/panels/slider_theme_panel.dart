@@ -50,16 +50,21 @@ class SliderThemePanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return Container(
       padding: kPadding,
       color: Colors.grey.shade100,
       child: Column(
         children: <Widget>[
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Text('Show value indicator'),
+              Text(
+                'Show value indicator',
+                style: textTheme.subtitle,
+              ),
               DropdownButton(
+                  style: textTheme.body2,
                   value: sliderTheme.showValueIndicator,
                   items: showIndicatorOptions
                       .map(_buildIndicatorOptions)

@@ -27,7 +27,10 @@ class SwitcherControl extends StatelessWidget {
       Row(
         children: <Widget>[
           Switch(value: checked, onChanged: onChange),
-          Text('$checkedLabel'),
+          Text(
+            checkedLabel,
+            style: labelStyle,
+          ),
         ],
       ),
     ];
@@ -35,7 +38,7 @@ class SwitcherControl extends StatelessWidget {
       children.add(Padding(
         padding: const EdgeInsets.only(right: 6.0),
         child: Text(
-          "$label",
+          label,
           style: labelStyle,
         ),
       ));

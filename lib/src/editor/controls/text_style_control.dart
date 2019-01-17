@@ -191,36 +191,30 @@ class TextStyleControlState extends State<TextStyleControl> {
           widget.onDecorationColorChanged)
     ];
 
-    return Padding(
-      padding: const EdgeInsets.only(top: 12.0, bottom: 6.0),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: Colors.white30,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    widget.label,
-                    style: textTheme.title,
-                    textAlign: TextAlign.left,
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.add_box),
-                    onPressed: toggle,
-                  )
-                ],
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                widget.label,
+                style: textTheme.title,
+                textAlign: TextAlign.left,
               ),
-            ),
-          ]..addAll(expanded ? controls : []),
-        ),
+              IconButton(
+                icon: Icon(
+                    expanded ? Icons.indeterminate_check_box : Icons.add_box),
+                onPressed: toggle,
+                color: Colors.blueGrey.shade600,
+              )
+            ],
+          ),
+        ]
+          ..addAll(expanded ? controls : [])
+          ..add(Divider()),
       ),
     );
   }

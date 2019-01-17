@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:panache_lib/src/editor/controls/color_selector.dart';
+import 'package:panache_lib/src/editor/controls/control_container.dart';
 import 'package:panache_lib/src/editor/controls/switcher_control.dart';
 
 import '../../theme_model.dart';
@@ -139,14 +140,10 @@ class ButtonThemePanel extends StatelessWidget {
   Widget _buildButtonTextThemeSelector(ButtonTextTheme buttonTextTheme,
       {TextStyle labelStyle, TextStyle dropdownTextStyle}) {
     return Expanded(
-      child: Container(
+      child: ControlContainerBorder(
         padding: const EdgeInsets.all(4.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: Colors.white,
-        ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(right: 16.0),
