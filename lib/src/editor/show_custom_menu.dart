@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 const Duration _kMenuDuration = const Duration(milliseconds: 300);
 const double _kMenuCloseIntervalEnd = 2.0 / 3.0;
 const double _kMenuItemHeight = 48.0;
-const double _kMenuScreenPadding = 12.0;
+const double _kMenuScreenPadding = 0.0;
 
 /// push a route to Navigator
 /// the position is expected
@@ -67,16 +67,16 @@ class _PopupMenuRoute<T> extends PopupRoute<T> {
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation) {
-    double selectedItemOffset;
+    /*double selectedItemOffset;
     if (initialValue != null) {
       selectedItemOffset = 0.0;
-    }
+    }*/
 
     Widget menu = _PopupMenu<T>(route: this);
     if (theme != null) menu = Theme(data: theme, child: menu);
 
     return CustomSingleChildLayout(
-        delegate: _PopupMenuRouteGridLayout(position, selectedItemOffset),
+        delegate: _PopupMenuRouteGridLayout(position /*, selectedItemOffset*/),
         child: menu);
   }
 
@@ -87,10 +87,10 @@ class _PopupMenuRoute<T> extends PopupRoute<T> {
 
 /// position the popup
 class _PopupMenuRouteGridLayout extends SingleChildLayoutDelegate {
-  _PopupMenuRouteGridLayout(this.position, this.selectedItemOffset);
+  _PopupMenuRouteGridLayout(this.position /*, this.selectedItemOffset*/);
 
   final RelativeRect position;
-  final double selectedItemOffset;
+  //final double selectedItemOffset;
 
   @override
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) =>
@@ -143,9 +143,10 @@ class _PopupMenu<T> extends StatelessWidget {
 
     final Widget child = SizedBox(
       width: 480.0,
-      height: 340.0,
+      height: 320.0,
       child: GridView(
         children: children,
+        padding: EdgeInsets.zero,
         gridDelegate:
             SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 6),
       ),
