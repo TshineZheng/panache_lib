@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:panache_lib/src/services/theme_service.dart';
-import 'package:quiver/time.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import 'converters/theme_converter.dart';
@@ -49,6 +48,10 @@ class ThemeModel extends Model {
 
   User _currentUser;
   User get user => _currentUser;
+
+  Map<String, dynamic> get panelStates => localData.panelStates;
+
+  double get scrollPosition => localData.scrollPosition;
 
   ThemeModel({
     @required CloudService cloudService,
@@ -116,14 +119,19 @@ class ThemeModel extends Model {
 
   Future loadTheme(PanacheTheme theme) async {
     _currentTheme = theme;
-    final result = await _service.loadTheme('${theme.id}.json');
-    notifyListeners();
-    return result;
+    try {
+      final result = await _service.loadTheme('${theme.id}.json');
+      notifyListeners();
+      return result;
+    } catch (error) {
+      print('ThemeModel.loadTheme... $error');
+    }
+    return null;
   }
 
   void initScreenshooter(ScreenShooter screenShooterKey) {
     _screenShooter = screenShooterKey;
-    Future.delayed(aSecond * 2, () => saveTheme());
+    //Future.delayed(aSecond * 2, () => saveTheme());
   }
 
   Future<dynamic> exportThemeToDrive() async {
@@ -158,4 +166,13 @@ class ThemeModel extends Model {
     await _cloudService.logout();
     notifyListeners();
   }
+
+  String themeDataPath(PanacheTheme theme) =>
+      '${dir?.path ?? ''}/themes/${theme.id}.json';
+
+  void saveEditorState(Map<String, bool> panelStates, double pixels) =>
+      localData.saveEditorState(panelStates, pixels);
+
+  void saveScrollPosition(double pixels) =>
+      localData.saveScrollPosition(pixels);
 }

@@ -31,13 +31,48 @@ class ThemeEditorState extends State<ThemeEditor> {
   bool accentTextPanelExpanded = false;
   bool inputsPanelExpanded = false;
 
+  ScrollController scrollController;
+
+  @override
+  void initState() {
+    print('widget.model.scrollPosition ${widget.model.scrollPosition}');
+    _initPanels();
+
+    scrollController =
+        ScrollController(initialScrollOffset: widget.model.scrollPosition ?? 0)
+          ..addListener(() {
+            widget.model.saveScrollPosition(scrollController.position.pixels);
+          });
+
+    super.initState();
+  }
+
+  void _initPanels() {
+    final panelStates = widget.model.panelStates;
+    colorPanelExpanded = panelStates['colorPanelExpanded'];
+    buttonThemePanelExpanded = panelStates['buttonThemePanelExpanded'];
+    iconThemePanelExpanded = panelStates['iconThemePanelExpanded'];
+    sliderThemePanelExpanded = panelStates['sliderThemePanelExpanded'];
+    tabBarThemePanelExpanded = panelStates['tabBarThemePanelExpanded'];
+    chipThemePanelExpanded = panelStates['chipThemePanelExpanded'];
+    textPanelExpanded = panelStates['textPanelExpanded'];
+    primaryTextPanelExpanded = panelStates['primaryTextPanelExpanded'];
+    accentTextPanelExpanded = panelStates['accentTextPanelExpanded'];
+    inputsPanelExpanded = panelStates['accentTextPanelExpanded'];
+  }
+
   @override
   Widget build(BuildContext context) {
     final primaryColor = widget.model.theme.primaryColor;
+    final orientation = MediaQuery.of(context).orientation;
+    final inPortrait = orientation == Orientation.portrait;
+    final useLargeLayout = MediaQuery.of(context).size.shortestSide >= 600;
+
     return Container(
       /*elevation: 4.0,*/
       color: Colors.blueGrey.shade100,
       child: ListView(
+        controller: scrollController,
         /*shrinkWrap: true,*/
         children: [
           GlobalThemePropertiesControl(),
@@ -51,6 +86,7 @@ class ThemeEditorState extends State<ThemeEditor> {
                 expanded: colorPanelExpanded,
                 icon: Icons.color_lens,
                 color: primaryColor,
+                dense: !useLargeLayout,
               ),
               _buildPanel(
                 widget.model,
@@ -59,6 +95,7 @@ class ThemeEditorState extends State<ThemeEditor> {
                 expanded: buttonThemePanelExpanded,
                 icon: Icons.touch_app,
                 color: primaryColor,
+                dense: !useLargeLayout,
               ),
               _buildPanel(
                 widget.model,
@@ -67,6 +104,7 @@ class ThemeEditorState extends State<ThemeEditor> {
                 expanded: inputsPanelExpanded,
                 icon: Icons.keyboard,
                 color: primaryColor,
+                dense: !useLargeLayout,
               ),
               _buildPanel(
                 widget.model,
@@ -75,6 +113,7 @@ class ThemeEditorState extends State<ThemeEditor> {
                 expanded: tabBarThemePanelExpanded,
                 icon: Icons.tab,
                 color: primaryColor,
+                dense: !useLargeLayout,
               ),
               _buildPanel(
                 widget.model,
@@ -83,6 +122,7 @@ class ThemeEditorState extends State<ThemeEditor> {
                 expanded: sliderThemePanelExpanded,
                 icon: Icons.tune,
                 color: primaryColor,
+                dense: !useLargeLayout,
               ),
               _buildPanel(
                 widget.model,
@@ -95,6 +135,7 @@ class ThemeEditorState extends State<ThemeEditor> {
                 expanded: textPanelExpanded,
                 icon: Icons.font_download,
                 color: primaryColor,
+                dense: !useLargeLayout,
               ),
               _buildPanel(
                 widget.model,
@@ -106,6 +147,7 @@ class ThemeEditorState extends State<ThemeEditor> {
                 expanded: primaryTextPanelExpanded,
                 icon: Icons.font_download,
                 color: primaryColor,
+                dense: !useLargeLayout,
               ),
               _buildPanel(
                 widget.model,
@@ -117,6 +159,7 @@ class ThemeEditorState extends State<ThemeEditor> {
                 expanded: accentTextPanelExpanded,
                 icon: Icons.font_download,
                 color: primaryColor,
+                dense: !useLargeLayout,
               ),
               _buildPanel(
                 widget.model,
@@ -125,6 +168,7 @@ class ThemeEditorState extends State<ThemeEditor> {
                 expanded: chipThemePanelExpanded,
                 icon: Icons.dns,
                 color: primaryColor,
+                dense: !useLargeLayout,
               ),
               _buildPanel(
                 widget.model,
@@ -133,6 +177,7 @@ class ThemeEditorState extends State<ThemeEditor> {
                 expanded: iconThemePanelExpanded,
                 icon: Icons.insert_emoticon,
                 color: primaryColor,
+                dense: !useLargeLayout,
               ),
               _buildPanel(
                 widget.model,
@@ -141,6 +186,7 @@ class ThemeEditorState extends State<ThemeEditor> {
                 expanded: dialogThemePanelExpanded,
                 icon: Icons.check_box_outline_blank,
                 color: primaryColor,
+                dense: !useLargeLayout,
               ),
             ],
           )
@@ -186,15 +232,34 @@ class ThemeEditorState extends State<ThemeEditor> {
         break;
     }
 
+    final panelStates = <String, bool>{
+      'colorPanelExpanded': colorPanelExpanded,
+      'buttonThemePanelExpanded': buttonThemePanelExpanded,
+      'inputsPanelExpanded': inputsPanelExpanded,
+      'tabBarThemePanelExpanded': tabBarThemePanelExpanded,
+      'sliderThemePanelExpanded': sliderThemePanelExpanded,
+      'textPanelExpanded': textPanelExpanded,
+      'primaryTextPanelExpanded': primaryTextPanelExpanded,
+      'accentTextPanelExpanded': accentTextPanelExpanded,
+      'chipThemePanelExpanded': chipThemePanelExpanded,
+      'iconThemePanelExpanded': iconThemePanelExpanded,
+      'dialogThemePanelExpanded': dialogThemePanelExpanded
+    };
+    widget.model.saveEditorState(panelStates, scrollController.position.pixels);
+
     setState(() {});
   }
 
   ExpansionPanel _buildPanel(ThemeModel model, String label,
-          {bool expanded: false, IconData icon, Color color, Widget child}) =>
+          {bool expanded: false,
+          IconData icon,
+          Color color,
+          Widget child,
+          bool dense}) =>
       ExpansionPanel(
         isExpanded: expanded,
-        headerBuilder: (context, isExpanded) =>
-            ExpanderHeader(icon: icon, color: color, label: label),
+        headerBuilder: (context, isExpanded) => ExpanderHeader(
+            icon: icon, color: color, label: label, dense: dense),
         body: child,
       );
 }

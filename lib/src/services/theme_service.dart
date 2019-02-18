@@ -41,12 +41,15 @@ class ThemeService {
   void initTheme(
       {MaterialColor primarySwatch: Colors.blue,
       Brightness brightness: Brightness.light}) {
+    final inputTheme = InputDecoration().applyDefaults(InputDecorationTheme());
+
     _theme = _localize(
       ThemeData(
         primarySwatch: primarySwatch,
         brightness: brightness,
         platform:
             Platform.isAndroid ? TargetPlatform.android : TargetPlatform.iOS,
+        /*inputDecorationTheme:*/
       ),
     );
   }

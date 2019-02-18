@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:panache_lib/src/utils/color_utils.dart';
 
 class ButtonPreview extends StatelessWidget {
   final ThemeData theme;
@@ -148,7 +149,9 @@ class WidgetPreview1 extends StatelessWidget {
                 'Active color : ThemeData.unselectedWidgetColor\n'
                 'Active selected color : ThemeData.toggleableActiveColor\n'
                 'Disabled color : ThemeData.disabledColor',
-                style: theme.primaryTextTheme.body2.copyWith(height: 1.4)),
+                style: theme.primaryTextTheme.body2.copyWith(
+                    height: 1.4,
+                    color: getContrastColor(theme.primaryColorDark))),
           ),
           Divider(),
           Text('Checkbox', style: textTheme.subtitle),

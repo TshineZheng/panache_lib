@@ -31,6 +31,11 @@ class InputDecorationThemePanel extends StatelessWidget {
     final prefixStyle = inputTheme.prefixStyle ?? baseStyle;
     final suffixStyle = inputTheme.suffixStyle ?? baseStyle;
 
+    final orientation = MediaQuery.of(context).orientation;
+    final inPortrait = orientation == Orientation.portrait;
+    final isLargeLayout = MediaQuery.of(context).size.shortestSide >= 600;
+    final useMobileLayout = !inPortrait && !isLargeLayout;
+
     return Container(
       padding: kPadding,
       color: Colors.grey.shade100,
@@ -158,42 +163,49 @@ class InputDecorationThemePanel extends StatelessWidget {
             textStyle: labelStyle,
             label: 'Label style',
             styleName: 'labelStyle',
+            useMobileLayout: useMobileLayout,
           ),
           _buildTextStyleControl(
             key: 'ctrl-hint_style',
             textStyle: hintStyle,
             label: 'Hint style',
             styleName: 'hintStyle',
+            useMobileLayout: useMobileLayout,
           ),
           _buildTextStyleControl(
             key: 'ctrl-helper_style',
             textStyle: helperStyle,
             label: 'Helper style',
             styleName: 'helperStyle',
+            useMobileLayout: useMobileLayout,
           ),
           _buildTextStyleControl(
             key: 'ctrl-error_style',
             textStyle: errorStyle,
             label: 'Error style',
             styleName: 'errorStyle',
+            useMobileLayout: useMobileLayout,
           ),
           _buildTextStyleControl(
             key: 'ctrl-prefix_style',
             textStyle: prefixStyle,
             label: 'Prefix style',
             styleName: 'prefixStyle',
+            useMobileLayout: useMobileLayout,
           ),
           _buildTextStyleControl(
             key: 'ctrl-suffix_style',
             textStyle: suffixStyle,
             label: 'Suffix style',
             styleName: 'suffixStyle',
+            useMobileLayout: useMobileLayout,
           ),
           _buildTextStyleControl(
             key: 'ctrl-counter_style',
             textStyle: counterStyle,
             label: 'Counter style',
             styleName: 'counterStyle',
+            useMobileLayout: useMobileLayout,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 6.0),
@@ -223,10 +235,12 @@ class InputDecorationThemePanel extends StatelessWidget {
     @required String label,
     @required TextStyle textStyle,
     @required String styleName,
+    @required bool useMobileLayout,
   }) {
     return TextStyleControl(
       label,
       key: Key(key),
+      useMobileLayout: useMobileLayout,
       style: textStyle,
       maxFontSize: 24,
       onColorChanged: (color) =>

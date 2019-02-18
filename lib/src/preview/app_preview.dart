@@ -132,67 +132,63 @@ class ThemePreviewAppState extends State<ThemePreviewApp>
   Widget build(BuildContext context) {
     return RepaintBoundary(
       key: _globalKey,
-      child: MaterialApp(
-        title: 'App Preview',
-        debugShowCheckedModeBanner: false,
-        home: AnimatedTheme(
-          data: widget.theme,
-          child: DefaultTabController(
-            length: _tabsItem.length,
-            child: Scaffold(
-              appBar: AppBar(
-                title: Text("App Preview"),
-                bottom: _buildTabBar(),
-                actions: <Widget>[
-                  IconButton(icon: Icon(Icons.add), onPressed: () {}),
-                  IconButton(
-                      icon: Icon(Icons.add_a_photo), onPressed: _screenshot),
-                  IconButton(
-                      icon: Icon(Icons.menu),
-                      onPressed: () => Scaffold.of(context).openDrawer()),
+      child: AnimatedTheme(
+        data: widget.theme,
+        child: DefaultTabController(
+          length: _tabsItem.length,
+          child: Scaffold(
+            appBar: AppBar(
+              title: Text("App Preview"),
+              bottom: _buildTabBar(),
+              actions: <Widget>[
+                IconButton(icon: Icon(Icons.add), onPressed: () {}),
+                IconButton(
+                    icon: Icon(Icons.add_a_photo), onPressed: _screenshot),
+                /*IconButton(
+                      icon: Icon(Icons.create_new_folder),
+                      onPressed: () => Scaffold.of(context).openDrawer()),*/
+              ],
+            ),
+            floatingActionButton: tabBarController.index == 0
+                ? FloatingActionButton(
+                    child: Icon(
+                      Icons.check,
+                      /*color: widget.theme?.accentTextTheme?.button?.color,*/
+                    ),
+                    onPressed: () {})
+                : null,
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.endDocked,
+            drawer: Drawer(
+              child: ListView(
+                children: <Widget>[
+                  Text('Drawer'),
                 ],
               ),
-              floatingActionButton: tabBarController.index == 0
-                  ? FloatingActionButton(
-                      child: Icon(
-                        Icons.check,
-                        /*color: widget.theme?.accentTextTheme?.button?.color,*/
-                      ),
-                      onPressed: () {})
-                  : null,
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.endDocked,
-              drawer: Drawer(
-                child: ListView(
-                  children: <Widget>[
-                    Text('Drawer'),
-                  ],
-                ),
+            ),
+            body: TabBarView(controller: tabBarController, children: [
+              WidgetPreview1(theme: widget.theme),
+              ButtonPreview(theme: widget.theme),
+              InputsPreview(theme: widget.theme),
+              SliderPreview(theme: widget.theme),
+              ChipsPreview(theme: widget.theme),
+              OthersPreview(theme: widget.theme),
+              TypographyPreview(
+                textTheme: widget.theme.textTheme,
+                brightness: widget.theme.brightness,
               ),
-              body: TabBarView(controller: tabBarController, children: [
-                WidgetPreview1(theme: widget.theme),
-                ButtonPreview(theme: widget.theme),
-                InputsPreview(theme: widget.theme),
-                SliderPreview(theme: widget.theme),
-                ChipsPreview(theme: widget.theme),
-                OthersPreview(theme: widget.theme),
-                TypographyPreview(
-                  textTheme: widget.theme.textTheme,
-                  brightness: widget.theme.brightness,
-                ),
-                TypographyPreview(
-                  textTheme: widget.theme.primaryTextTheme,
-                  brightness: widget.theme.primaryColorBrightness,
-                ),
-                TypographyPreview(
-                  textTheme: widget.theme.accentTextTheme,
-                  brightness: widget.theme.accentColorBrightness,
-                ),
-              ]),
-              bottomNavigationBar: BottomAppBar(
-                child: Row(children: bottomItems),
-                shape: CircularNotchedRectangle(),
+              TypographyPreview(
+                textTheme: widget.theme.primaryTextTheme,
+                brightness: widget.theme.primaryColorBrightness,
               ),
+              TypographyPreview(
+                textTheme: widget.theme.accentTextTheme,
+                brightness: widget.theme.accentColorBrightness,
+              ),
+            ]),
+            bottomNavigationBar: BottomAppBar(
+              child: Row(children: bottomItems),
+              shape: CircularNotchedRectangle(),
             ),
           ),
         ),

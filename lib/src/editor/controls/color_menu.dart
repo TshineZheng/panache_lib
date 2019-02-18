@@ -2,16 +2,21 @@ import 'package:flutter/material.dart';
 
 import '../../utils/color_utils.dart';
 import '../../utils/constants.dart';
+import '../color_stream.dart';
 import '../show_custom_menu.dart';
 
-void openColorMenu(BuildContext context, {ValueChanged<Color> onSelection}) {
+void openColorMenu(BuildContext context,
+    {ValueChanged<Color> onSelection, Color color}) {
   final RenderBox renderBox = context.findRenderObject();
   final Offset topLeft = renderBox?.localToGlobal(Offset.zero);
+
+  final colorStream = ColorStream(color ?? Colors.blue);
 
   showGridMenu<Color>(
     context: context,
     elevation: 2.0,
-    items: getColorMenuTileItems(),
+    items: getColorMenuTileItems(colorStream, color),
+    colorStream: colorStream,
     position: RelativeRect.fromLTRB(
       topLeft.dx,
       topLeft.dy,
@@ -20,7 +25,8 @@ void openColorMenu(BuildContext context, {ValueChanged<Color> onSelection}) {
     ),
   ).then<Null>(
     (Color newValue) {
-      if (newValue == null) return null;
+      colorStream.dispose();
+      if (newValue == null) return;
       if (onSelection != null) onSelection(newValue);
     },
   );
@@ -48,22 +54,34 @@ List<PopupMenuItem<Color>> getColorMenuItems() {
       .toList();
 }
 
-List<PopupGridMenuItem<Color>> getColorMenuTileItems() => namedColors()
-    .map(
-      (c) => PopupGridMenuItem<Color>(
-            value: c.color,
-            child: GridTile(
-              footer: Padding(
-                padding: EdgeInsets.all(4.0),
-                child: Text(c.name,
-                    style: isDark(c.color) ? kDarkTextStyle : kLightTextStyle),
+List<PopupGridMenuItem<Color>> getColorMenuTileItems(
+        ColorStream colorStream, Color currentColor) =>
+    namedColors()
+        .map(
+          (c) => PopupGridMenuItem<Color>(
+                value: c.color,
+                onSelection: colorStream.selectColor,
+                selected: c.color == currentColor,
+                child: GridTile(
+                  footer: Padding(
+                    padding: EdgeInsets.all(4.0),
+                    child: Text(c.name,
+                        style:
+                            isDark(c.color) ? kDarkTextStyle : kLightTextStyle),
+                  ),
+                  child: Container(
+                    width: kSwatchSize,
+                    height: kSwatchSize,
+                    decoration: BoxDecoration(
+                        color: c.color,
+                        border: Border.all(
+                            style: c.color == currentColor
+                                ? BorderStyle.solid
+                                : BorderStyle.none,
+                            width: 3,
+                            color: Colors.white)),
+                  ),
+                ),
               ),
-              child: Container(
-                width: kSwatchSize,
-                height: kSwatchSize,
-                color: c.color,
-              ),
-            ),
-          ),
-    )
-    .toList();
+        )
+        .toList();

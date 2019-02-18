@@ -5,9 +5,13 @@ class ExpanderHeader extends StatelessWidget {
   final Color color;
   final String label;
   final IconData icon;
+  final bool dense;
 
   ExpanderHeader(
-      {@required this.color, @required this.label, @required this.icon});
+      {@required this.color,
+      @required this.label,
+      @required this.icon,
+      this.dense});
 
   @override
   Widget build(BuildContext context) => Row(
@@ -21,7 +25,9 @@ class ExpanderHeader extends StatelessWidget {
           ),
           Text(
             label,
-            style: Theme.of(context).textTheme.headline,
+            style: dense
+                ? Theme.of(context).textTheme.subhead
+                : Theme.of(context).textTheme.headline,
           ),
         ],
       );

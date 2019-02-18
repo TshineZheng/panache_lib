@@ -8,6 +8,7 @@ class ScreenshotRenderer extends StatelessWidget {
   final PanacheTheme theme;
   final String basePath;
   final bool removable;
+  final Size size;
   final ValueChanged<PanacheTheme> onThemeSelection;
   final ValueChanged<PanacheTheme> onDeleteTheme;
 
@@ -15,6 +16,7 @@ class ScreenshotRenderer extends StatelessWidget {
       {Key key,
       @required this.theme,
       @required this.basePath,
+      @required this.size,
       this.onThemeSelection,
       this.onDeleteTheme,
       this.removable: false})
@@ -29,18 +31,21 @@ class ScreenshotRenderer extends StatelessWidget {
       alignment: Alignment.bottomLeft,
       children: <Widget>[
         InkWell(
-          onTap: () => onThemeSelection(theme),
+          onTap: () => removable ? null : onThemeSelection(theme),
           child: Container(
             child: Material(
                 elevation: 2.0,
                 child: imageFile.existsSync()
                     ? Image.file(
                         imageFile,
-                        width: 142,
-                        height: 250,
+                        width: size.width,
+                        height: size.height,
                         fit: BoxFit.fitHeight,
                       )
-                    : SizedBox(width: 140, child: Icon(Icons.color_lens))),
+                    : SizedBox(
+                        width: size.width,
+                        height: size.height,
+                        child: Icon(Icons.color_lens))),
           ),
         ),
         removable

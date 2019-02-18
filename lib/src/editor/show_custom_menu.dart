@@ -3,7 +3,10 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-const Duration _kMenuDuration = const Duration(milliseconds: 300);
+import '../utils/color_utils.dart';
+import 'color_stream.dart';
+
+const Duration _kMenuDuration = const Duration(milliseconds: 100);
 const double _kMenuCloseIntervalEnd = 2.0 / 3.0;
 const double _kMenuItemHeight = 48.0;
 const double _kMenuScreenPadding = 0.0;
@@ -15,7 +18,8 @@ Future<T> showGridMenu<T>(
     RelativeRect position,
     @required List<PopupMenuEntry<T>> items,
     T initialValue,
-    double elevation: 8.0}) {
+    double elevation: 8.0,
+    ColorStream colorStream}) {
   assert(context != null);
   assert(items != null && items.isNotEmpty);
   return Navigator.push(
@@ -23,6 +27,7 @@ Future<T> showGridMenu<T>(
     _PopupMenuRoute<T>(
       position: position,
       items: items,
+      colorStream: colorStream,
       initialValue: initialValue,
       elevation: elevation,
       theme: Theme.of(context, shadowThemeOnly: true),
@@ -41,13 +46,15 @@ class _PopupMenuRoute<T> extends PopupRoute<T> {
       this.items,
       this.initialValue,
       this.elevation,
-      this.theme});
+      this.theme,
+      this.colorStream});
 
   final RelativeRect position;
   final List<PopupMenuEntry<T>> items;
   final dynamic initialValue;
   final double elevation;
   final ThemeData theme;
+  final ColorStream colorStream;
 
   @override
   Animation<double> createAnimation() => CurvedAnimation(
@@ -72,7 +79,7 @@ class _PopupMenuRoute<T> extends PopupRoute<T> {
       selectedItemOffset = 0.0;
     }*/
 
-    Widget menu = _PopupMenu<T>(route: this);
+    Widget menu = _PopupMenu<T>(route: this, colorStream: colorStream);
     if (theme != null) menu = Theme(data: theme, child: menu);
 
     return CustomSingleChildLayout(
@@ -128,20 +135,30 @@ class _PopupMenuRouteGridLayout extends SingleChildLayoutDelegate {
   }
 }
 
-class _PopupMenu<T> extends StatelessWidget {
-  const _PopupMenu({Key key, this.route}) : super(key: key);
+class _PopupMenu<T> extends StatefulWidget {
+  const _PopupMenu({Key key, this.route, this.colorStream}) : super(key: key);
   final _PopupMenuRoute<T> route;
+  final ColorStream colorStream;
+
+  @override
+  _PopupMenuState createState() {
+    return new _PopupMenuState();
+  }
+}
+
+class _PopupMenuState extends State<_PopupMenu> {
+  double _opacity = 1;
 
   @override
   Widget build(BuildContext context) {
     final List<Widget> children = [];
 
-    for (int i = 0; i < route.items.length; ++i) {
-      Widget item = route.items[i];
+    for (int i = 0; i < widget.route.items.length; ++i) {
+      Widget item = widget.route.items[i];
       children.add(item);
     }
 
-    final Widget child = SizedBox(
+    final Widget colorsGrid = SizedBox(
       width: 480.0,
       height: 320.0,
       child: GridView(
@@ -152,15 +169,69 @@ class _PopupMenu<T> extends StatelessWidget {
       ),
     );
 
+    final opacityBox = SizedBox(
+        height: 128,
+        width: 480,
+        child: StreamBuilder(
+            stream: widget.colorStream.color$,
+            initialData: Colors.blue,
+            builder: (BuildContext context, AsyncSnapshot<Color> snapshot) {
+              Color currentColor = snapshot.data;
+              _opacity = currentColor.opacity;
+              return Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: 64,
+                    child:
+                        Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                      Text('Opacity'),
+                      Slider(
+                          divisions: 100,
+                          value: _opacity,
+                          label: '$_opacity',
+                          onChanged: _onOpacityUpdate),
+                      Expanded(child: SizedBox()),
+                    ]),
+                  ),
+                  Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                    Container(
+                      width: 64,
+                      height: 64,
+                      color: currentColor,
+                    ),
+                    Text(colorToHex32(currentColor)),
+                    Expanded(child: SizedBox()),
+                    IconButton(
+                      icon: Icon(
+                        Icons.check_circle,
+                        color: Colors.green,
+                      ),
+                      onPressed: () => Navigator.pop(context, snapshot.data),
+                    )
+                  ]),
+                ],
+              );
+            }));
+
     return Material(
       type: MaterialType.card,
-      elevation: route.elevation,
-      child: child,
+      elevation: widget.route.elevation,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[colorsGrid, opacityBox],
+      ),
     );
+  }
+
+  void _onOpacityUpdate(double opacity) {
+    widget.colorStream.setOpacity(opacity);
+    setState(() {
+      _opacity = opacity;
+    });
   }
 }
 
-class PopupGridMenuItem<T> extends PopupMenuEntry<T> {
+class PopupGridMenuItem<T extends Color> extends PopupMenuEntry<T> {
   /// Creates an item for a popup menu.
   ///
   /// By default, the item is enabled.
@@ -168,14 +239,19 @@ class PopupGridMenuItem<T> extends PopupMenuEntry<T> {
     Key key,
     this.value,
     this.enabled: true,
+    @required this.onSelection,
+    @required this.selected,
     @required this.child,
   }) : super(key: key);
 
   final T value;
   final bool enabled;
+  final bool selected;
 
   /// The widget below this widget in the tree.
   final Widget child;
+
+  final ValueChanged<T> onSelection;
 
   @override
   double get height => _kMenuItemHeight;
@@ -191,13 +267,15 @@ class PopupGridMenuItem<T> extends PopupMenuEntry<T> {
   }
 }
 
-class _PopupGridMenuItemState<T extends PopupGridMenuItem<dynamic>>
+class _PopupGridMenuItemState<T extends PopupGridMenuItem<Color>>
     extends State<T> {
   // Override this to put something else in the menu entry.
   Widget buildChild() => widget.child;
 
   void onTap() {
-    Navigator.pop(context, widget.value);
+    //Navigator.pop(context, widget.value);
+    print('_PopupGridMenuItemState.onTap... ${widget.value}');
+    widget.onSelection(widget.value);
   }
 
   @override

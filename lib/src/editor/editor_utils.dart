@@ -3,11 +3,17 @@ import 'package:flutter/material.dart';
 import 'controls/brightness_control.dart';
 import 'controls/color_selector.dart';
 
-Widget getFieldsRow(List<Widget> children) => Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      mainAxisSize: MainAxisSize.max,
-      children: children.map((w) => Expanded(child: w)).toList(growable: false),
-    );
+Widget getFieldsRow(List<Widget> children, {Axis direction: Axis.horizontal}) {
+  final isHorizontal = direction == Axis.horizontal;
+  return Flex(
+    direction: direction,
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    mainAxisSize: isHorizontal ? MainAxisSize.max : MainAxisSize.min,
+    children: children
+        .map((w) => isHorizontal ? Expanded(child: w) : w)
+        .toList(growable: false),
+  );
+}
 
 Widget getColorBrightnessSelector(
         {String label,

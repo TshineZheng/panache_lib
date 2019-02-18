@@ -7,6 +7,7 @@
 library panache_lib;
 
 export 'src/app_theme.dart';
+export 'src/editor/controls/color_selector.dart';
 export 'src/editor/editor_screen.dart';
 export 'src/launch/launch_screen.dart';
 export 'src/local_data.dart';

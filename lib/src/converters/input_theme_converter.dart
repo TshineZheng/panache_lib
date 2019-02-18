@@ -126,7 +126,8 @@ Map<String, dynamic> inputBorderToMap(InputBorder border) {
   if (border is UnderlineInputBorder) {
     return {
       'type': type,
-      'radius': borderRadiusToMap(border.borderRadius ?? BorderRadius.zero),
+      'radius':
+          borderRadiusToMap(/*border.borderRadius ?? */ BorderRadius.zero),
       'side': borderSideToMap(border.borderSide)
     };
   }
@@ -174,14 +175,14 @@ InputDecorationTheme inputDecorationThemeFromMap(Map<String, dynamic> data) {
 InputBorder inputBorderFromMap(Map<String, dynamic> data) {
   if (data['type'] == 'UnderlineInputBorder') {
     return UnderlineInputBorder(
-        borderRadius: borderRadiusFromMap(data['radius']),
-        borderSide: borderSideFromMap(data['borderSide']));
+      borderSide: borderSideFromMap(data['side']),
+    );
   }
 
   if (data['type'] == 'OutlineInputBorder') {
     return OutlineInputBorder(
-        borderRadius: borderRadiusFromMap(data['borderRadius']),
-        borderSide: borderSideFromMap(data['borderSide']),
+        borderRadius: borderRadiusFromMap(data['radius']),
+        borderSide: borderSideFromMap(data['side']),
         gapPadding: data['gapPadding']);
   }
 

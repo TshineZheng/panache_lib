@@ -24,7 +24,8 @@ class SwitcherControl extends StatelessWidget {
     final labelStyle = textTheme.subtitle;
 
     final children = <Widget>[
-      Row(
+      Flex(
+        direction: direction,
         children: <Widget>[
           Switch(value: checked, onChanged: onChange),
           Text(

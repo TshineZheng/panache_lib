@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'constants.dart';
 
+enum RGB { R, G, B }
+
+enum HSL { H, S, L }
+
 const materialColorsNames = [
   "red",
   "pink",
@@ -49,9 +53,24 @@ MaterialColor swatchFor({Color color}) =>
         orElse: () => newColorSwatch(color));
 
 String materialSwatchCodeFor({Color color}) {
-  final found = namedColors().firstWhere((c) => c.color.value == color.value);
-  return 'Colors.${found.name}';
+  try {
+    final found = namedColors().firstWhere((c) => c.color.value == color.value);
+    return 'Colors.${found.name}';
+  } catch (error) {
+    return customSwatchCode(color);
+  }
 }
+
+String customSwatchCode(Color color) {
+  return "MaterialColor(${color.value},${getMaterialColorValues(color).toString()})";
+}
+
+/*Map<int, Color> colorToSwatch(Color color){
+  return {
+    50:;
+    100:;
+  };
+}*/
 
 List<NamedColor> namedColors() {
   var colors = List<Color>.from(Colors.primaries, growable: true);
@@ -73,7 +92,10 @@ class NamedColor {
 
 bool isDark(Color c) => (c.red + c.green + c.blue) / 3 >= 146;
 
-getMaterialSwatches(ValueChanged<Color> onSelection) {
+Color getContrastColor(Color c, {int limit: 450}) =>
+    c.red + c.green + c.blue < limit ? Colors.white : Colors.black;
+
+List<Widget> getMaterialSwatches(ValueChanged<Color> onSelection) {
   final colors = Colors.primaries.map((c) => c).toList();
   colors.addAll([white, black, grey]);
 
@@ -138,6 +160,22 @@ String colorToHex32(Color color) =>
 
 String colorToInt(Color color) =>
     '0x${color.value.toRadixString(16).padLeft(8, '0')}';
+
+List<Color> getHueGradientColors({int steps: 36}) =>
+    List.generate(steps, (value) => value).map<Color>((v) {
+      final hsl = HSLColor.fromAHSL(1, v * (360 / steps), 0.67, 0.50);
+      final rgb = hsl.toColor();
+      return rgb.withOpacity(1);
+    }).toList();
+
+Color getMinSaturation(Color c) {
+  final hsl = HSLColor.fromColor(c);
+  final minS = hsl.withSaturation(0);
+  return minS.toColor().withOpacity(1);
+}
+
+Color getMaxSaturation(Color c) =>
+    HSLColor.fromColor(c).withSaturation(1).toColor();
 
 const MaterialColor grey = const MaterialColor(
   _greyPrimaryValue,

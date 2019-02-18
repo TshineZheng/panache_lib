@@ -128,7 +128,7 @@ BorderRadius borderRadiusFromMap(Map<String, dynamic> data) {
 BorderSide borderSideFromMap(dynamic data) {
   if (data == null || data == 'none') return BorderSide.none;
   return BorderSide(
-    color: data['color'],
+    color: Color(data['color']),
     width: double.parse(data['width']) ?? 1.0,
     style: BorderStyle.values[max(0, data['style'])],
   );

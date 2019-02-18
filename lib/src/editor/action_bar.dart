@@ -11,7 +11,6 @@ class GlobalThemePropertiesControl extends StatelessWidget {
     final model = ThemeModel.of(context);
     //final onAndroid = model.theme.platform == TargetPlatform.android;
     final isDark = model.theme.brightness == Brightness.dark;
-
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -21,7 +20,7 @@ class GlobalThemePropertiesControl extends StatelessWidget {
             child: ColorSelector(
               'Primary swatch',
               model.theme.primaryColor,
-              (color) => _onSwatchSelection(model, color),
+              (color) => _onSwatchSelection(model, swatchFor(color: color)),
               padding: 0,
             ),
           ),

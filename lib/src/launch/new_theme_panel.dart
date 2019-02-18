@@ -14,6 +14,8 @@ class NewThemePanel extends StatelessWidget {
   final ValueChanged<Brightness> onBrightnessSelection;
   final VoidCallback onNewTheme;
 
+  final Orientation orientation;
+
   bool get isDark => initialBrightness == Brightness.dark;
 
   const NewThemePanel({
@@ -23,21 +25,38 @@ class NewThemePanel extends StatelessWidget {
     @required this.onSwatchSelection,
     @required this.onBrightnessSelection,
     @required this.onNewTheme,
+    @required this.orientation,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final inPortrait = orientation == Orientation.portrait;
+    final isLargeLayout = MediaQuery.of(context).size.shortestSide >= 600;
+    final isMobileInLandscape = !inPortrait && !isLargeLayout;
 
+    final newThemeLabel = Padding(
+      padding: EdgeInsets.only(
+          bottom: isMobileInLandscape ? 0 : 16,
+          right: isMobileInLandscape ? 16 : 0),
+      child: Text('New theme', style: textTheme.title),
+    );
+    final btCreate = Padding(
+      padding: EdgeInsets.only(top: isMobileInLandscape ? 2 : 16.0),
+      child: RaisedButton.icon(
+        shape: StadiumBorder(),
+        color: newThemePrimary,
+        icon: Icon(Icons.color_lens, color: newThemePrimary[100]),
+        label: Text('Create', style: TextStyle(color: Colors.white)),
+        onPressed: onNewTheme,
+      ),
+    );
     return Container(
-      padding: EdgeInsets.all(16.0),
+      padding: EdgeInsets.all(isMobileInLandscape ? 6 : 16.0),
       color: Colors.white54,
       child: Column(
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(bottom: 16.0),
-            child: Text('New theme', style: textTheme.title),
-          ),
+          isLargeLayout || inPortrait ? newThemeLabel : SizedBox(),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
@@ -51,18 +70,12 @@ class NewThemePanel extends StatelessWidget {
                 label: 'Brightness',
                 onBrightnessChanged: onBrightnessSelection,
               ),
-            ],
+            ]
+              ..insert(
+                  0, !inPortrait && !isLargeLayout ? newThemeLabel : SizedBox())
+              ..add(!inPortrait && !isLargeLayout ? btCreate : SizedBox()),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 16.0),
-            child: RaisedButton.icon(
-              shape: StadiumBorder(),
-              color: newThemePrimary,
-              icon: Icon(Icons.color_lens, color: newThemePrimary[100]),
-              label: Text('Customize', style: TextStyle(color: Colors.white)),
-              onPressed: onNewTheme,
-            ),
-          )
+          isLargeLayout || inPortrait ? btCreate : SizedBox()
         ],
       ),
     );

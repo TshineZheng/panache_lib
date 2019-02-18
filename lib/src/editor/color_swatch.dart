@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../utils/color_utils.dart';
 import '../utils/constants.dart';
-import 'controls/color_menu.dart';
+import 'controls/color_picker/colorpicker_dialog.dart';
+//import 'controls/color_menu.dart';
 
 class ColorSwatchControl extends StatelessWidget {
   final Color color;
@@ -20,18 +21,12 @@ class ColorSwatchControl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => InkWell(
-      onTap: () => openColorMenu(context, onSelection: onSelection),
+      onTap: () => showColorPicker(
+          context: context, onColor: onSelection, currentColor: color)
+      /*openColorMenu(context, onSelection: onSelection, color: color)*/,
       child: Container(
         width: kSwatchSize,
         height: kSwatchSize,
-        decoration: BoxDecoration(
-          color: color,
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 2.5,
-              color: Colors.grey.shade400,
-            )
-          ],
-        ),
+        decoration: BoxDecoration(color: color),
       ));
 }

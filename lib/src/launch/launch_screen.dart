@@ -3,7 +3,7 @@ import 'package:scoped_model/scoped_model.dart';
 
 import '../models.dart';
 import '../theme_model.dart';
-import 'new_theme_panel.dart';
+import 'launch_large_layout.dart';
 import 'screenshot_renderer.dart';
 
 class LaunchScreen extends StatefulWidget {
@@ -24,6 +24,8 @@ class LaunchScreenState extends State<LaunchScreen> {
 
   bool editMode = false;
 
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     super.initState();
@@ -31,62 +33,26 @@ class LaunchScreenState extends State<LaunchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('LaunchScreenState.build... ');
     final mqSize = MediaQuery.of(context).size;
     print('LaunchScreenState.build... mqSize $mqSize');
     imageCache.clear();
     return Scaffold(
+      key: scaffoldKey,
       backgroundColor: Colors.blueGrey.shade50,
       body: SafeArea(child: ScopedModelDescendant<ThemeModel>(
           builder: (BuildContext context, Widget child, ThemeModel model) {
         return ConstrainedBox(
           constraints: BoxConstraints.expand(),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              PanacheLogo(),
-              ConstrainedBox(
-                constraints: BoxConstraints.tightFor(width: 520),
-                child: NewThemePanel(
-                    newThemePrimary: newThemePrimary,
-                    initialBrightness: initialBrightness,
-                    onSwatchSelection: onSwatchSelection,
-                    onBrightnessSelection: onBrightnessSelection,
-                    onNewTheme: () => _newTheme(model)),
-              ),
-              model.themes?.isNotEmpty ?? false
-                  ? Column(children: [
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: FlatButton(
-                          child: Text(
-                            editMode ? 'Done' : 'Edit',
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                                color: Colors.blueGrey),
-                          ),
-                          onPressed: () => setState(() => editMode = !editMode),
-                        ),
-                      ),
-                      Container(
-                        color: Colors.blueGrey.shade200,
-                        constraints: BoxConstraints.expand(height: 300),
-                        child: ListView(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 16.0, horizontal: 16),
-                          shrinkWrap: true,
-                          itemExtent: 180,
-                          scrollDirection: Axis.horizontal,
-                          semanticChildCount: model.themes?.length ?? 0,
-                          children: _buildThemeThumbs(model.themes ?? [],
-                              basePath: '${model.dir?.path ?? ''}/themes'),
-                        ),
-                      )
-                    ])
-                  : SizedBox()
-            ],
-          ),
+          child: LaunchLayout(
+              model: model,
+              newThemePrimary: newThemePrimary,
+              initialBrightness: initialBrightness,
+              onSwatchSelection: onSwatchSelection,
+              onBrightnessSelection: onBrightnessSelection,
+              newTheme: _newTheme,
+              editMode: editMode,
+              toggleEditMode: () => setState(() => editMode = !editMode),
+              buildThemeThumbs: _buildThemeThumbs),
         );
       })),
     );
@@ -98,19 +64,17 @@ class LaunchScreenState extends State<LaunchScreen> {
   void onBrightnessSelection(Brightness value) =>
       setState(() => initialBrightness = value);
 
-  List<Widget> _buildThemeThumbs(
-    List<PanacheTheme> themes, {
-    String basePath,
-  }) =>
+  List<Widget> _buildThemeThumbs(List<PanacheTheme> themes,
+          {String basePath, Size size}) =>
       themes
           .map<Widget>((f) => ScreenshotRenderer(
-                key: UniqueKey(),
                 theme: f,
                 removable: editMode,
                 basePath: basePath,
                 onThemeSelection: (PanacheTheme theme) => _loadTheme(theme),
                 onDeleteTheme: (PanacheTheme theme) =>
                     widget.model.deleteTheme(theme),
+                size: size,
               ))
           .toList();
 
@@ -123,24 +87,13 @@ class LaunchScreenState extends State<LaunchScreen> {
   _editTheme() => Navigator.of(context).pushNamed('/editor');
 
   Future _loadTheme(PanacheTheme theme) async {
-    await widget.model.loadTheme(theme);
-    return _editTheme();
-  }
-}
-
-class PanacheLogo extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset('logo.png', package: 'panache_lib', width: 60),
-        ),
-        Text('Panache', style: textTheme.display1),
-      ],
-    );
+    final result = await widget.model.loadTheme(theme);
+    if (result != null)
+      _editTheme();
+    else
+      scaffoldKey.currentState.showSnackBar(SnackBar(
+        content: Text('Error : Can\'t load this theme.'),
+        backgroundColor: Colors.red.shade700,
+      ));
   }
 }

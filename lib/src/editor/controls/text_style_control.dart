@@ -59,6 +59,8 @@ class TextStyleControl extends StatefulWidget {
 
   final bool expanded;
 
+  final bool useMobileLayout;
+
   TextStyleControl(
     this.label, {
     Key key,
@@ -73,6 +75,7 @@ class TextStyleControl extends StatefulWidget {
     @required this.onDecorationChanged,
     @required this.onDecorationStyleChanged,
     @required this.onDecorationColorChanged,
+    this.useMobileLayout: false,
     this.expanded: false,
     this.maxFontSize: 112.0,
   })  : this.color = style.color ?? Colors.black,
@@ -126,23 +129,25 @@ class TextStyleControlState extends State<TextStyleControl> {
       ]),
       getFieldsRow([
         SwitcherControl(
+            direction: widget.useMobileLayout ? Axis.vertical : Axis.horizontal,
             checked: widget.isBold,
             checkedLabel: 'Bold',
             onChange: widget.onWeightChanged),
         SwitcherControl(
+            direction: widget.useMobileLayout ? Axis.vertical : Axis.horizontal,
             checked: widget.isItalic,
             checkedLabel: 'Italic',
             onChange: widget.onFontStyleChanged),
-        SliderPropertyControl(
-          widget.lineHeight,
-          widget.onLineHeightChanged,
-          label: 'Line height',
-          min: 1,
-          max: 3,
-          showDivisions: false,
-          vertical: true,
-        ),
-      ]),
+      ] /*, direction: Axis.vertical*/),
+      SliderPropertyControl(
+        widget.lineHeight,
+        widget.onLineHeightChanged,
+        label: 'Line height',
+        min: 1,
+        max: 3,
+        showDivisions: false,
+        vertical: true,
+      ),
       getFieldsRow([
         SliderPropertyControl(
           widget.letterSpacing,
