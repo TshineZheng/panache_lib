@@ -65,13 +65,13 @@ Color _getFillColor(InputDecorationTheme theme, Brightness brightness) {
 String inputBorderToCode(InputBorder border) {
   if (border is UnderlineInputBorder) {
     return '''UnderlineInputBorder(
-      side: ${borderSideToCode(border.borderSide)},
+      borderSide: ${borderSideToCode(border.borderSide)},
       borderRadius: BorderRadius.all(${border.borderRadius.topLeft}),
     )''';
   }
   if (border is OutlineInputBorder) {
     return '''OutlineInputBorder(
-      side: ${borderSideToCode(border.borderSide)},
+      borderSide: ${borderSideToCode(border.borderSide)},
       borderRadius: BorderRadius.all(${border.borderRadius.topLeft}),
       gapPadding: ${border.gapPadding}
     )''';
