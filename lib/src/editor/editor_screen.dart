@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../preview/app_preview.dart';
@@ -94,6 +95,17 @@ class PanacheEditorTopbar extends StatelessWidget
             icon: Icon(Icons.color_lens),
             onPressed: () => Scaffold.of(context).openDrawer()),
         actions: [
+          IconButton(icon: Icon(Icons.content_copy), onPressed: (){
+            Clipboard.setData(new ClipboardData(text: model.themeCode));
+            final snackBar = SnackBar(
+              content: Text('Copied to Clipboard'),
+              action: SnackBarAction(
+                label: 'OK',
+                onPressed: () {},
+              ),
+            );
+            Scaffold.of(context).showSnackBar(snackBar);
+          }),
           IconButton(
             icon: Icon(showCode ? Icons.mobile_screen_share : Icons.keyboard),
             onPressed: () => onShowCodeChanged(!showCode),
